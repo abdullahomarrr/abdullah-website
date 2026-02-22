@@ -1,0 +1,101 @@
+---
+import SectionLabel from "./SectionLabel.astro";
+---
+
+<section id="about" class="section about">
+  <div class="container">
+    <SectionLabel text="About" />
+
+    <div class="about-content">
+      <p class="about-text-large">
+        A product designer with four years of
+        hands-on experience, consistently
+        delivering innovative and user-centered solutions.
+      </p>
+
+      <p class="about-text-large">
+        <strong>Successfully collaborated with over 50 clients,</strong>
+        <span class="muted">
+          helping them elevate their business websites through tailored
+          design solutions.
+        </span>
+      </p>
+    </div>
+
+    <div class="about-stats card">
+      <div class="stat">
+        <span class="stat-number accent">4+</span>
+        <span class="stat-label">Years Experience</span>
+      </div>
+      <div class="stat">
+        <span class="stat-number accent">50+</span>
+        <span class="stat-label">Project Done</span>
+      </div>
+      <div class="stat">
+        <span class="stat-number accent">45+</span>
+        <span class="stat-label">Happy Client</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .about-content {
+    margin-bottom: 40px;
+    max-width: 680px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+  }
+
+  .about-text-large {
+    font-family: var(--font-serif);
+    font-size: clamp(26px, 3.3vw, 36px);
+    font-weight: 400;
+    line-height: 1.35;
+    letter-spacing: -0.01em;
+    margin-bottom: 24px;
+  }
+
+  .about-text-large strong {
+    font-weight: 600;
+  }
+
+  .about-stats {
+    display: flex;
+    gap: 48px;
+    padding: 28px 36px;
+    max-width: 520px;
+    margin: 0 auto;
+  }
+
+  .stat {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .stat-number {
+    font-family: var(--font-serif);
+    font-size: 31px;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+  }
+
+  .stat-label {
+    font-size: 15px;
+    color: var(--text);
+  }
+
+  @media (max-width: 767px) {
+    .about-stats {
+      gap: 28px;
+      padding: 22px 24px;
+      max-width: 100%;
+    }
+
+    .stat-number {
+      font-size: 26px;
+    }
+  }
+</style>

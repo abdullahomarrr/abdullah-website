@@ -1,0 +1,120 @@
+---
+import SectionLabel from "./SectionLabel.astro";
+
+const jobs = [
+  {
+    company: "Mobbin",
+    role: "Product Designer at Mobbin",
+    period: "January 2024 - Now",
+    color: "#1D1D1D",
+    icon: "mobbin",
+  },
+  {
+    company: "Balkan Brothers",
+    role: "Product Designer at Balkan Brothers",
+    period: "January 2021 - December 2023",
+    color: "#2DD4BF",
+    icon: "balkan",
+  },
+  {
+    company: "Envato",
+    role: "Product Designer at Envato",
+    period: "February 2018 - December 2020",
+    color: "#81C341",
+    icon: "envato",
+  },
+];
+---
+
+<section id="experience" class="section experience">
+  <div class="container" style="text-align: center;">
+    <SectionLabel text="Experience" />
+
+    <h2 class="experience-heading">
+      A Proven Track Record of Design Excellence
+    </h2>
+
+    <div class="experience-list">
+      {jobs.map((job) => (
+        <div class="experience-card card">
+          <div class="experience-icon" style={`background: ${job.color};`}>
+            {job.icon === "mobbin" && (
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M6 8C6 6.89543 6.89543 6 8 6H16C17.1046 6 18 6.89543 18 8V16C18 17.1046 17.1046 18 16 18H8C6.89543 18 6 17.1046 6 16V8Z" fill="white"/>
+                <path d="M9 11L11 13.5L15 9" stroke={job.color} stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            )}
+            {job.icon === "balkan" && (
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M7 17L12 7L17 17H7Z" fill="white"/>
+              </svg>
+            )}
+            {job.icon === "envato" && (
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M15 6C12 6 9 9 9 12C9 15 10 17 10 17C10 17 9 14 12 11C15 8 15 6 15 6Z" fill="white"/>
+              </svg>
+            )}
+          </div>
+          <div class="experience-info">
+            <span class="experience-role">{job.role}</span>
+            <span class="experience-period muted">{job.period}</span>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .experience-heading {
+    font-size: clamp(31px, 3.9vw, 44px);
+    font-weight: 400;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    max-width: 520px;
+    margin: 0 auto 36px;
+    text-align: center;
+  }
+
+  .experience-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-width: 620px;
+    margin: 0 auto;
+  }
+
+  .experience-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 18px 22px;
+  }
+
+  .experience-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .experience-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .experience-role {
+    font-family: var(--font-serif);
+    font-size: 20px;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+  }
+
+  .experience-period {
+    font-size: 15px;
+  }
+</style>

@@ -1,0 +1,221 @@
+---
+import SectionLabel from "./SectionLabel.astro";
+
+const reviews = [
+  {
+    quote: "Abdullah Omar delivered exactly what we needed—creative, efficient, and impactful. Highly recommended!",
+    name: "David Saloka",
+    role: "Founder Travelae",
+  },
+  {
+    quote: "Professional and responsive. Abdullah understood our vision perfectly and brought it to life.",
+    name: "Warsun Jess",
+    role: "Founder Gombalan",
+  },
+  {
+    quote: "Outstanding work! The design exceeded our expectations and helped boost our conversions significantly.",
+    name: "Sarah Chen",
+    role: "CEO TechFlow",
+  },
+  {
+    quote: "Incredible attention to detail. Abdullah transformed our outdated website into a modern masterpiece.",
+    name: "Alex Rivera",
+    role: "Founder Artisan Co",
+  },
+];
+---
+
+<section id="reviews" class="section reviews">
+  <div class="container">
+    <SectionLabel text="Reviews" />
+
+    <div class="reviews-header">
+      <h2 class="reviews-heading">What My Client Say</h2>
+      <div class="reviews-arrows">
+        <button class="arrow-btn" id="reviewPrev" aria-label="Previous review">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M15 18l-6-6 6-6"/>
+          </svg>
+        </button>
+        <button class="arrow-btn" id="reviewNext" aria-label="Next review">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 18l6-6-6-6"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="reviews-viewport">
+      <div class="reviews-track" id="reviewsTrack">
+        {reviews.map((review) => (
+          <div class="review-card card">
+            <span class="review-quote-icon">99</span>
+            <p class="review-text">{review.quote}</p>
+            <div class="review-author">
+              <div class="review-author-bar"></div>
+              <div class="review-author-info">
+                <span class="review-name">{review.name}</span>
+                <span class="review-role muted">{review.role}</span>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const viewport = document.querySelector(".reviews-viewport") as HTMLElement;
+  const track = document.getElementById("reviewsTrack") as HTMLElement;
+  const prevBtn = document.getElementById("reviewPrev") as HTMLButtonElement;
+  const nextBtn = document.getElementById("reviewNext") as HTMLButtonElement;
+
+  if (track && prevBtn && nextBtn && viewport) {
+    let currentIndex = 0;
+    const GAP = 20;
+
+    function getVisibleCount(): number {
+      return window.innerWidth >= 768 ? 2 : 1;
+    }
+
+    function getCards(): NodeListOf<HTMLElement> {
+      return track.querySelectorAll(".review-card") as NodeListOf<HTMLElement>;
+    }
+
+    function getMaxIndex(): number {
+      return Math.max(0, getCards().length - getVisibleCount());
+    }
+
+    function slide() {
+      const cards = getCards();
+      if (!cards.length) return;
+      const cardWidth = (viewport.offsetWidth - GAP) / getVisibleCount();
+      const offset = currentIndex * (cardWidth + GAP);
+      track.style.transform = `translateX(-${offset}px)`;
+    }
+
+    prevBtn.addEventListener("click", () => {
+      if (currentIndex > 0) { currentIndex--; slide(); }
+    });
+
+    nextBtn.addEventListener("click", () => {
+      if (currentIndex < getMaxIndex()) { currentIndex++; slide(); }
+    });
+
+    const ro = new ResizeObserver(() => {
+      if (currentIndex > getMaxIndex()) currentIndex = getMaxIndex();
+      slide();
+    });
+    ro.observe(viewport);
+  }
+</script>
+
+<style>
+  .reviews-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 32px;
+  }
+
+  .reviews-heading {
+    font-size: clamp(28px, 3.5vw, 40px);
+    font-weight: 400;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+  }
+
+  .reviews-arrows {
+    display: flex;
+    gap: 12px;
+  }
+
+  .arrow-btn {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text);
+    background: transparent;
+    cursor: pointer;
+    transition: border-color 0.2s;
+  }
+
+  .arrow-btn:hover {
+    border-color: var(--text);
+  }
+
+  .reviews-viewport {
+    overflow: hidden;
+  }
+
+  .reviews-track {
+    display: flex;
+    gap: 20px;
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  /* Each card = exactly half the viewport minus half the gap */
+  .review-card {
+    flex: 0 0 calc(50% - 10px);
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .review-quote-icon {
+    font-family: var(--font-serif);
+    font-size: 26px;
+    color: var(--muted);
+    line-height: 1;
+    opacity: 0.45;
+  }
+
+  .review-text {
+    font-family: var(--font-serif);
+    font-size: 17px;
+    line-height: 1.6;
+    letter-spacing: -0.01em;
+    flex: 1;
+  }
+
+  .review-author {
+    display: flex;
+    align-items: stretch;
+    gap: 12px;
+    padding-top: 8px;
+  }
+
+  .review-author-bar {
+    width: 2px;
+    background: var(--border);
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+
+  .review-author-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .review-name {
+    font-size: 15px;
+    font-weight: 600;
+  }
+
+  .review-role {
+    font-size: 13px;
+  }
+
+  @media (max-width: 767px) {
+    .review-card {
+      flex: 0 0 100%;
+    }
+  }
+</style>
