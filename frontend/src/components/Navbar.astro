@@ -4,7 +4,9 @@
 <nav class="navbar">
   <div class="navbar-inner">
     <div class="navbar-left">
-      <a href="#hero" class="navbar-brand" data-scroll-top>Abdullah.</a>
+      <a href="#hero" class="navbar-brand" data-scroll-top>
+        <img src="/logo.png" alt="Abdullah Omar" class="navbar-logo" />
+      </a>
       <span class="navbar-divider">/</span>
       <ul class="navbar-links">
         <li><a href="#about">About</a></li>
@@ -34,7 +36,7 @@
   .navbar-inner {
     width: 100%;
     padding: 0 40px;
-    height: 60px;
+    height: 76px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -49,13 +51,15 @@
   }
 
   .navbar-brand {
-    font-family: 'Space Grotesk', var(--font-sans);
-    font-weight: 700;
-    font-size: 19px;
-    color: var(--text);
-    letter-spacing: -0.02em;
-    white-space: nowrap;
+    display: flex;
+    align-items: center;
     flex-shrink: 0;
+  }
+
+  .navbar-logo {
+    height: 56px;
+    width: auto;
+    display: block;
   }
 
   .navbar-divider {
@@ -104,7 +108,8 @@
     font-family: 'Space Grotesk', var(--font-sans);
     font-size: 15px;
     font-weight: 500;
-    letter-spacing: 0.02em;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
     transition: background 0.15s ease, color 0.15s ease;
     white-space: nowrap;
   }

@@ -277,8 +277,8 @@ body.snap-active {
   display: flex;
   align-items: center;
   position: relative;
-  /* clear the fixed navbar (60px) so content starts below it */
-  padding-top: 60px;
+  /* clear the fixed navbar (76px) so content starts below it */
+  padding-top: 76px;
 }
 
 .pageInner {
@@ -295,7 +295,7 @@ body.snap-active {
 
 /* Internal overflow for sections whose content may exceed viewport */
 .pageInner--scrollable {
-  max-height: calc(100vh - 60px);
+  max-height: calc(100vh - 76px);
   overflow-y: auto;
   padding-right: 14px; /* prevents scrollbar overlaying content */
   scrollbar-width: thin;
@@ -347,7 +347,7 @@ body.snap-active {
     min-height: auto;
     align-items: stretch;
     /* keep navbar clearance on mobile too */
-    padding-top: 60px;
+    padding-top: 76px;
   }
 
   .pageInner {
