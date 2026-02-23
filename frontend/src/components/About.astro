@@ -2,118 +2,131 @@
 import SectionLabel from "./SectionLabel.astro";
 ---
 
-<div class="about-wrap">
-  <div data-reveal data-delay="0">
-    <SectionLabel text="About" />
+<div class="about-grid">
+  <!-- Left: Photo -->
+  <div class="about-photo-col" data-reveal data-delay="0">
+    <div class="about-photo-frame">
+      <img src="/abdullah.jpeg" alt="Abdullah Omar" class="about-photo" />
+    </div>
   </div>
 
-  <h2 class="about-headline" data-reveal data-delay="1">
-    Building software<br />that actually ships.
-  </h2>
+  <!-- Right: Content -->
+  <div class="about-text-col">
+    <div data-reveal data-delay="0">
+      <SectionLabel text="About" />
+    </div>
 
-  <div class="about-content">
-    <p class="about-text-large" data-reveal data-delay="2">
-      I'm Abdullah Omar — a Software Engineer who builds full-stack web applications,
-      AI-powered tools, and scalable backend systems.
+    <h2 class="about-headline" data-reveal data-delay="1">
+      Building software that actually ships.
+    </h2>
+
+    <p class="about-body" data-reveal data-delay="2">
+      I'm Abdullah Omar — a Software Engineer who builds full-stack web
+      applications, AI-powered tools, and scalable backend systems.
     </p>
 
-    <p class="about-text-large" data-reveal data-delay="3">
+    <p class="about-body" data-reveal data-delay="3">
       <strong>Founding Engineer at Pyko Canada,</strong>
-      <span class="muted">
-        where I ship LLM-driven workflows, RESTful APIs, and production-ready
-        infrastructure that real users depend on every day.
-      </span>
+      <span class="muted"> where I ship LLM-driven workflows, RESTful APIs, and
+      production-ready infrastructure that real users depend on every day.</span>
     </p>
-  </div>
 
-  <div class="about-stats">
-    <div class="stat card" data-reveal data-delay="4">
-      <span class="stat-number accent">3+</span>
-      <span class="stat-label">Years Building</span>
-    </div>
-
-    <div class="stat card" data-reveal data-delay="5">
-      <span class="stat-number accent">10+</span>
-      <span class="stat-label">Projects Shipped</span>
-    </div>
-
-    <div class="stat card" data-reveal data-delay="6">
-      <span class="stat-number accent">8+</span>
-      <span class="stat-label">Technologies</span>
+    <div class="about-tags" data-reveal data-delay="4">
+      <span class="about-tag">Full-Stack</span>
+      <span class="about-tag">AI / LLMs</span>
+      <span class="about-tag">Backend Systems</span>
     </div>
   </div>
 </div>
 
 <style>
-  .about-wrap {
+  .about-grid {
+    display: grid;
+    grid-template-columns: 360px 1fr;
+    gap: 80px;
+    align-items: center;
     width: 100%;
-    max-width: 680px;
-    margin: 0 auto;
-    text-align: center;
   }
 
+  /* ── Photo column ── */
+  .about-photo-frame {
+    aspect-ratio: 3 / 4;
+    border-radius: 20px;
+    overflow: hidden;
+    background: var(--card);
+    border: 1px solid var(--border);
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.09);
+    position: relative;
+  }
+
+  .about-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+  }
+
+  /* ── Text column ── */
   .about-headline {
     font-family: var(--font-serif);
-    font-size: clamp(31px, 3.9vw, 44px);
+    font-size: clamp(30px, 3.6vw, 46px);
     font-weight: 400;
-    line-height: 1.2;
+    line-height: 1.15;
     letter-spacing: -0.02em;
-    margin-bottom: 32px;
+    margin-top: 16px;
+    margin-bottom: 28px;
   }
 
-  .about-content {
-    margin-bottom: 40px;
-  }
-
-  .about-text-large {
-    font-family: var(--font-serif);
-    font-size: clamp(20px, 2.4vw, 26px);
+  .about-body {
+    font-family: var(--font-satoshi);
     font-weight: 400;
-    line-height: 1.45;
-    letter-spacing: -0.01em;
+    font-size: clamp(17px, 1.5vw, 20px);
+    line-height: 1.6;
+    color: var(--text);
     margin-bottom: 20px;
   }
 
-  .about-text-large strong {
+  .about-body strong {
     font-weight: 600;
   }
 
-  .about-stats {
+  /* ── Skill tags ── */
+  .about-tags {
     display: flex;
-    gap: 48px;
-    padding: 28px 36px;
-    max-width: 480px;
-    margin: 0 auto;
-    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 16px;
   }
 
-  .stat {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
-
-  .stat-number {
-    font-family: var(--font-serif);
-    font-size: 31px;
+  .about-tag {
+    font-family: var(--font-satoshi);
+    font-size: 13px;
     font-weight: 500;
-    letter-spacing: -0.02em;
+    color: var(--text);
+    background: transparent;
+    border: 1px solid rgba(29, 29, 29, 0.2);
+    border-radius: 100px;
+    padding: 5px 16px;
+    letter-spacing: 0.01em;
   }
 
-  .stat-label {
-    font-size: 14px;
-    color: var(--text);
+  /* ── Responsive ── */
+  @media (max-width: 960px) {
+    .about-grid {
+      grid-template-columns: 300px 1fr;
+      gap: 48px;
+    }
   }
 
   @media (max-width: 767px) {
-    .about-stats {
-      gap: 24px;
-      padding: 22px 24px;
-      max-width: 100%;
+    .about-grid {
+      grid-template-columns: 1fr;
+      gap: 32px;
     }
 
-    .stat-number {
-      font-size: 26px;
+    .about-photo-frame {
+      aspect-ratio: 4 / 3;
+      max-width: 320px;
     }
   }
 </style>

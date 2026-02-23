@@ -3,13 +3,15 @@ import SectionLabel from "./SectionLabel.astro";
 
 const jobs = [
   {
-    role: "Founding Engineer at Pyko Canada Ltd",
+    company: "Pyko Canada Ltd",
+    role: "Founding Engineer",
     description: "Building LLM-driven workflows, RESTful APIs, and production-ready infrastructure that real users depend on every day.",
     stack: ["Python", "TypeScript", "FastAPI", "MongoDB Atlas", "AWS"],
     period: "June 2025 – Present",
     preview: "/pyko2.JPG",
   },
   {
+    company: "Self-Employed",
     role: "Freelance & Enterprise Designer",
     description: "Delivered high-quality visual assets, motion graphics, and brand identities for clients across multiple industries.",
     stack: ["Photoshop", "Blender", "Premiere Pro", "After Effects", "DaVinci Resolve"],
@@ -17,7 +19,8 @@ const jobs = [
     preview: "/assets/polaroid-1.jpg",
   },
   {
-    role: "Research & Design Volunteer at Ethiopiaid",
+    company: "Ethiopiaid",
+    role: "Research & Design Volunteer",
     description: "Created marketing materials and research assets to support charitable outreach campaigns.",
     stack: ["Photoshop", "Canva"],
     period: "Jun 2022 – Aug 2022",
@@ -49,6 +52,7 @@ const jobs = [
           </div>
         )}
         <div class="experience-info">
+          <span class="experience-company">{job.company}</span>
           <span class="experience-role">{job.role}</span>
           <p class="experience-desc">{job.description}</p>
           <div class="experience-tags">
@@ -108,7 +112,8 @@ const jobs = [
     display: flex;
     flex-direction: column;
     text-align: left;
-    background: #232323;
+    background: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.08);
     overflow: hidden;
   }
 
@@ -152,18 +157,29 @@ const jobs = [
     padding: 22px 20px 20px;
   }
 
+  .experience-company {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
   .experience-role {
     font-family: var(--font-serif);
     font-size: clamp(17px, 1.6vw, 21px);
     font-weight: 400;
     letter-spacing: -0.01em;
-    color: #fff;
+    color: var(--text);
     line-height: 1.2;
+    margin-top: 2px;
   }
 
   .experience-desc {
+    font-family: var(--font-satoshi);
+    font-weight: 400;
     font-size: 14px;
-    color: rgba(255, 255, 255, 0.5);
+    color: var(--muted);
     line-height: 1.55;
     margin: 0;
   }
@@ -177,9 +193,11 @@ const jobs = [
   }
 
   .experience-tag {
+    font-family: var(--font-satoshi);
+    font-weight: 500;
     font-size: 12px;
-    color: rgba(255, 255, 255, 0.75);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: var(--text);
+    border: 1px solid rgba(0, 0, 0, 0.14);
     border-radius: 999px;
     padding: 4px 12px;
     white-space: nowrap;

@@ -3,7 +3,7 @@ import SectionLabel from "./SectionLabel.astro";
 
 const projects = [
   {
-    title: "Pyko Canada — AI-Powered Education Platform",
+    title: "Pyko Canada",
     year: "2025 – Present",
     stack: "Python · TypeScript · FastAPI · MongoDB Atlas · AWS",
     description: "Founding Engineer on a 5-person team. Shipped Canvas LMS integration, an AI copilot reducing student setup time by 85%, and a student performance analytics layer with peer benchmarking.",
@@ -12,7 +12,7 @@ const projects = [
     image: "/pyko.jpg",
   },
   {
-    title: "PakUni — Centralized Admissions Platform",
+    title: "PakUni",
     year: "2026",
     stack: "Python · JavaScript · FastAPI · MongoDB",
     description: "MVP platform for Pakistani students to create one reusable profile and submit to multiple universities. Reduced duplicated data entry by ~78% across 5 applications.",
@@ -53,7 +53,11 @@ const projects = [
           <span class="project-year muted">{p.year}</span>
         </div>
         <p class="project-description muted">{p.description}</p>
-        <span class="project-stack">{p.stack}</span>
+        <div class="project-tags">
+          {p.stack.split(' · ').map((tag: string) => (
+            <span class="tag">{tag}</span>
+          ))}
+        </div>
       </div>
     ))}
   </div>
@@ -148,20 +152,35 @@ const projects = [
   }
 
   .project-year {
+    font-family: var(--font-satoshi);
+    font-weight: 400;
     font-size: 15px;
     flex-shrink: 0;
   }
 
   .project-description {
+    font-family: var(--font-satoshi);
+    font-weight: 400;
     font-size: 15px;
     line-height: 1.65;
     margin-bottom: 8px;
   }
 
-  .project-stack {
-    font-size: 13px;
-    color: var(--accent);
+  .project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .tag {
+    font-family: var(--font-satoshi);
+    font-size: 12px;
     font-weight: 500;
+    color: var(--text);
+    background: transparent;
+    border: 1px solid rgba(29, 29, 29, 0.2);
+    border-radius: 100px;
+    padding: 3px 10px;
     letter-spacing: 0.01em;
   }
 

@@ -26,6 +26,12 @@
   <span class="scroll-explore__text">Scroll to explore</span>
 </a>
 
+<div class="hero-socials" data-reveal data-delay="3">
+  <a href="https://linkedin.com/in/abdullahomar07" target="_blank" rel="noopener">LinkedIn</a>
+  <a href="https://github.com/abdullahomar07" target="_blank" rel="noopener">Github</a>
+  <a href="mailto:abdullahom07@gmail.com">Gmail</a>
+</div>
+
 <style>
   :global(.snapPage--hero .pageInner) {
     display: flex;
@@ -59,8 +65,11 @@
   }
 
   .hero-subtitle {
+    font-family: var(--font-satoshi);
     font-size: 20px;
-    line-height: 1.65;
+    font-weight: 400;
+    line-height: 1.6;
+    letter-spacing: -0.01em;
     color: var(--text);
     max-width: 600px;
     margin: 0 0 40px;
@@ -75,6 +84,9 @@
   }
 
   .hero-buttons .btn {
+    font-family: var(--font-satoshi);
+    font-weight: 500;
+    letter-spacing: -0.01em;
     height: 52px;
     padding: 0 28px;
     font-size: 17px;
@@ -112,11 +124,11 @@
     padding: 18px 20px 16px 20px;
     text-decoration: none;
     width: 160px;
-    transition: opacity 0.2s;
+    transition: color 0.2s;
   }
 
   .scroll-explore:hover {
-    opacity: 0.85;
+    color: var(--accent);
   }
 
   .scroll-explore__star {
@@ -141,12 +153,39 @@
     position: relative;
   }
 
+  .hero-socials {
+    position: absolute;
+    bottom: 20px;
+    left: 40px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 28px;
+  }
+
+  .hero-socials a {
+    color: var(--text);
+    font-family: var(--font-serif);
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 300;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .hero-socials a:hover {
+    color: var(--accent);
+  }
+
   @media (max-width: 767px) {
     .scroll-explore {
       display: none;
     }
     .hero-buttons {
       flex-wrap: wrap;
+    }
+    .hero-socials {
+      display: none;
     }
   }
 </style>
