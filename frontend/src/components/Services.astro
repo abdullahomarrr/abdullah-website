@@ -3,92 +3,90 @@ import SectionLabel from "./SectionLabel.astro";
 
 const services = [
   {
-    title: "Website Design",
-    description: "Designing responsive and visually appealing websites with a focus on optimal user experience.",
-    icon: "globe",
+    title: "Full-Stack Development",
+    description: "Building end-to-end web applications using Python, TypeScript, FastAPI, and React.js — from database to deployed product.",
+    icon: "stack",
   },
   {
-    title: "Framer Design",
-    description: "Creating interactive website prototypes with Framer that allow real-time experiences.",
-    icon: "framer",
+    title: "AI & LLM Integration",
+    description: "Building AI copilots and LLM-powered workflows with structured tool/function calling, agent orchestration, and OpenAI APIs.",
+    icon: "ai",
   },
   {
-    title: "Wordpress Development",
-    description: "Developing secure, easy-to-manage, and business-ready websites on WordPress.",
-    icon: "wordpress",
+    title: "Backend APIs & Auth",
+    description: "Designing RESTful APIs and implementing secure authentication flows including OAuth 2.0 and privacy-compliant data handling.",
+    icon: "api",
   },
   {
-    title: "Branding",
-    description: "Building a strong and consistent brand identity to capture the target audience's attention.",
-    icon: "branding",
+    title: "Database Architecture",
+    description: "Modeling and managing data with MongoDB and MongoDB Atlas for scalable, production-ready applications.",
+    icon: "db",
   },
   {
-    title: "Logo Design",
-    description: "Designing unique and professional logos that visually represent the brand's identity.",
-    icon: "logo",
+    title: "Cloud & DevOps",
+    description: "Deploying and managing infrastructure using AWS, Docker, and GitHub-based workflows.",
+    icon: "cloud",
   },
 ];
 ---
 
-<section id="services" class="section services">
-  <div class="container">
-    <SectionLabel text="Services" />
-
-    <h2 class="services-heading">What I do for you?</h2>
-
-    <div class="services-grid">
-      {services.map((service, i) => (
-        <div class={`service-card card ${i === 2 ? 'service-card-full' : ''}`}>
-          <div class="service-icon">
-            {service.icon === "globe" && (
-              <svg width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="16" cy="16" r="12"/>
-                <path d="M4 16h24"/>
-                <path d="M16 4c3.5 3.5 5.5 7.5 5.5 12s-2 8.5-5.5 12c-3.5-3.5-5.5-7.5-5.5-12s2-8.5 5.5-12z"/>
-              </svg>
-            )}
-            {service.icon === "framer" && (
-              <svg width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M9 6h14v7H16l7 7H9v-7h7l-7-7z"/>
-                <path d="M9 20l7 7v-7"/>
-              </svg>
-            )}
-            {service.icon === "wordpress" && (
-              <svg width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="16" cy="16" r="12"/>
-                <path d="M6 16l6 10"/>
-                <path d="M14 6.5l-3 17"/>
-                <path d="M18 6.5l-3 17"/>
-                <path d="M20 6l6 10"/>
-              </svg>
-            )}
-            {service.icon === "branding" && (
-              <svg width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="6" y="8" width="20" height="16" rx="2"/>
-                <path d="M11 16h2"/>
-                <path d="M11 20h2"/>
-                <rect x="17" y="12" width="5" height="8" rx="1"/>
-              </svg>
-            )}
-            {service.icon === "logo" && (
-              <svg width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="13" cy="16" r="6"/>
-                <circle cx="19" cy="16" r="6"/>
-              </svg>
-            )}
-          </div>
-          <h3 class="service-title">{service.title}</h3>
-          <p class="service-description muted">{service.description}</p>
-          <a href="#" class="service-link link-arrow">
-            See detail <span>→</span>
-          </a>
-        </div>
-      ))}
-    </div>
+<div class="services-content">
+  <div data-reveal data-delay="0">
+    <SectionLabel text="Skills" />
   </div>
-</section>
+
+  <h2 class="services-heading" data-reveal data-delay="1">What I Build</h2>
+
+  <div class="services-grid" data-reveal data-delay="2">
+    {services.map((service, i) => (
+      <div class={`service-card card ${i === 2 ? 'service-card-full' : ''}`}>
+        <div class="service-icon">
+          {service.icon === "stack" && (
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 10l12-6 12 6-12 6z"/>
+              <path d="M4 16l12 6 12-6"/>
+              <path d="M4 22l12 6 12-6"/>
+            </svg>
+          )}
+          {service.icon === "ai" && (
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="16" cy="16" r="4"/>
+              <path d="M16 4v4M16 24v4M4 16h4M24 16h4"/>
+              <path d="M7.76 7.76l2.83 2.83M21.41 21.41l2.83 2.83M7.76 24.24l2.83-2.83M21.41 10.59l2.83-2.83"/>
+            </svg>
+          )}
+          {service.icon === "api" && (
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 10h4l2 12 4-16 3 12 2-8h5"/>
+            </svg>
+          )}
+          {service.icon === "db" && (
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <ellipse cx="16" cy="9" rx="10" ry="4"/>
+              <path d="M6 9v6c0 2.21 4.48 4 10 4s10-1.79 10-4V9"/>
+              <path d="M6 15v6c0 2.21 4.48 4 10 4s10-1.79 10-4v-6"/>
+            </svg>
+          )}
+          {service.icon === "cloud" && (
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M24 20a6 6 0 000-12 1 1 0 00-.07 0A8 8 0 108 20"/>
+              <path d="M12 24l4-4 4 4"/>
+              <path d="M16 20v8"/>
+            </svg>
+          )}
+        </div>
+        <h3 class="service-title">{service.title}</h3>
+        <p class="service-description muted">{service.description}</p>
+      </div>
+    ))}
+  </div>
+</div>
 
 <style>
+  .services-content {
+    width: 100%;
+  }
+
   .services-heading {
     font-size: clamp(31px, 3.9vw, 44px);
     font-weight: 400;
@@ -136,14 +134,6 @@ const services = [
   .service-description {
     font-size: 15px;
     line-height: 1.6;
-  }
-
-  .service-link {
-    margin-top: auto;
-    padding-top: 4px;
-    font-size: 15px;
-    font-weight: 500;
-    color: var(--text);
   }
 
   @media (max-width: 767px) {

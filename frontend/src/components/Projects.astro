@@ -3,72 +3,61 @@ import SectionLabel from "./SectionLabel.astro";
 
 const projects = [
   {
-    title: "[Redesign] - Enstack Landing Page",
-    year: "2024",
-    image: "/assets/project-1.jpg",
+    title: "Pyko Canada — AI-Powered Education Platform",
+    year: "2025 – Present",
+    stack: "Python · TypeScript · FastAPI · MongoDB Atlas · AWS",
+    description: "Founding Engineer on a 5-person team. Shipped Canvas LMS integration, an AI copilot reducing student setup time by 85%, and a student performance analytics layer with peer benchmarking.",
+    color: "#1a1a2e",
+    accent: "#214BB7",
   },
   {
-    title: "Kursinan - Furniture Website Design",
-    year: "2024",
-    image: "/assets/project-2.jpg",
-  },
-  {
-    title: "Kentung - Furniture Website Design",
-    year: "2024",
-    image: "/assets/project-4.jpg",
-  },
-  {
-    title: "ARTVISTA GALLERY - Art Gallery Website",
-    year: "2024",
-    image: "/assets/project-5.jpg",
+    title: "PakUni — Centralized Admissions Platform",
+    year: "2026",
+    stack: "Python · JavaScript · FastAPI · MongoDB",
+    description: "MVP platform for Pakistani students to create one reusable profile and submit to multiple universities. Reduced duplicated data entry by ~78% across 5 applications.",
+    color: "#214BB7",
+    accent: "#4a6fd4",
   },
 ];
 ---
 
-<section id="projects" class="section projects">
-  <div class="container">
+<div class="projects-content">
+  <div data-reveal data-delay="0">
     <SectionLabel text="Projects" />
-
-    <h2 class="projects-heading">
-      Showcasing Our Success Stories Through
-      Thoughtfully Crafted Solutions
-    </h2>
-
-    <div class="projects-grid">
-      <!-- Row 1: 2 tiles -->
-      <div class="project-row project-row-2">
-        {projects.slice(0, 2).map((p) => (
-          <div class="project-tile">
-            <div class="project-image-wrap">
-              <img src={p.image} alt={p.title} class="project-image" />
-            </div>
-            <div class="project-meta">
-              <span class="project-title">{p.title}</span>
-              <span class="project-year">{p.year}</span>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      <!-- Row 2: 2 tiles -->
-      <div class="project-row project-row-2">
-        {projects.slice(3, 5).map((p) => (
-          <div class="project-tile">
-            <div class="project-image-wrap">
-              <img src={p.image} alt={p.title} class="project-image" />
-            </div>
-            <div class="project-meta">
-              <span class="project-title">{p.title}</span>
-              <span class="project-year">{p.year}</span>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
   </div>
-</section>
+
+  <h2 class="projects-heading" data-reveal data-delay="1">
+    Building Products That<br />Solve Real Problems
+  </h2>
+
+  <div class="projects-grid" data-reveal data-delay="2">
+    {projects.map((p) => (
+      <div class="project-tile">
+        <div class="project-image-wrap" style={`background: ${p.color};`}>
+          <div class="project-placeholder">
+            <div class="placeholder-lines">
+              <div class="ph-line ph-line-wide" style={`background: ${p.accent};`}></div>
+              <div class="ph-line ph-line-mid" style={`background: ${p.accent};`}></div>
+              <div class="ph-line ph-line-short" style={`background: ${p.accent};`}></div>
+            </div>
+          </div>
+        </div>
+        <div class="project-meta">
+          <span class="project-title">{p.title}</span>
+          <span class="project-year muted">{p.year}</span>
+        </div>
+        <p class="project-description muted">{p.description}</p>
+        <span class="project-stack">{p.stack}</span>
+      </div>
+    ))}
+  </div>
+</div>
 
 <style>
+  .projects-content {
+    width: 100%;
+  }
+
   .projects-heading {
     font-size: clamp(31px, 3.9vw, 44px);
     font-weight: 400;
@@ -79,57 +68,62 @@ const projects = [
   }
 
   .projects-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 40px;
-  }
-
-  .project-row {
     display: grid;
+    grid-template-columns: 1fr 1fr;
     gap: 24px;
   }
 
-  .project-row-2 {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .project-row-1 {
-    grid-template-columns: 1fr;
-  }
-
-  .project-tile-full {
-    max-width: 600px;
-    margin: 0 auto;
+  .project-tile {
+    display: flex;
+    flex-direction: column;
   }
 
   .project-image-wrap {
     border-radius: var(--radius);
     overflow: hidden;
     margin-bottom: 16px;
-    background: #ddd;
     aspect-ratio: 4 / 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.3s ease;
   }
 
-  .project-tile-full .project-image-wrap {
-    aspect-ratio: 16 / 10;
+  .project-tile:hover .project-image-wrap {
+    opacity: 0.9;
   }
 
-  .project-image {
+  .project-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    transition: transform 0.4s ease;
   }
 
-  .project-tile:hover .project-image {
-    transform: scale(1.03);
+  .placeholder-lines {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 40%;
   }
+
+  .ph-line {
+    height: 4px;
+    border-radius: 2px;
+    opacity: 0.45;
+  }
+
+  .ph-line-wide  { width: 100%; }
+  .ph-line-mid   { width: 70%; }
+  .ph-line-short { width: 50%; }
 
   .project-meta {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
     gap: 16px;
+    margin-bottom: 8px;
   }
 
   .project-title {
@@ -142,17 +136,25 @@ const projects = [
 
   .project-year {
     font-size: 15px;
-    color: var(--muted);
     flex-shrink: 0;
   }
 
-  @media (max-width: 767px) {
-    .project-row-2 {
-      grid-template-columns: 1fr;
-    }
+  .project-description {
+    font-size: 15px;
+    line-height: 1.65;
+    margin-bottom: 8px;
+  }
 
-    .project-tile-full {
-      max-width: 100%;
+  .project-stack {
+    font-size: 13px;
+    color: var(--accent);
+    font-weight: 500;
+    letter-spacing: 0.01em;
+  }
+
+  @media (max-width: 767px) {
+    .projects-grid {
+      grid-template-columns: 1fr;
     }
   }
 </style>

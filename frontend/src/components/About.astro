@@ -2,59 +2,76 @@
 import SectionLabel from "./SectionLabel.astro";
 ---
 
-<section id="about" class="section about">
-  <div class="container">
+<div class="about-wrap">
+  <div data-reveal data-delay="0">
     <SectionLabel text="About" />
+  </div>
 
-    <div class="about-content">
-      <p class="about-text-large">
-        A product designer with four years of
-        hands-on experience, consistently
-        delivering innovative and user-centered solutions.
-      </p>
+  <h2 class="about-headline" data-reveal data-delay="1">
+    Building software<br />that actually ships.
+  </h2>
 
-      <p class="about-text-large">
-        <strong>Successfully collaborated with over 50 clients,</strong>
-        <span class="muted">
-          helping them elevate their business websites through tailored
-          design solutions.
-        </span>
-      </p>
+  <div class="about-content">
+    <p class="about-text-large" data-reveal data-delay="2">
+      I'm Abdullah Omar — a Software Engineer who builds full-stack web applications,
+      AI-powered tools, and scalable backend systems.
+    </p>
+
+    <p class="about-text-large" data-reveal data-delay="3">
+      <strong>Founding Engineer at Pyko Canada,</strong>
+      <span class="muted">
+        where I ship LLM-driven workflows, RESTful APIs, and production-ready
+        infrastructure that real users depend on every day.
+      </span>
+    </p>
+  </div>
+
+  <div class="about-stats">
+    <div class="stat card" data-reveal data-delay="4">
+      <span class="stat-number accent">3+</span>
+      <span class="stat-label">Years Building</span>
     </div>
 
-    <div class="about-stats card">
-      <div class="stat">
-        <span class="stat-number accent">4+</span>
-        <span class="stat-label">Years Experience</span>
-      </div>
-      <div class="stat">
-        <span class="stat-number accent">50+</span>
-        <span class="stat-label">Project Done</span>
-      </div>
-      <div class="stat">
-        <span class="stat-number accent">45+</span>
-        <span class="stat-label">Happy Client</span>
-      </div>
+    <div class="stat card" data-reveal data-delay="5">
+      <span class="stat-number accent">10+</span>
+      <span class="stat-label">Projects Shipped</span>
+    </div>
+
+    <div class="stat card" data-reveal data-delay="6">
+      <span class="stat-number accent">8+</span>
+      <span class="stat-label">Technologies</span>
     </div>
   </div>
-</section>
+</div>
 
 <style>
+  .about-wrap {
+    width: 100%;
+    max-width: 680px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .about-headline {
+    font-family: var(--font-serif);
+    font-size: clamp(31px, 3.9vw, 44px);
+    font-weight: 400;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    margin-bottom: 32px;
+  }
+
   .about-content {
     margin-bottom: 40px;
-    max-width: 680px;
-    margin-left: auto;
-    margin-right: auto;
-    text-align: center;
   }
 
   .about-text-large {
     font-family: var(--font-serif);
-    font-size: clamp(26px, 3.3vw, 36px);
+    font-size: clamp(20px, 2.4vw, 26px);
     font-weight: 400;
-    line-height: 1.35;
+    line-height: 1.45;
     letter-spacing: -0.01em;
-    margin-bottom: 24px;
+    margin-bottom: 20px;
   }
 
   .about-text-large strong {
@@ -65,8 +82,9 @@ import SectionLabel from "./SectionLabel.astro";
     display: flex;
     gap: 48px;
     padding: 28px 36px;
-    max-width: 520px;
+    max-width: 480px;
     margin: 0 auto;
+    justify-content: center;
   }
 
   .stat {
@@ -83,13 +101,13 @@ import SectionLabel from "./SectionLabel.astro";
   }
 
   .stat-label {
-    font-size: 15px;
+    font-size: 14px;
     color: var(--text);
   }
 
   @media (max-width: 767px) {
     .about-stats {
-      gap: 28px;
+      gap: 24px;
       padding: 22px 24px;
       max-width: 100%;
     }

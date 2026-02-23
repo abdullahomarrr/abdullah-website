@@ -1,24 +1,20 @@
 ---
 ---
 
-<section class="section cta-section">
-  <div class="container">
-    <div class="cta-banner card">
-      <div class="cta-content">
-        <h2 class="cta-heading">
-          Ready to get started? Let's discuss your
-          project and make it a reality!"
-        </h2>
-        <a href="mailto:abdullahom07@gmail.com" class="btn btn-primary">Talk with me</a>
-      </div>
-    </div>
+<div class="cta-banner card" data-reveal data-delay="0">
+  <div class="cta-content">
+    <h2 class="cta-heading">
+      Ready to get started? Let's discuss your
+      project and make it a reality!
+    </h2>
+    <a href="mailto:abdullahom07@gmail.com" class="btn btn-primary">Talk with me</a>
   </div>
-</section>
+</div>
 
 <style>
   .cta-banner {
     position: relative;
-    padding: 64px 40px;
+    padding: 56px 40px;
     text-align: center;
     overflow: hidden;
   }
@@ -33,54 +29,16 @@
   }
 
   .cta-heading {
-    font-size: clamp(29px, 3.9vw, 42px);
+    font-size: clamp(26px, 3.2vw, 38px);
     font-weight: 400;
     line-height: 1.25;
     letter-spacing: -0.02em;
-    max-width: 560px;
-  }
-
-  .cta-polaroid {
-    position: absolute;
-    width: clamp(80px, 10vw, 130px);
-    height: clamp(80px, 10vw, 130px);
-    object-fit: cover;
-    border-radius: 16px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
-    z-index: 1;
-    filter: grayscale(100%);
-  }
-
-  .cta-polaroid-left {
-    left: 32px;
-    bottom: 30%;
-    transform: rotate(10deg);
-  }
-
-  .cta-polaroid-right {
-    right: 32px;
-    bottom: 30%;
-    transform: rotate(-10deg);
+    max-width: 520px;
   }
 
   @media (max-width: 767px) {
     .cta-banner {
-      padding: 48px 24px;
-    }
-
-    .cta-polaroid {
-      width: 64px;
-      height: 64px;
-    }
-
-    .cta-polaroid-left {
-      left: 12px;
-      bottom: 20%;
-    }
-
-    .cta-polaroid-right {
-      right: 12px;
-      bottom: 20%;
+      padding: 40px 24px;
     }
   }
 </style>
