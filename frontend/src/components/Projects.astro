@@ -9,6 +9,7 @@ const projects = [
     description: "Founding Engineer on a 5-person team. Shipped Canvas LMS integration, an AI copilot reducing student setup time by 85%, and a student performance analytics layer with peer benchmarking.",
     color: "#1a1a2e",
     accent: "#214BB7",
+    image: "/pyko.jpg",
   },
   {
     title: "PakUni — Centralized Admissions Platform",
@@ -27,20 +28,24 @@ const projects = [
   </div>
 
   <h2 class="projects-heading" data-reveal data-delay="1">
-    Building Products That<br />Solve Real Problems
+    Building Products That Solve Real Problems
   </h2>
 
   <div class="projects-grid" data-reveal data-delay="2">
     {projects.map((p) => (
       <div class="project-tile">
         <div class="project-image-wrap" style={`background: ${p.color};`}>
-          <div class="project-placeholder">
-            <div class="placeholder-lines">
-              <div class="ph-line ph-line-wide" style={`background: ${p.accent};`}></div>
-              <div class="ph-line ph-line-mid" style={`background: ${p.accent};`}></div>
-              <div class="ph-line ph-line-short" style={`background: ${p.accent};`}></div>
+          {p.image ? (
+            <img src={p.image} alt={p.title} class="project-img" />
+          ) : (
+            <div class="project-placeholder">
+              <div class="placeholder-lines">
+                <div class="ph-line ph-line-wide" style={`background: ${p.accent};`}></div>
+                <div class="ph-line ph-line-mid" style={`background: ${p.accent};`}></div>
+                <div class="ph-line ph-line-short" style={`background: ${p.accent};`}></div>
+              </div>
             </div>
-          </div>
+          )}
         </div>
         <div class="project-meta">
           <span class="project-title">{p.title}</span>
@@ -64,7 +69,7 @@ const projects = [
     line-height: 1.2;
     letter-spacing: -0.02em;
     max-width: 620px;
-    margin-bottom: 48px;
+    margin-bottom: 32px;
   }
 
   .projects-grid {
@@ -82,7 +87,7 @@ const projects = [
     border-radius: var(--radius);
     overflow: hidden;
     margin-bottom: 16px;
-    aspect-ratio: 4 / 3;
+    aspect-ratio: 16 / 9;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -91,6 +96,13 @@ const projects = [
 
   .project-tile:hover .project-image-wrap {
     opacity: 0.9;
+  }
+
+  .project-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
   }
 
   .project-placeholder {
