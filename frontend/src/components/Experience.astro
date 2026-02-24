@@ -9,6 +9,7 @@ const jobs = [
     stack: ["Python", "TypeScript", "FastAPI", "MongoDB Atlas", "AWS"],
     period: "June 2025 – Present",
     preview: "/pyko2.JPG",
+    href: "/experience/pyko",
   },
   {
     company: "Self-Employed",
@@ -17,6 +18,7 @@ const jobs = [
     stack: ["Photoshop", "Blender", "Premiere Pro", "After Effects", "DaVinci Resolve"],
     period: "2022 – 2024",
     preview: "/velocity.png",
+    href: "/experience/design",
   },
 ];
 ---
@@ -32,31 +34,54 @@ const jobs = [
 
   <div class="experience-list">
     {jobs.map((job, i) => (
-      <div class="experience-card" data-reveal data-delay={String(i + 2)}>
-        {job.preview && (
-          <div class="experience-preview">
-            <img src={job.preview} alt="" />
-            <button class="experience-arrow" aria-label="View">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <path d="M3 13L13 3M13 3H6M13 3V10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </button>
+      job.href ? (
+        <a href={job.href} class="experience-card experience-card--link" data-reveal data-delay={String(i + 2)}>
+          {job.preview && (
+            <div class="experience-preview">
+              <img src={job.preview} alt="" />
+              <span class="experience-arrow" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <path d="M3 13L13 3M13 3H6M13 3V10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+            </div>
+          )}
+          <div class="experience-info">
+            <span class="experience-company">{job.company}</span>
+            <span class="experience-role">{job.role}</span>
+            <p class="experience-desc">{job.description}</p>
+            <div class="experience-tags">
+              {job.stack.slice(0, 3).map(tag => (
+                <span class="experience-tag">{tag}</span>
+              ))}
+              {job.stack.length > 3 && (
+                <span class="experience-tag">+{job.stack.length - 3}</span>
+              )}
+            </div>
           </div>
-        )}
-        <div class="experience-info">
-          <span class="experience-company">{job.company}</span>
-          <span class="experience-role">{job.role}</span>
-          <p class="experience-desc">{job.description}</p>
-          <div class="experience-tags">
-            {job.stack.slice(0, 3).map(tag => (
-              <span class="experience-tag">{tag}</span>
-            ))}
-            {job.stack.length > 3 && (
-              <span class="experience-tag">+{job.stack.length - 3}</span>
-            )}
+        </a>
+      ) : (
+        <div class="experience-card" data-reveal data-delay={String(i + 2)}>
+          {job.preview && (
+            <div class="experience-preview">
+              <img src={job.preview} alt="" />
+            </div>
+          )}
+          <div class="experience-info">
+            <span class="experience-company">{job.company}</span>
+            <span class="experience-role">{job.role}</span>
+            <p class="experience-desc">{job.description}</p>
+            <div class="experience-tags">
+              {job.stack.slice(0, 3).map(tag => (
+                <span class="experience-tag">{tag}</span>
+              ))}
+              {job.stack.length > 3 && (
+                <span class="experience-tag">+{job.stack.length - 3}</span>
+              )}
+            </div>
           </div>
         </div>
-      </div>
+      )
     ))}
   </div>
 </div>
@@ -109,6 +134,21 @@ const jobs = [
     overflow: hidden;
   }
 
+  .experience-card--link {
+    cursor: pointer;
+    transition: box-shadow 0.22s ease, transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .experience-card--link:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
+  }
+
+  .experience-card--link:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+
   .experience-preview {
     position: relative;
     width: 100%;
@@ -132,14 +172,13 @@ const jobs = [
     width: 35px;
     height: 35px;
     background: #fff;
-    border: none;
     border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
-    cursor: pointer;
     color: #1D1D1D;
     flex-shrink: 0;
+    pointer-events: none;
   }
 
   .experience-info {

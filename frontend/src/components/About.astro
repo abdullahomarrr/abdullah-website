@@ -3,8 +3,8 @@ import SectionLabel from "./SectionLabel.astro";
 ---
 
 <div class="about-grid">
-  <!-- Left: Photo -->
-  <div class="about-photo-col" data-reveal data-delay="0">
+  <!-- Left: Photo — frame slides up, image zooms out independently -->
+  <div class="about-photo-col">
     <div class="about-photo-frame">
       <img src="/abdullah.jpeg" alt="Abdullah Omar" class="about-photo" />
     </div>
@@ -12,26 +12,33 @@ import SectionLabel from "./SectionLabel.astro";
 
   <!-- Right: Content -->
   <div class="about-text-col">
-    <div data-reveal data-delay="0">
+    <!-- Label wipes in left→right like a stamp -->
+    <div class="about-label-wrap">
       <SectionLabel text="About" />
     </div>
 
-    <h2 class="about-headline" data-reveal data-delay="1">
-      Building software that actually ships.
+    <!-- Headline words slide up from masks, softer easing than Hero -->
+    <h2 class="about-headline">
+      <span class="word-mask"><span class="aword" style="--wi:0">Building</span></span>
+      <span class="word-mask"><span class="aword" style="--wi:1">software</span></span>
+      <span class="word-mask"><span class="aword" style="--wi:2">that</span></span>
+      <span class="word-mask"><span class="aword" style="--wi:3">actually</span></span>
+      <span class="word-mask"><span class="aword" style="--wi:4">ships.</span></span>
     </h2>
 
-    <p class="about-body" data-reveal data-delay="2">
+    <p class="about-body about-body-1">
       I'm Abdullah Omar — a Software Engineer who builds full-stack web
       applications, AI-powered tools, and scalable backend systems.
     </p>
 
-    <p class="about-body" data-reveal data-delay="3">
+    <p class="about-body about-body-2">
       <strong>Founding Engineer at Pyko Canada,</strong>
       <span class="muted"> where I ship LLM-driven workflows, RESTful APIs, and
       production-ready infrastructure that real users depend on every day.</span>
     </p>
 
-    <div class="about-tags" data-reveal data-delay="4">
+    <!-- Tags pop in with spring overshoot — the section's finale -->
+    <div class="about-tags">
       <span class="about-tag">Full-Stack</span>
       <span class="about-tag">AI / LLMs</span>
       <span class="about-tag">Backend Systems</span>
@@ -48,7 +55,21 @@ import SectionLabel from "./SectionLabel.astro";
     width: 100%;
   }
 
-  /* ── Photo column ── */
+  /* ========================
+     PHOTO — two-layer depth
+     Frame + image animate independently to create parallax depth.
+     ======================== */
+  .about-photo-col {
+    opacity: 0;
+    transform: translateY(44px);
+    transition: opacity 1100ms ease, transform 1100ms cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  :global(.snapPage.isActive) .about-photo-col {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
   .about-photo-frame {
     aspect-ratio: 3 / 4;
     border-radius: 20px;
@@ -64,6 +85,53 @@ import SectionLabel from "./SectionLabel.astro";
     height: 100%;
     object-fit: cover;
     object-position: center top;
+    /* Starts zoomed in, settles to natural size as the frame arrives */
+    transform: scale(1.14);
+    transition: transform 1700ms cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  :global(.snapPage.isActive) .about-photo {
+    transform: scale(1);
+  }
+
+  /* ========================
+     SECTION LABEL — clip-path wipe
+     Pill is stamped in left→right like a print reveal.
+     ======================== */
+  .about-label-wrap {
+    clip-path: inset(0 101% 0 0);
+    transition: clip-path 650ms cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  :global(.snapPage.isActive) .about-label-wrap {
+    clip-path: inset(0 0% 0 0);
+    transition-delay: 220ms;
+  }
+
+  /* ========================
+     HEADLINE — word mask, softer easing than Hero
+     ======================== */
+  .word-mask {
+    display: inline-block;
+    overflow: hidden;
+    padding-bottom: 0.08em;
+    margin-bottom: -0.08em;
+    vertical-align: top;
+  }
+
+  .aword {
+    display: inline-block;
+    transform: translateY(110%);
+    transition-property: transform;
+    transition-duration: 1050ms;
+    /* Softer than Hero's cubic-bezier(0.16, 1, 0.3, 1) */
+    transition-timing-function: cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  /* Delays live only in active state → exit is instant */
+  :global(.snapPage.isActive) .aword {
+    transform: translateY(0);
+    transition-delay: calc(380ms + var(--wi) * 55ms);
   }
 
   /* ── Text column ── */
@@ -77,6 +145,10 @@ import SectionLabel from "./SectionLabel.astro";
     margin-bottom: 28px;
   }
 
+  /* ========================
+     BODY PARAGRAPHS — staggered fade-up
+     Subordinate to headline; clean and unobtrusive.
+     ======================== */
   .about-body {
     font-family: var(--font-satoshi);
     font-weight: 400;
@@ -84,13 +156,31 @@ import SectionLabel from "./SectionLabel.astro";
     line-height: 1.6;
     color: var(--text);
     margin-bottom: 20px;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 950ms ease, transform 950ms ease;
   }
 
   .about-body strong {
     font-weight: 600;
   }
 
-  /* ── Skill tags ── */
+  :global(.snapPage.isActive) .about-body-1 {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 860ms;
+  }
+
+  :global(.snapPage.isActive) .about-body-2 {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 1040ms;
+  }
+
+  /* ========================
+     TAGS — scale pop with spring overshoot
+     The section's final beat; bubbles appearing one by one.
+     ======================== */
   .about-tags {
     display: flex;
     flex-wrap: wrap;
@@ -108,6 +198,29 @@ import SectionLabel from "./SectionLabel.astro";
     border-radius: 100px;
     padding: 5px 16px;
     letter-spacing: 0.01em;
+    opacity: 0;
+    transform: scale(0.62);
+    transition:
+      opacity 650ms cubic-bezier(0.34, 1.56, 0.64, 1),
+      transform 650ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  :global(.snapPage.isActive) .about-tag:nth-child(1) {
+    opacity: 1;
+    transform: scale(1);
+    transition-delay: 1230ms;
+  }
+
+  :global(.snapPage.isActive) .about-tag:nth-child(2) {
+    opacity: 1;
+    transform: scale(1);
+    transition-delay: 1320ms;
+  }
+
+  :global(.snapPage.isActive) .about-tag:nth-child(3) {
+    opacity: 1;
+    transform: scale(1);
+    transition-delay: 1410ms;
   }
 
   /* ── Responsive ── */
