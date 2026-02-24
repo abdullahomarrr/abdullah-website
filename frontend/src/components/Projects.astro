@@ -3,24 +3,26 @@ import SectionLabel from "./SectionLabel.astro";
 
 const projects = [
   {
-    title: "Pyko Canada",
-    year: "2025 – Present",
-    stack: "Python · TypeScript · FastAPI · MongoDB Atlas · AWS",
-    description: "Pyko is an deterministic and AI-powered academic intelligence platform that predicts outcomes, optimizes study behavior, and delivers proactive insights for student success.",
-    color: "#1a1a2e",
-    accent: "#214BB7",
-    image: "/pyko.jpg",
-    link: "/projects/pyko",
-  },
-  {
     title: "PakUni",
     year: "2026",
     stack: "Python · JavaScript · FastAPI · MongoDB",
-    description: "MVP platform for Pakistani students to create one reusable profile and submit to multiple universities. Reduced duplicated data entry by ~78% across 5 applications.",
+    description: "A unified admissions platform simplifying how Pakistani students apply to universities with one profile, one dashboard, and one workflow.",
     color: "#214BB7",
     accent: "#4a6fd4",
     image: "/pakuni.png",
     link: "/projects/pakuni",
+    comingSoon: false,
+  },
+  {
+    title: "Deer Hacks",
+    year: "2026",
+    stack: "",
+    description: "Something's brewing. Details locked, launch imminent — stay tuned.",
+    color: "#ECECEC",
+    accent: "#9F9F9F",
+    image: null,
+    link: "#",
+    comingSoon: true,
   },
 ];
 ---
@@ -43,42 +45,51 @@ const projects = [
 
   <div class="projects-grid">
     {projects.map((p) => (
-      <div class="project-tile">
-        <a
-          class="project-image-wrap"
-          href={p.link}
-          target={p.link.startsWith('http') ? '_blank' : undefined}
-          rel={p.link.startsWith('http') ? 'noopener noreferrer' : undefined}
-          style={`background: ${p.color};`}
-        >
-          {p.image ? (
-            /* Zoom wrapper animates independently from hover on .project-img */
-            <div class="project-img-zoom">
-              <img src={p.image} alt={p.title} class="project-img" />
+      <div class={`project-tile${p.comingSoon ? ' project-tile--soon' : ''}`}>
+        {p.comingSoon ? (
+          <div class="project-image-wrap project-image-wrap--soon" style={`background: ${p.color};`}>
+            <div class="coming-soon-inner">
+              <span class="coming-soon-label">Coming Soon</span>
             </div>
-          ) : (
-            <div class="project-placeholder">
-              <div class="placeholder-lines">
-                <div class="ph-line ph-line-wide" style={`background: ${p.accent};`}></div>
-                <div class="ph-line ph-line-mid" style={`background: ${p.accent};`}></div>
-                <div class="ph-line ph-line-short" style={`background: ${p.accent};`}></div>
-              </div>
-            </div>
-          )}
-          <div class="project-overlay">
-            <span class="view-btn">View Project</span>
           </div>
-        </a>
+        ) : (
+          <a
+            class="project-image-wrap"
+            href={p.link}
+            target={p.link.startsWith('http') ? '_blank' : undefined}
+            rel={p.link.startsWith('http') ? 'noopener noreferrer' : undefined}
+            style={`background: ${p.color};`}
+          >
+            {p.image ? (
+              <div class="project-img-zoom">
+                <img src={p.image} alt={p.title} class="project-img" />
+              </div>
+            ) : (
+              <div class="project-placeholder">
+                <div class="placeholder-lines">
+                  <div class="ph-line ph-line-wide" style={`background: ${p.accent};`}></div>
+                  <div class="ph-line ph-line-mid" style={`background: ${p.accent};`}></div>
+                  <div class="ph-line ph-line-short" style={`background: ${p.accent};`}></div>
+                </div>
+              </div>
+            )}
+            <div class="project-overlay">
+              <span class="view-btn">View Project</span>
+            </div>
+          </a>
+        )}
         <div class="project-meta">
           <span class="project-title">{p.title}</span>
-          <span class="project-year muted">{p.year}</span>
+          {p.year && <span class="project-year muted">{p.year}</span>}
         </div>
         <p class="project-description muted">{p.description}</p>
-        <div class="project-tags">
-          {p.stack.split(' · ').map((tag: string) => (
-            <span class="tag">{tag}</span>
-          ))}
-        </div>
+        {!p.comingSoon && p.stack && (
+          <div class="project-tags">
+            {p.stack.split(' · ').map((tag: string) => (
+              <span class="tag">{tag}</span>
+            ))}
+          </div>
+        )}
       </div>
     ))}
   </div>
@@ -267,6 +278,36 @@ const projects = [
   .project-image-wrap:hover .view-btn {
     opacity: 1;
     transform: translateY(0);
+  }
+
+  /* ========================
+     COMING SOON CARD
+     ======================== */
+  .project-image-wrap--soon {
+    cursor: default;
+    border: 1.5px dashed rgba(29, 29, 29, 0.18);
+    background: #F0F0F0 !important;
+  }
+
+  .coming-soon-inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+  }
+
+  .coming-soon-label {
+    font-family: var(--font-serif);
+    font-size: clamp(22px, 2.8vw, 32px);
+    font-weight: 400;
+    color: var(--muted);
+    letter-spacing: 0.02em;
+    font-style: italic;
+  }
+
+  .project-tile--soon {
+    opacity: 0.6;
   }
 
   .project-placeholder {

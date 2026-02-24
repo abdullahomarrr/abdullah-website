@@ -5,7 +5,7 @@ const jobs = [
   {
     company: "Pyko Canada Ltd",
     role: "Founding Engineer",
-    description: "Building LLM-driven workflows, RESTful APIs, and production-ready infrastructure that real users depend on every day.",
+    description: "Led a 5-person engineering team to build and launch Pyko's core platform used by active students.",
     stack: ["Python", "TypeScript", "FastAPI", "MongoDB Atlas", "AWS"],
     period: "June 2025 – Present",
     preview: "/pyko2.JPG",
@@ -56,7 +56,10 @@ const jobs = [
               </div>
             )}
             <div class="experience-info">
-              <span class="experience-company">{job.company}</span>
+              <div class="experience-meta-row">
+                <span class="experience-company">{job.company}</span>
+                <span class="experience-period">{job.period}</span>
+              </div>
               <span class="experience-role">{job.role}</span>
               <p class="experience-desc">{job.description}</p>
               <div class="experience-tags">
@@ -77,7 +80,10 @@ const jobs = [
               </div>
             )}
             <div class="experience-info">
-              <span class="experience-company">{job.company}</span>
+              <div class="experience-meta-row">
+                <span class="experience-company">{job.company}</span>
+                <span class="experience-period">{job.period}</span>
+              </div>
               <span class="experience-role">{job.role}</span>
               <p class="experience-desc">{job.description}</p>
               <div class="experience-tags">
@@ -311,6 +317,14 @@ const jobs = [
     padding: 22px 20px 20px;
   }
 
+  /* Company + Period row */
+  .experience-meta-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+  }
+
   /* Company — subtle fade-up */
   .experience-company {
     font-size: 11px;
@@ -327,6 +341,24 @@ const jobs = [
     opacity: 1; transform: translateY(0); transition-delay: 1030ms;
   }
   :global(.snapPage.isActive) .card-wrap:nth-child(2) .experience-company {
+    opacity: 1; transform: translateY(0); transition-delay: 1170ms;
+  }
+
+  /* Period — same style and animation as company */
+  .experience-period {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 600ms ease, transform 600ms ease;
+  }
+
+  :global(.snapPage.isActive) .card-wrap:nth-child(1) .experience-period {
+    opacity: 1; transform: translateY(0); transition-delay: 1030ms;
+  }
+  :global(.snapPage.isActive) .card-wrap:nth-child(2) .experience-period {
     opacity: 1; transform: translateY(0); transition-delay: 1170ms;
   }
 
@@ -410,7 +442,8 @@ const jobs = [
 
   @media (max-width: 767px) {
     .experience-wrap { height: auto; }
+    .experience-heading { white-space: normal; font-size: clamp(22px, 6vw, 32px); }
     .experience-list { flex: none; }
-    .card-wrap { flex: 0 0 72vw; min-height: 420px; }
+    .card-wrap { flex: 0 0 78vw; min-height: 400px; }
   }
 </style>

@@ -1,7 +1,7 @@
 ---
 ---
 
-<nav class="navbar">
+<nav class="navbar" id="navbar">
   <div class="navbar-inner">
     <div class="navbar-left">
       <a href="#hero" class="navbar-brand" data-scroll-top>
@@ -19,6 +19,24 @@
     <div class="navbar-right">
       <a href="#contact" class="navbar-contact-btn">Contact me</a>
     </div>
+
+    <!-- Hamburger — visible only on mobile -->
+    <button class="navbar-hamburger" id="navHamburger" aria-label="Toggle menu" aria-expanded="false">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </div>
+
+  <!-- Mobile dropdown menu -->
+  <div class="navbar-mobile-menu" id="navMobileMenu" aria-hidden="true">
+    <ul class="navbar-mobile-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="/ABDULLAH OMAR RESUME UPDATED 2026.pdf" target="_blank">Resume</a></li>
+    </ul>
+    <a href="#contact" class="navbar-mobile-contact">Contact me</a>
   </div>
 </nav>
 
@@ -119,6 +137,128 @@
     color: var(--bg);
   }
 
+  /* ========================
+     HAMBURGER BUTTON
+     ======================== */
+  .navbar-hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 8px;
+    border-radius: 8px;
+    transition: background 0.15s ease;
+  }
+
+  .navbar-hamburger:hover {
+    background: var(--border);
+  }
+
+  .navbar-hamburger span {
+    display: block;
+    width: 20px;
+    height: 1.5px;
+    background: var(--text);
+    border-radius: 2px;
+    transform-origin: center;
+    transition: transform 0.25s ease, opacity 0.25s ease, width 0.25s ease;
+  }
+
+  /* X state when open */
+  .navbar.nav-open .navbar-hamburger span:nth-child(1) {
+    transform: translateY(6.5px) rotate(45deg);
+  }
+  .navbar.nav-open .navbar-hamburger span:nth-child(2) {
+    opacity: 0;
+    width: 0;
+  }
+  .navbar.nav-open .navbar-hamburger span:nth-child(3) {
+    transform: translateY(-6.5px) rotate(-45deg);
+  }
+
+  /* ========================
+     MOBILE DROPDOWN MENU
+     ======================== */
+  .navbar-mobile-menu {
+    display: none;
+    flex-direction: column;
+    gap: 0;
+    background: var(--bg);
+    border-top: 1px solid var(--border);
+    padding: 16px 24px 24px;
+    /* Slide-down animation */
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    transition: max-height 0.3s ease, opacity 0.25s ease;
+  }
+
+  .navbar.nav-open .navbar-mobile-menu {
+    max-height: 400px;
+    opacity: 1;
+  }
+
+  .navbar-mobile-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-bottom: 16px;
+  }
+
+  .navbar-mobile-links li a {
+    display: block;
+    font-family: 'Space Grotesk', var(--font-sans);
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+    transition: color 0.15s ease;
+  }
+
+  .navbar-mobile-links li:last-child a {
+    border-bottom: none;
+  }
+
+  .navbar-mobile-links li a:hover {
+    color: var(--text);
+  }
+
+  .navbar-mobile-contact {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 44px;
+    width: 100%;
+    border-radius: 8px;
+    border: 1px solid var(--text);
+    color: var(--text);
+    font-family: 'Space Grotesk', var(--font-sans);
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-top: 4px;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+
+  .navbar-mobile-contact:hover {
+    background: var(--text);
+    color: var(--bg);
+  }
+
+  /* ========================
+     RESPONSIVE
+     ======================== */
   @media (max-width: 1023px) {
     .navbar-inner {
       padding: 0 32px;
@@ -132,19 +272,47 @@
   @media (max-width: 767px) {
     .navbar-inner {
       padding: 0 20px;
-      gap: 16px;
+      gap: 0;
     }
 
-    .navbar-links {
-      gap: 14px;
-    }
-  }
-
-  /* Hide lower-priority links on small screens */
-  @media (max-width: 600px) {
-    .navbar-links li:nth-child(n+4) {
+    /* Hide the desktop nav and contact button */
+    .navbar-divider,
+    .navbar-links,
+    .navbar-right {
       display: none;
+    }
+
+    /* Show hamburger */
+    .navbar-hamburger {
+      display: flex;
+    }
+
+    /* Show mobile menu container (visibility driven by max-height/opacity) */
+    .navbar-mobile-menu {
+      display: flex;
     }
   }
 </style>
 
+<script>
+  const navbar = document.getElementById("navbar");
+  const hamburger = document.getElementById("navHamburger");
+  const mobileMenu = document.getElementById("navMobileMenu");
+
+  if (hamburger && navbar && mobileMenu) {
+    hamburger.addEventListener("click", () => {
+      const isOpen = navbar.classList.toggle("nav-open");
+      hamburger.setAttribute("aria-expanded", String(isOpen));
+      mobileMenu.setAttribute("aria-hidden", String(!isOpen));
+    });
+
+    // Close menu when any mobile nav link is clicked
+    mobileMenu.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", () => {
+        navbar.classList.remove("nav-open");
+        hamburger.setAttribute("aria-expanded", "false");
+        mobileMenu.setAttribute("aria-hidden", "true");
+      });
+    });
+  }
+</script>

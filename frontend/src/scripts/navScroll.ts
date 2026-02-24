@@ -11,7 +11,12 @@
 
 const snapShell = document.getElementById("snapShell") as HTMLElement | null;
 
-if (snapShell) {
+// On mobile the snap shell is not the scroll container — native body scroll
+// handles everything. All the custom scroll logic (wheel intercept, touch
+// navigation, anchor preventDefault) must stay off on mobile.
+const isMobile = () => window.matchMedia("(max-width: 767px)").matches;
+
+if (snapShell && !isMobile()) {
   const DURATION = 800; // ms — tweak this to adjust overall speed
   let currentIndex = 0;
   let isAnimating = false;
