@@ -1,0 +1,1200 @@
+---
+import ProjectLayout from "../../layouts/ProjectLayout.astro";
+import { projects } from "../../data/projects";
+
+export function getStaticPaths() {
+  return Object.keys(projects).map((slug) => ({ params: { slug } }));
+}
+
+const { slug } = Astro.params;
+const project = projects[slug as string];
+
+if (!project) {
+  return Astro.redirect("/");
+}
+---
+
+<ProjectLayout title={`${project.name} — Abdullah Omar`}>
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <div class="topbar-inner">
+      <a href="/" class="back-link">
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 16 16"
+          fill="none"
+          aria-hidden="true"
+        >
+          <path
+            d="M10 13L5 8L10 3"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"></path>
+        </svg>
+        Back to Projects
+      </a>
+      <a href="/" class="brand-link" aria-label="Home">
+        <img src="/logo.png" alt="Abdullah Omar" class="brand-logo" />
+      </a>
+    </div>
+  </div>
+
+  <main
+    class="page-main"
+    style={project.accentColor ? `--accent: ${project.accentColor}` : undefined}
+  >
+    <!-- ─── HERO ─────────────────────────────────── -->
+    <header class="hero anim" style="--i:0">
+      <div class="hero-text">
+        <span class="hero-year">{project.year}</span>
+        <h1 class="hero-title">{project.name}</h1>
+        <p class="hero-tagline">{project.tagline}</p>
+        <div class="hero-tags" role="list" aria-label="Technologies">
+          {
+            project.tags.map((t) => (
+              <span class="tag" role="listitem">
+                {t}
+              </span>
+            ))
+          }
+        </div>
+      </div>
+    </header>
+
+    <!-- ─── DEMO BOX ──────────────────────────────── -->
+    <div class="demo-wrap anim" style="--i:1" aria-hidden="true">
+
+      {/* ── Pyko: dark dashboard ── */}
+      {
+        project.slug === "pyko" && (
+          <div
+            class="demo-card"
+            role="img"
+            aria-label="Pyko student dashboard preview"
+          >
+            <div class="demo-titlebar">
+              <div class="demo-dots">
+                <span class="dot dot-red" />
+                <span class="dot dot-yellow" />
+                <span class="dot dot-green" />
+              </div>
+              <span class="demo-title-text">Pyko — Student Dashboard</span>
+              <div class="demo-titlebar-spacer" />
+            </div>
+            <div class="demo-body">
+              <nav class="demo-sidebar">
+                <div class="dsb-item dsb-active">
+                  <span class="dsb-icon" />
+                  Overview
+                </div>
+                <div class="dsb-item">
+                  <span class="dsb-icon" />
+                  Courses
+                </div>
+                <div class="dsb-item">
+                  <span class="dsb-icon" />
+                  Analytics
+                </div>
+                <div class="dsb-item">
+                  <span class="dsb-icon" />
+                  Copilot
+                </div>
+                <div class="dsb-spacer" />
+                <div class="dsb-item">
+                  <span class="dsb-icon" />
+                  Settings
+                </div>
+              </nav>
+              <div class="demo-content">
+                <div class="demo-welcome">
+                  <span class="demo-greeting">Good morning, Alex</span>
+                  <span class="demo-sub">4 assignments due this week</span>
+                </div>
+                <div class="demo-stats">
+                  <div class="stat-card">
+                    <span class="stat-label">Avg Grade</span>
+                    <span class="stat-value">83.4%</span>
+                    <span class="stat-trend trend-up">↑ 2.1%</span>
+                  </div>
+                  <div class="stat-card">
+                    <span class="stat-label">Courses</span>
+                    <span class="stat-value">6</span>
+                    <span class="stat-trend">active</span>
+                  </div>
+                  <div class="stat-card stat-card-warn">
+                    <span class="stat-label">At Risk</span>
+                    <span class="stat-value">1</span>
+                    <span class="stat-trend trend-down">needs action</span>
+                  </div>
+                </div>
+                <div class="demo-courses">
+                  <span class="demo-courses-label">Performance</span>
+                  {[
+                    { name: "MATH 201", pct: 82, clr: "#4ade80" },
+                    { name: "CS 305", pct: 68, clr: "#f87171" },
+                    { name: "ENG 101", pct: 91, clr: "#4ade80" },
+                    { name: "ECON 210", pct: 79, clr: "#facc15" },
+                  ].map((c) => (
+                    <div class="course-row">
+                      <span class="course-name">{c.name}</span>
+                      <div class="course-track">
+                        <div
+                          class="course-fill"
+                          style={`width:${c.pct}%;background:${c.clr}`}
+                        />
+                      </div>
+                      <span class="course-pct">{c.pct}%</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        )
+      }
+
+      {/* ── PakUni: light admissions form ── */}
+      {
+        project.slug === "pakuni" && (
+          <div
+            class="pu-card"
+            role="img"
+            aria-label="PakUni application portal preview"
+          >
+            <div class="pu-titlebar">
+              <div class="demo-dots">
+                <span class="dot dot-red" />
+                <span class="dot dot-yellow" />
+                <span class="dot dot-green" />
+              </div>
+              <span class="pu-title-text">PakUni — Application Portal</span>
+              <div class="demo-titlebar-spacer" />
+              <span class="pu-step-badge">Step 3 of 5</span>
+            </div>
+            <div class="pu-body">
+              {/* Step progress */}
+              <div class="pu-stepper">
+                <div class="pu-step step-done">
+                  <div class="pu-dot-outer">
+                    <span class="pu-dot-check">✓</span>
+                  </div>
+                  <span class="pu-step-name">Profile</span>
+                </div>
+                <div class="pu-connector line-done" />
+                <div class="pu-step step-done">
+                  <div class="pu-dot-outer">
+                    <span class="pu-dot-check">✓</span>
+                  </div>
+                  <span class="pu-step-name">Academics</span>
+                </div>
+                <div class="pu-connector line-done" />
+                <div class="pu-step step-active">
+                  <div class="pu-dot-outer">
+                    <span class="pu-dot-inner" />
+                  </div>
+                  <span class="pu-step-name">Documents</span>
+                </div>
+                <div class="pu-connector" />
+                <div class="pu-step step-pending">
+                  <div class="pu-dot-outer" />
+                  <span class="pu-step-name">Programs</span>
+                </div>
+                <div class="pu-connector" />
+                <div class="pu-step step-pending">
+                  <div class="pu-dot-outer" />
+                  <span class="pu-step-name">Review</span>
+                </div>
+              </div>
+
+              {/* Document checklist */}
+              <div class="pu-content">
+                <div class="pu-content-header">
+                  <span class="pu-content-title">Your Documents</span>
+                  <span class="pu-completeness">3 / 5 complete</span>
+                </div>
+                <div class="pu-progress-track">
+                  <div class="pu-progress-fill" />
+                </div>
+                <div class="pu-doc-list">
+                  {[
+                    { name: "Matriculation Certificate", done: true },
+                    { name: "Intermediate Result Card", done: true },
+                    { name: "CNIC Copy", done: true },
+                    { name: "Domicile Certificate", done: false },
+                    { name: "Recent Photograph", done: false },
+                  ].map((doc) => (
+                    <div class={`pu-doc-row ${doc.done ? "doc-done" : "doc-missing"}`}>
+                      <span class="pu-doc-check">{doc.done ? "✓" : "·"}</span>
+                      <span class="pu-doc-name">{doc.name}</span>
+                      <span class="pu-doc-status">
+                        {doc.done ? "Uploaded" : "Required"}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Footer */}
+              <div class="pu-footer">
+                <button class="pu-btn pu-btn-back">← Back</button>
+                <button class="pu-btn pu-btn-continue">Continue →</button>
+              </div>
+            </div>
+          </div>
+        )
+      }
+    </div>
+
+    <!-- ─── OVERVIEW ──────────────────────────────── -->
+    <section class="section anim" style="--i:2" aria-labelledby="overview-h">
+      <div class="section-inner">
+        <p class="section-label">What it does</p>
+        <h2 class="section-heading" id="overview-h">Platform Overview</h2>
+        <ul class="feature-list">
+          {
+            project.overview.map((item) => (
+              <li class="feature-item">
+                <span class="feature-dot" aria-hidden="true" />
+                <span>{item}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </section>
+
+    <!-- ─── PROBLEM + HOW IT WORKS ────────────────── -->
+    <section
+      class="section section-split anim"
+      style="--i:3"
+      aria-labelledby="problem-h"
+    >
+      <div class="split-left">
+        <p class="section-label">Context</p>
+        <h2 class="section-heading" id="problem-h">The Problem</h2>
+        {project.problem.map((p) => <p class="problem-text">{p}</p>)}
+      </div>
+      <div class="split-right">
+        <p class="section-label">Engineering</p>
+        <h2 class="section-heading" id="hiw-h">How It Works</h2>
+        <div class="hiw-grid" role="list">
+          {
+            project.howItWorks.map((item, i) => (
+              <div class="hiw-card" role="listitem">
+                <span class="hiw-num" aria-hidden="true">
+                  0{i + 1}
+                </span>
+                <h3 class="hiw-title">{item.title}</h3>
+                <p class="hiw-detail">{item.detail}</p>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── IMPACT ───────────────────────────────── -->
+    <section class="section anim" style="--i:4" aria-labelledby="impact-h">
+      <div class="section-inner section-inner--full">
+        <p class="section-label">Traction</p>
+        <h2 class="section-heading" id="impact-h">Impact</h2>
+        <ul class="metrics-grid" role="list">
+          {
+            project.metrics.map((m) => (
+              <li class="metric-card" role="listitem">
+                <h3 class="metric-title">{m.title}</h3>
+                <p class="metric-desc">{m.description}</p>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </section>
+  </main>
+</ProjectLayout>
+
+<style>
+  /* ─── Animations ─────────────────────────────── */
+  @keyframes fadeUp {
+    from {
+      opacity: 0;
+      transform: translateY(22px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .anim {
+    opacity: 0;
+    animation: fadeUp 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation-delay: calc(var(--i, 0) * 0.12s);
+  }
+
+  /* ─── Top bar ─────────────────────────────────── */
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .topbar-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 40px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-family: var(--font-satoshi);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--muted);
+    transition: color 0.15s ease;
+  }
+
+  .back-link:hover {
+    color: var(--text);
+  }
+
+  .back-link:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  .brand-link {
+    display: flex;
+    align-items: center;
+  }
+
+  .brand-logo {
+    height: 48px;
+    width: auto;
+  }
+
+  /* ─── Page layout ────────────────────────────── */
+  .page-main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 40px 120px;
+  }
+
+  /* ─── Hero ───────────────────────────────────── */
+  .hero {
+    padding-top: 80px;
+    margin-bottom: 48px;
+  }
+
+  .hero-text {
+    max-width: 720px;
+  }
+
+  .hero-year {
+    display: block;
+    font-family: var(--font-satoshi);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+
+  .hero-title {
+    font-family: var(--font-serif);
+    font-size: clamp(52px, 7vw, 84px);
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    color: var(--text);
+    margin-bottom: 22px;
+  }
+
+  .hero-tagline {
+    font-family: var(--font-satoshi);
+    font-size: 17px;
+    line-height: 1.65;
+    color: var(--muted);
+    max-width: 600px;
+    margin-bottom: 28px;
+  }
+
+  .hero-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .tag {
+    font-family: var(--font-satoshi);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text);
+    border: 1px solid rgba(29, 29, 29, 0.18);
+    border-radius: 100px;
+    padding: 4px 12px;
+    letter-spacing: 0.01em;
+  }
+
+  /* ─── Demo wrap ──────────────────────────────── */
+  .demo-wrap {
+    width: 100%;
+    margin-bottom: 96px;
+  }
+
+  /* Shared titlebar dots */
+  .demo-dots {
+    display: flex;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+
+  .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+  }
+
+  .dot-red {
+    background: #ff5f57;
+  }
+  .dot-yellow {
+    background: #febc2e;
+  }
+  .dot-green {
+    background: #28c840;
+  }
+
+  .demo-titlebar-spacer {
+    flex: 1;
+  }
+
+  /* ─── Pyko demo (dark) ───────────────────────── */
+  .demo-card {
+    background: #0d1117;
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow:
+      0 40px 100px rgba(0, 0, 0, 0.16),
+      0 8px 24px rgba(0, 0, 0, 0.1);
+    aspect-ratio: 16 / 8;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .demo-titlebar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 16px;
+    background: #161b22;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    flex-shrink: 0;
+  }
+
+  .demo-title-text {
+    font-family: var(--font-satoshi);
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.25);
+    letter-spacing: 0.04em;
+  }
+
+  .demo-body {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+    min-height: 0;
+  }
+
+  .demo-sidebar {
+    width: 150px;
+    background: #0d1117;
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 14px 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex-shrink: 0;
+  }
+
+  .dsb-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 10px;
+    border-radius: 6px;
+    font-family: var(--font-satoshi);
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.3);
+    cursor: default;
+    user-select: none;
+  }
+
+  .dsb-active {
+    background: rgba(33, 75, 183, 0.2);
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  .dsb-icon {
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+    background: rgba(255, 255, 255, 0.12);
+    flex-shrink: 0;
+  }
+
+  .dsb-active .dsb-icon {
+    background: #214bb7;
+  }
+
+  .dsb-spacer {
+    flex: 1;
+  }
+
+  .demo-content {
+    flex: 1;
+    padding: 16px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    overflow: hidden;
+    min-width: 0;
+  }
+
+  .demo-welcome {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .demo-greeting {
+    font-family: var(--font-satoshi);
+    font-size: 13px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+  .demo-sub {
+    font-family: var(--font-satoshi);
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.28);
+  }
+
+  .demo-stats {
+    display: flex;
+    gap: 10px;
+  }
+
+  .stat-card {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 8px;
+    padding: 10px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+  }
+
+  .stat-card-warn {
+    border-color: rgba(248, 113, 113, 0.25);
+  }
+
+  .stat-label {
+    font-family: var(--font-satoshi);
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.28);
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+  }
+
+  .stat-value {
+    font-family: var(--font-satoshi);
+    font-size: 22px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.88);
+    line-height: 1;
+  }
+
+  .stat-trend {
+    font-family: var(--font-satoshi);
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.28);
+  }
+
+  .trend-up {
+    color: #4ade80;
+  }
+  .trend-down {
+    color: #f87171;
+  }
+
+  .demo-courses {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+  }
+
+  .demo-courses-label {
+    font-family: var(--font-satoshi);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.22);
+    margin-bottom: 2px;
+  }
+
+  .course-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .course-name {
+    font-family: var(--font-satoshi);
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.5);
+    width: 62px;
+    flex-shrink: 0;
+  }
+
+  .course-track {
+    flex: 1;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.07);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .course-fill {
+    height: 100%;
+    border-radius: 2px;
+    opacity: 0.75;
+  }
+
+  .course-pct {
+    font-family: var(--font-satoshi);
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.35);
+    width: 30px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  /* ─── PakUni demo (light) ────────────────────── */
+  .pu-card {
+    background: #fff;
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: 1px solid #e4e4e4;
+    box-shadow:
+      0 24px 64px rgba(0, 0, 0, 0.07),
+      0 4px 14px rgba(0, 0, 0, 0.04);
+    aspect-ratio: 16 / 8;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .pu-titlebar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 16px;
+    background: #f7f8f9;
+    border-bottom: 1px solid #ebebeb;
+    flex-shrink: 0;
+  }
+
+  .pu-title-text {
+    font-family: var(--font-satoshi);
+    font-size: 11px;
+    color: #aaa;
+    letter-spacing: 0.04em;
+  }
+
+  .pu-step-badge {
+    font-family: var(--font-satoshi);
+    font-size: 10px;
+    font-weight: 600;
+    color: #1a6b3c;
+    background: rgba(26, 107, 60, 0.08);
+    border-radius: 100px;
+    padding: 3px 9px;
+    letter-spacing: 0.03em;
+    flex-shrink: 0;
+  }
+
+  .pu-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 18px 24px 16px;
+    gap: 14px;
+    overflow: hidden;
+    min-height: 0;
+  }
+
+  /* Step progress indicator */
+  .pu-stepper {
+    display: flex;
+    align-items: flex-start;
+    gap: 0;
+  }
+
+  .pu-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    flex-shrink: 0;
+  }
+
+  .pu-dot-outer {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 2px solid #d4d4d4;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .step-done .pu-dot-outer {
+    border-color: #1a6b3c;
+    background: #1a6b3c;
+  }
+
+  .step-active .pu-dot-outer {
+    border-color: #1a6b3c;
+    background: #fff;
+  }
+
+  .pu-dot-check {
+    font-size: 9px;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1;
+  }
+
+  .pu-dot-inner {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #1a6b3c;
+  }
+
+  .pu-step-name {
+    font-family: var(--font-satoshi);
+    font-size: 9px;
+    color: #bbb;
+    white-space: nowrap;
+    letter-spacing: 0.02em;
+  }
+
+  .step-done .pu-step-name,
+  .step-active .pu-step-name {
+    color: #1a6b3c;
+    font-weight: 600;
+  }
+
+  .pu-connector {
+    flex: 1;
+    height: 2px;
+    background: #e4e4e4;
+    margin-top: 9px;
+  }
+
+  .line-done {
+    background: #1a6b3c;
+  }
+
+  /* Document checklist */
+  .pu-content {
+    flex: 1;
+    background: #f7f8f9;
+    border: 1px solid #ebebeb;
+    border-radius: 10px;
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    overflow: hidden;
+    min-height: 0;
+  }
+
+  .pu-content-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .pu-content-title {
+    font-family: var(--font-satoshi);
+    font-size: 11px;
+    font-weight: 600;
+    color: #1d1d1d;
+  }
+
+  .pu-completeness {
+    font-family: var(--font-satoshi);
+    font-size: 10px;
+    font-weight: 600;
+    color: #1a6b3c;
+  }
+
+  .pu-progress-track {
+    height: 3px;
+    background: #e4e4e4;
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .pu-progress-fill {
+    height: 100%;
+    width: 60%;
+    background: #1a6b3c;
+    border-radius: 2px;
+    opacity: 0.8;
+  }
+
+  .pu-doc-list {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    overflow: hidden;
+  }
+
+  .pu-doc-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 10px;
+    border-radius: 6px;
+    background: #fff;
+    border: 1px solid #ebebeb;
+    flex-shrink: 0;
+  }
+
+  .pu-doc-check {
+    font-family: var(--font-satoshi);
+    font-size: 11px;
+    font-weight: 700;
+    width: 14px;
+    flex-shrink: 0;
+    text-align: center;
+    line-height: 1;
+  }
+
+  .doc-done .pu-doc-check {
+    color: #1a6b3c;
+  }
+  .doc-missing .pu-doc-check {
+    color: #ccc;
+    font-size: 16px;
+    margin-top: -2px;
+  }
+
+  .pu-doc-name {
+    font-family: var(--font-satoshi);
+    font-size: 11px;
+    color: #555;
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .pu-doc-status {
+    font-family: var(--font-satoshi);
+    font-size: 10px;
+    font-weight: 500;
+    flex-shrink: 0;
+  }
+
+  .doc-done .pu-doc-status {
+    color: #1a6b3c;
+  }
+  .doc-missing .pu-doc-status {
+    color: #f87171;
+  }
+
+  /* Footer actions */
+  .pu-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  .pu-btn {
+    font-family: var(--font-satoshi);
+    font-size: 11px;
+    font-weight: 500;
+    padding: 7px 16px;
+    border-radius: 6px;
+    cursor: default;
+    border: 1px solid #e4e4e4;
+    background: #fff;
+    color: #888;
+    user-select: none;
+  }
+
+  .pu-btn-continue {
+    background: #1a6b3c;
+    border-color: #1a6b3c;
+    color: #fff;
+  }
+
+  /* ─── Content sections ───────────────────────── */
+  .section {
+    border-top: 1px solid var(--border);
+    padding: 72px 0;
+  }
+
+  .section-inner {
+    max-width: 860px;
+  }
+
+  .section-inner--full {
+    max-width: 100%;
+  }
+
+  .section-label {
+    font-family: var(--font-satoshi);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+
+  .section-heading {
+    font-family: var(--font-serif);
+    font-size: clamp(28px, 3.2vw, 40px);
+    font-weight: 400;
+    letter-spacing: -0.025em;
+    line-height: 1.15;
+    color: var(--text);
+    margin-bottom: 36px;
+  }
+
+  .feature-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px 48px;
+  }
+
+  .feature-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-family: var(--font-satoshi);
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--text);
+  }
+
+  .feature-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+    margin-top: 6px;
+  }
+
+  .section-split {
+    display: grid;
+    grid-template-columns: 1fr 1.35fr;
+    gap: 80px;
+    align-items: start;
+    border-top: 1px solid var(--border);
+    padding: 72px 0;
+  }
+
+  .split-left .section-heading,
+  .split-right .section-heading {
+    margin-bottom: 24px;
+  }
+
+  .problem-text {
+    font-family: var(--font-satoshi);
+    font-size: 15px;
+    line-height: 1.72;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+
+  .problem-text:last-child {
+    margin-bottom: 0;
+  }
+
+  .hiw-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+
+  .hiw-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 20px;
+  }
+
+  .hiw-num {
+    display: block;
+    font-family: var(--font-satoshi);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    margin-bottom: 10px;
+  }
+
+  .hiw-title {
+    font-family: var(--font-satoshi);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 8px;
+    line-height: 1.3;
+  }
+
+  .hiw-detail {
+    font-family: var(--font-satoshi);
+    font-size: 13px;
+    line-height: 1.62;
+    color: var(--muted);
+  }
+
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .metric-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 40px 36px;
+    min-height: 160px;
+  }
+
+  .metric-title {
+    font-family: var(--font-satoshi);
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 7px;
+    line-height: 1.3;
+  }
+
+  .metric-desc {
+    font-family: var(--font-satoshi);
+    font-size: 14px;
+    line-height: 1.62;
+    color: var(--muted);
+  }
+
+
+  /* ─── Responsive ─────────────────────────────── */
+  @media (max-width: 1023px) {
+    .page-main {
+      padding: 0 32px 80px;
+    }
+
+    .topbar-inner {
+      padding: 0 32px;
+    }
+
+    .section-split {
+      grid-template-columns: 1fr;
+      gap: 48px;
+    }
+  }
+
+  @media (max-width: 967px) {
+    .page-main {
+      padding: 0 20px 60px;
+    }
+
+    .topbar-inner {
+      padding: 0 20px;
+    }
+
+    .hero {
+      padding-top: 48px;
+      margin-bottom: 36px;
+    }
+
+    .demo-card,
+    .pu-card {
+      aspect-ratio: 4 / 3;
+    }
+
+    /* Pyko mobile */
+    .demo-sidebar {
+      display: none;
+    }
+
+    .demo-stats {
+      gap: 7px;
+    }
+
+    .stat-value {
+      font-size: 16px;
+    }
+
+    /* PakUni mobile */
+    .pu-step-name {
+      display: none;
+    }
+
+    .pu-body {
+      padding: 14px 16px 12px;
+      gap: 10px;
+    }
+
+    .demo-wrap {
+      margin-bottom: 60px;
+    }
+
+    .feature-list {
+      grid-template-columns: 1fr;
+    }
+
+    .hiw-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .metrics-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .section,
+    .section-split {
+      padding: 48px 0;
+    }
+  }
+</style>

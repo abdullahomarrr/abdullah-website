@@ -10,7 +10,7 @@ const projects = [
     color: "#1a1a2e",
     accent: "#214BB7",
     image: "/pyko.jpg",
-    link: "https://pyko.ca",
+    link: "/projects/pyko",
   },
   {
     title: "PakUni",
@@ -20,7 +20,7 @@ const projects = [
     color: "#214BB7",
     accent: "#4a6fd4",
     image: "/pakuni.png",
-    link: "#",
+    link: "/projects/pakuni",
   },
 ];
 ---
@@ -37,7 +37,7 @@ const projects = [
   <div class="projects-grid" data-reveal data-delay="2">
     {projects.map((p) => (
       <div class="project-tile">
-        <a class="project-image-wrap" href={p.link} target="_blank" rel="noopener noreferrer" style={`background: ${p.color};`}>
+        <a class="project-image-wrap" href={p.link} target={p.link.startsWith('http') ? '_blank' : undefined} rel={p.link.startsWith('http') ? 'noopener noreferrer' : undefined} style={`background: ${p.color};`}>
           {p.image ? (
             <img src={p.image} alt={p.title} class="project-img" />
           ) : (
