@@ -397,6 +397,11 @@ body.snap-active {
 @media (max-width: 767px) {
   body.snap-active {
     overflow: auto;
+    scrollbar-width: none;
+  }
+
+  body.snap-active::-webkit-scrollbar {
+    display: none;
   }
 
   .snapShell {
