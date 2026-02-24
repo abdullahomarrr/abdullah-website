@@ -6,10 +6,11 @@ const projects = [
     title: "Pyko Canada",
     year: "2025 – Present",
     stack: "Python · TypeScript · FastAPI · MongoDB Atlas · AWS",
-    description: "Founding Engineer on a 5-person team. Shipped Canvas LMS integration, an AI copilot reducing student setup time by 85%, and a student performance analytics layer with peer benchmarking.",
+    description: "Pyko is an deterministic and AI-powered academic intelligence platform that predicts outcomes, optimizes study behavior, and delivers proactive insights for student success.",
     color: "#1a1a2e",
     accent: "#214BB7",
     image: "/pyko.jpg",
+    link: "https://pyko.ca",
   },
   {
     title: "PakUni",
@@ -19,6 +20,7 @@ const projects = [
     color: "#214BB7",
     accent: "#4a6fd4",
     image: "/pakuni.png",
+    link: "#",
   },
 ];
 ---
@@ -35,7 +37,7 @@ const projects = [
   <div class="projects-grid" data-reveal data-delay="2">
     {projects.map((p) => (
       <div class="project-tile">
-        <div class="project-image-wrap" style={`background: ${p.color};`}>
+        <a class="project-image-wrap" href={p.link} target="_blank" rel="noopener noreferrer" style={`background: ${p.color};`}>
           {p.image ? (
             <img src={p.image} alt={p.title} class="project-img" />
           ) : (
@@ -47,7 +49,10 @@ const projects = [
               </div>
             </div>
           )}
-        </div>
+          <div class="project-overlay">
+            <span class="view-btn">View Project</span>
+          </div>
+        </a>
         <div class="project-meta">
           <span class="project-title">{p.title}</span>
           <span class="project-year muted">{p.year}</span>
@@ -89,6 +94,7 @@ const projects = [
   }
 
   .project-image-wrap {
+    position: relative;
     border-radius: var(--radius);
     overflow: hidden;
     margin-bottom: 16px;
@@ -96,11 +102,8 @@ const projects = [
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: opacity 0.3s ease;
-  }
-
-  .project-tile:hover .project-image-wrap {
-    opacity: 0.9;
+    text-decoration: none;
+    cursor: pointer;
   }
 
   .project-img {
@@ -108,6 +111,50 @@ const projects = [
     height: 100%;
     object-fit: cover;
     display: block;
+    transition:
+      filter 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+      transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .project-image-wrap:hover .project-img {
+    filter: blur(5px);
+    transform: scale(1.03);
+  }
+
+  .project-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.22);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .project-image-wrap:hover .project-overlay {
+    opacity: 1;
+  }
+
+  .view-btn {
+    color: #fff;
+    font-family: var(--font-satoshi);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    border: 1.5px solid rgba(255, 255, 255, 0.75);
+    border-radius: 100px;
+    padding: 9px 22px;
+    opacity: 0;
+    transform: translateY(8px);
+    transition:
+      opacity 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.05s,
+      transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.05s;
+  }
+
+  .project-image-wrap:hover .view-btn {
+    opacity: 1;
+    transform: translateY(0);
   }
 
   .project-placeholder {

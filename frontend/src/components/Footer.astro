@@ -2,75 +2,29 @@
 ---
 
 <div class="footer-inner" data-reveal data-delay="1">
-  <div class="footer-top">
-    <a href="#hero" class="footer-brand" data-scroll-top>Abdullah.</a>
-    <a href="mailto:abdullahom07@gmail.com" class="link-underline footer-email">
-      abdullahom07@gmail.com
-    </a>
-  </div>
-  <div class="footer-bottom">
-    <div class="footer-socials">
-      <a href="https://github.com/abdullahomarr" class="social-link" target="_blank" rel="noopener">GitHub</a>
-      <a href="https://linkedin.com/in/abdullahomarr" class="social-link" target="_blank" rel="noopener">LinkedIn</a>
-    </div>
-    <a href="#hero" class="footer-back" data-scroll-top>
-      Back to top <span>↑</span>
-    </a>
-  </div>
+<a href="#hero" class="footer-back" data-scroll-top>
+    Back to top <span>↑</span>
+  </a>
 </div>
 
 <style>
   .footer-inner {
-    margin-top: 40px;
-    padding-top: 32px;
-    border-top: 1px solid var(--border);
-  }
-
-  .footer-top {
+    position: absolute;
+    bottom: 20px;
+    left: 40px;
+    right: 40px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    margin-bottom: 20px;
+    justify-content: flex-end;
   }
 
-  .footer-brand {
-    font-family: var(--font-sans);
-    font-weight: 700;
-    font-size: 24px;
-    letter-spacing: -0.01em;
-  }
-
-  .footer-email {
-    font-size: 15px;
-  }
-
-  .footer-bottom {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .footer-socials {
-    display: flex;
-    gap: 28px;
-  }
-
-  .social-link {
-    font-size: 15px;
-    font-weight: 400;
+.footer-back {
+    font-family: var(--font-serif);
+    font-size: 18px;
+    font-style: italic;
+    font-weight: 300;
     color: var(--text);
-    transition: opacity 0.2s;
-  }
-
-  .social-link:hover {
-    opacity: 0.6;
-  }
-
-  .footer-back {
-    font-size: 15px;
-    font-weight: 400;
-    color: var(--text);
-    display: flex;
+    display: inline-flex;
     align-items: center;
     gap: 6px;
     transition: opacity 0.2s;
@@ -81,11 +35,10 @@
   }
 
   @media (max-width: 767px) {
-    .footer-top,
-    .footer-bottom {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 12px;
+    .footer-inner {
+      left: 24px;
+      right: 24px;
+      bottom: 16px;
     }
   }
 </style>

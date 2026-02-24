@@ -423,6 +423,13 @@ body.snap-active {
 }
 
 /* =============================================
+   CONTACT SECTION
+   ============================================= */
+.snapPage--contact {
+  background: var(--bg);
+}
+
+/* =============================================
    REDUCED MOTION
    ============================================= */
 @media (prefers-reduced-motion: reduce) {
