@@ -24,64 +24,74 @@ const jobs = [
 ---
 
 <div class="experience-wrap">
-  <div data-reveal data-delay="0">
+  <!-- Label: scale-pop spring — overshoot arrival -->
+  <div class="experience-label-wrap">
     <SectionLabel text="Experience" />
   </div>
 
-  <h2 class="experience-heading" data-reveal data-delay="1">
-    Building Real Products, Shipping Real Impact
+  <!-- Heading: word-mask, fastest stagger in portfolio (30ms) -->
+  <h2 class="experience-heading">
+    <span class="word-mask"><span class="eword" style="--ewi:0">Building</span></span>
+    <span class="word-mask"><span class="eword" style="--ewi:1">Real</span></span>
+    <span class="word-mask"><span class="eword" style="--ewi:2">Products,</span></span>
+    <span class="word-mask"><span class="eword" style="--ewi:3">Shipping</span></span>
+    <span class="word-mask"><span class="eword" style="--ewi:4">Real</span></span>
+    <span class="word-mask"><span class="eword" style="--ewi:5">Impact</span></span>
   </h2>
 
   <div class="experience-list">
     {jobs.map((job, i) => (
-      job.href ? (
-        <a href={job.href} class="experience-card experience-card--link" data-reveal data-delay={String(i + 2)}>
-          {job.preview && (
-            <div class="experience-preview">
-              <img src={job.preview} alt="" />
-              <span class="experience-arrow" aria-hidden="true">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                  <path d="M3 13L13 3M13 3H6M13 3V10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </span>
+      <!-- card-wrap: clip-path curtain drop (top→bottom reveal) -->
+      <div class="card-wrap">
+        {job.href ? (
+          <a href={job.href} class="experience-card experience-card--link">
+            {job.preview && (
+              <div class="experience-preview">
+                <img src={job.preview} alt="" class="exp-img" />
+                <span class="experience-arrow" aria-hidden="true">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M3 13L13 3M13 3H6M13 3V10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </span>
+              </div>
+            )}
+            <div class="experience-info">
+              <span class="experience-company">{job.company}</span>
+              <span class="experience-role">{job.role}</span>
+              <p class="experience-desc">{job.description}</p>
+              <div class="experience-tags">
+                {job.stack.slice(0, 3).map(tag => (
+                  <span class="experience-tag">{tag}</span>
+                ))}
+                {job.stack.length > 3 && (
+                  <span class="experience-tag">+{job.stack.length - 3}</span>
+                )}
+              </div>
             </div>
-          )}
-          <div class="experience-info">
-            <span class="experience-company">{job.company}</span>
-            <span class="experience-role">{job.role}</span>
-            <p class="experience-desc">{job.description}</p>
-            <div class="experience-tags">
-              {job.stack.slice(0, 3).map(tag => (
-                <span class="experience-tag">{tag}</span>
-              ))}
-              {job.stack.length > 3 && (
-                <span class="experience-tag">+{job.stack.length - 3}</span>
-              )}
+          </a>
+        ) : (
+          <div class="experience-card">
+            {job.preview && (
+              <div class="experience-preview">
+                <img src={job.preview} alt="" class="exp-img" />
+              </div>
+            )}
+            <div class="experience-info">
+              <span class="experience-company">{job.company}</span>
+              <span class="experience-role">{job.role}</span>
+              <p class="experience-desc">{job.description}</p>
+              <div class="experience-tags">
+                {job.stack.slice(0, 3).map(tag => (
+                  <span class="experience-tag">{tag}</span>
+                ))}
+                {job.stack.length > 3 && (
+                  <span class="experience-tag">+{job.stack.length - 3}</span>
+                )}
+              </div>
             </div>
           </div>
-        </a>
-      ) : (
-        <div class="experience-card" data-reveal data-delay={String(i + 2)}>
-          {job.preview && (
-            <div class="experience-preview">
-              <img src={job.preview} alt="" />
-            </div>
-          )}
-          <div class="experience-info">
-            <span class="experience-company">{job.company}</span>
-            <span class="experience-role">{job.role}</span>
-            <p class="experience-desc">{job.description}</p>
-            <div class="experience-tags">
-              {job.stack.slice(0, 3).map(tag => (
-                <span class="experience-tag">{tag}</span>
-              ))}
-              {job.stack.length > 3 && (
-                <span class="experience-tag">+{job.stack.length - 3}</span>
-              )}
-            </div>
-          </div>
-        </div>
-      )
+        )}
+      </div>
     ))}
   </div>
 </div>
@@ -95,6 +105,27 @@ const jobs = [
     text-align: center;
   }
 
+  /* ========================
+     LABEL — scale-pop spring
+     Overshoot arrival: scales past 1 then settles.
+     ======================== */
+  .experience-label-wrap {
+    opacity: 0;
+    transform: scale(0.72);
+    transition:
+      opacity  550ms cubic-bezier(0.34, 1.56, 0.64, 1),
+      transform 550ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  :global(.snapPage.isActive) .experience-label-wrap {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  /* ========================
+     HEADING — word-mask, fastest stagger
+     Portfolio progression: Hero 105ms → About 55ms → Projects 40ms → Experience 30ms
+     ======================== */
   .experience-heading {
     font-size: clamp(24px, 3.1vw, 38px);
     font-weight: 400;
@@ -104,6 +135,30 @@ const jobs = [
     margin: 0 auto 24px;
   }
 
+  .word-mask {
+    display: inline-block;
+    overflow: hidden;
+    padding-bottom: 0.08em;
+    margin-bottom: -0.08em;
+    vertical-align: top;
+  }
+
+  .eword {
+    display: inline-block;
+    transform: translateY(110%);
+    transition-property: transform;
+    transition-duration: 850ms;
+    transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  :global(.snapPage.isActive) .eword {
+    transform: translateY(0);
+    transition-delay: calc(150ms + var(--ewi) * 30ms);
+  }
+
+  /* ========================
+     LIST
+     ======================== */
   .experience-list {
     display: flex;
     flex-direction: row;
@@ -118,12 +173,37 @@ const jobs = [
     flex: 1;
   }
 
-  .experience-list::-webkit-scrollbar {
-    display: none;
+  .experience-list::-webkit-scrollbar { display: none; }
+
+  /* ========================
+     CARD WRAP — clip-path curtain drop
+     Top edge is immediately visible; bottom inset shrinks from 100%→0%,
+     printing the card downward like a page loading in.
+     round 20px follows the card's corner radius as the curtain lifts.
+     ======================== */
+  .card-wrap {
+    flex: 1 1 0;
+    display: flex;
+    flex-direction: column;
+    clip-path: inset(0 0 100% 0 round 20px);
+    transition: clip-path 950ms cubic-bezier(0.25, 1, 0.5, 1);
   }
 
+  :global(.snapPage.isActive) .card-wrap:nth-child(1) {
+    clip-path: inset(0 0 0% 0 round 20px);
+    transition-delay: 650ms;
+  }
+
+  :global(.snapPage.isActive) .card-wrap:nth-child(2) {
+    clip-path: inset(0 0 0% 0 round 20px);
+    transition-delay: 800ms;
+  }
+
+  /* ========================
+     CARD
+     ======================== */
   .experience-card {
-    flex: 1 1 0;
+    flex: 1;
     border-radius: 20px;
     padding: 0;
     display: flex;
@@ -132,6 +212,7 @@ const jobs = [
     background: #fff;
     border: 1px solid rgba(0, 0, 0, 0.08);
     overflow: hidden;
+    text-decoration: none;
   }
 
   .experience-card--link {
@@ -149,6 +230,10 @@ const jobs = [
     outline-offset: 3px;
   }
 
+  /* ========================
+     PREVIEW IMAGE — zoom out on entrance
+     Independent timing from card curtain.
+     ======================== */
   .experience-preview {
     position: relative;
     width: 100%;
@@ -158,13 +243,28 @@ const jobs = [
     margin-bottom: 0;
   }
 
-  .experience-preview img {
+  .exp-img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
+    transform: scale(1.09);
+    transition: transform 1700ms cubic-bezier(0.25, 1, 0.5, 1);
   }
 
+  :global(.snapPage.isActive) .card-wrap:nth-child(1) .exp-img {
+    transform: scale(1);
+    transition-delay: 650ms;
+  }
+
+  :global(.snapPage.isActive) .card-wrap:nth-child(2) .exp-img {
+    transform: scale(1);
+    transition-delay: 800ms;
+  }
+
+  /* ========================
+     ARROW BUTTON — scale-pop spring, pops after curtain is fully down
+     ======================== */
   .experience-arrow {
     position: absolute;
     top: 12px;
@@ -179,8 +279,28 @@ const jobs = [
     color: #1D1D1D;
     flex-shrink: 0;
     pointer-events: none;
+    opacity: 0;
+    transform: scale(0);
+    transition:
+      opacity  400ms cubic-bezier(0.34, 1.56, 0.64, 1),
+      transform 400ms cubic-bezier(0.34, 1.56, 0.64, 1);
   }
 
+  :global(.snapPage.isActive) .card-wrap:nth-child(1) .experience-arrow {
+    opacity: 1;
+    transform: scale(1);
+    transition-delay: 960ms;
+  }
+
+  :global(.snapPage.isActive) .card-wrap:nth-child(2) .experience-arrow {
+    opacity: 1;
+    transform: scale(1);
+    transition-delay: 1100ms;
+  }
+
+  /* ========================
+     INFO SECTION
+     ======================== */
   .experience-info {
     display: flex;
     flex-direction: column;
@@ -188,14 +308,26 @@ const jobs = [
     padding: 22px 20px 20px;
   }
 
+  /* Company — subtle fade-up */
   .experience-company {
     font-size: 11px;
     font-weight: 500;
     letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--muted);
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 600ms ease, transform 600ms ease;
   }
 
+  :global(.snapPage.isActive) .card-wrap:nth-child(1) .experience-company {
+    opacity: 1; transform: translateY(0); transition-delay: 1030ms;
+  }
+  :global(.snapPage.isActive) .card-wrap:nth-child(2) .experience-company {
+    opacity: 1; transform: translateY(0); transition-delay: 1170ms;
+  }
+
+  /* Role — clip-path wipe: prints itself left→right */
   .experience-role {
     font-family: var(--font-serif);
     font-size: clamp(17px, 1.6vw, 21px);
@@ -204,8 +336,18 @@ const jobs = [
     color: var(--text);
     line-height: 1.2;
     margin-top: 2px;
+    clip-path: inset(0 101% 0 0);
+    transition: clip-path 750ms cubic-bezier(0.25, 1, 0.5, 1);
   }
 
+  :global(.snapPage.isActive) .card-wrap:nth-child(1) .experience-role {
+    clip-path: inset(0 0% 0 0); transition-delay: 1110ms;
+  }
+  :global(.snapPage.isActive) .card-wrap:nth-child(2) .experience-role {
+    clip-path: inset(0 0% 0 0); transition-delay: 1250ms;
+  }
+
+  /* Description — blur-into-focus */
   .experience-desc {
     font-family: var(--font-satoshi);
     font-weight: 400;
@@ -213,8 +355,22 @@ const jobs = [
     color: var(--muted);
     line-height: 1.55;
     margin: 0;
+    opacity: 0;
+    filter: blur(5px);
+    transition: opacity 900ms ease, filter 900ms ease;
   }
 
+  :global(.snapPage.isActive) .card-wrap:nth-child(1) .experience-desc {
+    opacity: 1; filter: blur(0px); transition-delay: 1210ms;
+  }
+  :global(.snapPage.isActive) .card-wrap:nth-child(2) .experience-desc {
+    opacity: 1; filter: blur(0px); transition-delay: 1350ms;
+  }
+
+  /* ========================
+     TAGS — scale-pop spring, staggered per card
+     Each card: 4 items (3 tags + "+N"), 45ms apart
+     ======================== */
   .experience-tags {
     display: flex;
     flex-wrap: nowrap;
@@ -232,18 +388,26 @@ const jobs = [
     border-radius: 999px;
     padding: 4px 12px;
     white-space: nowrap;
+    opacity: 0;
+    transform: scale(0.65);
+    transition:
+      opacity  500ms cubic-bezier(0.34, 1.56, 0.64, 1),
+      transform 500ms cubic-bezier(0.34, 1.56, 0.64, 1);
   }
 
+  :global(.snapPage.isActive) .card-wrap:nth-child(1) .experience-tag:nth-child(1) { opacity:1; transform:scale(1); transition-delay:1360ms; }
+  :global(.snapPage.isActive) .card-wrap:nth-child(1) .experience-tag:nth-child(2) { opacity:1; transform:scale(1); transition-delay:1405ms; }
+  :global(.snapPage.isActive) .card-wrap:nth-child(1) .experience-tag:nth-child(3) { opacity:1; transform:scale(1); transition-delay:1450ms; }
+  :global(.snapPage.isActive) .card-wrap:nth-child(1) .experience-tag:nth-child(4) { opacity:1; transform:scale(1); transition-delay:1495ms; }
+
+  :global(.snapPage.isActive) .card-wrap:nth-child(2) .experience-tag:nth-child(1) { opacity:1; transform:scale(1); transition-delay:1500ms; }
+  :global(.snapPage.isActive) .card-wrap:nth-child(2) .experience-tag:nth-child(2) { opacity:1; transform:scale(1); transition-delay:1545ms; }
+  :global(.snapPage.isActive) .card-wrap:nth-child(2) .experience-tag:nth-child(3) { opacity:1; transform:scale(1); transition-delay:1590ms; }
+  :global(.snapPage.isActive) .card-wrap:nth-child(2) .experience-tag:nth-child(4) { opacity:1; transform:scale(1); transition-delay:1635ms; }
+
   @media (max-width: 767px) {
-    .experience-wrap {
-      height: auto;
-    }
-    .experience-list {
-      flex: none;
-    }
-    .experience-card {
-      flex: 0 0 72vw;
-      min-height: 420px;
-    }
+    .experience-wrap { height: auto; }
+    .experience-list { flex: none; }
+    .card-wrap { flex: 0 0 72vw; min-height: 420px; }
   }
 </style>

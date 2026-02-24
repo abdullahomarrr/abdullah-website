@@ -1,8 +1,8 @@
 ---
 ---
 
-<div class="footer-inner" data-reveal data-delay="1">
-<a href="#hero" class="footer-back" data-scroll-top>
+<div class="footer-inner">
+  <a href="#hero" class="footer-back" data-scroll-top>
     Back to top <span>↑</span>
   </a>
 </div>
@@ -18,7 +18,12 @@
     justify-content: flex-end;
   }
 
-.footer-back {
+  /* ========================
+     BACK TO TOP — slides in from right
+     Lives bottom-right, so it arrives from that direction.
+     The last element to appear — a quiet coda to the whole page.
+     ======================== */
+  .footer-back {
     font-family: var(--font-serif);
     font-size: 18px;
     font-style: italic;
@@ -27,7 +32,15 @@
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    transition: opacity 0.2s;
+    opacity: 0;
+    transform: translateX(22px);
+    transition: opacity 700ms ease, transform 700ms cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  :global(.snapPage.isActive) .footer-back {
+    opacity: 1;
+    transform: translateX(0);
+    transition-delay: 1400ms;
   }
 
   .footer-back:hover {

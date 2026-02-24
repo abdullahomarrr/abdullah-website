@@ -132,15 +132,6 @@
   --section-gap: 120px;
 }
 
-html[data-theme="dark"] {
-  --bg: #111111;
-  --card: #1C1C1C;
-  --text: #F0F0F0;
-  --muted: #666666;
-  --border: #2C2C2C;
-  --accent: #5B7EE5;
-  --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.3);
-}
 
 /* =============================================
    RESET & BASE

@@ -26,20 +26,36 @@ const projects = [
 ---
 
 <div class="projects-content">
-  <div data-reveal data-delay="0">
+  <!-- Label slides DOWN from above — first time in the portfolio -->
+  <div class="projects-label-wrap">
     <SectionLabel text="Projects" />
   </div>
 
-  <h2 class="projects-heading" data-reveal data-delay="1">
-    Building Products That Solve Real Problems
+  <!-- Word-mask headline: snappiest easing of the three sections -->
+  <h2 class="projects-heading">
+    <span class="word-mask"><span class="pword" style="--pwi:0">Building</span></span>
+    <span class="word-mask"><span class="pword" style="--pwi:1">Products</span></span>
+    <span class="word-mask"><span class="pword" style="--pwi:2">That</span></span>
+    <span class="word-mask"><span class="pword" style="--pwi:3">Solve</span></span>
+    <span class="word-mask"><span class="pword" style="--pwi:4">Real</span></span>
+    <span class="word-mask"><span class="pword" style="--pwi:5">Problems</span></span>
   </h2>
 
-  <div class="projects-grid" data-reveal data-delay="2">
+  <div class="projects-grid">
     {projects.map((p) => (
       <div class="project-tile">
-        <a class="project-image-wrap" href={p.link} target={p.link.startsWith('http') ? '_blank' : undefined} rel={p.link.startsWith('http') ? 'noopener noreferrer' : undefined} style={`background: ${p.color};`}>
+        <a
+          class="project-image-wrap"
+          href={p.link}
+          target={p.link.startsWith('http') ? '_blank' : undefined}
+          rel={p.link.startsWith('http') ? 'noopener noreferrer' : undefined}
+          style={`background: ${p.color};`}
+        >
           {p.image ? (
-            <img src={p.image} alt={p.title} class="project-img" />
+            /* Zoom wrapper animates independently from hover on .project-img */
+            <div class="project-img-zoom">
+              <img src={p.image} alt={p.title} class="project-img" />
+            </div>
           ) : (
             <div class="project-placeholder">
               <div class="placeholder-lines">
@@ -73,6 +89,26 @@ const projects = [
     width: 100%;
   }
 
+  /* ========================
+     LABEL — slides down from above
+     First element in portfolio to arrive from the top.
+     ======================== */
+  .projects-label-wrap {
+    opacity: 0;
+    transform: translateY(-14px);
+    transition: opacity 700ms ease, transform 700ms cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  :global(.snapPage.isActive) .projects-label-wrap {
+    opacity: 1;
+    transform: translateY(0);
+    /* No delay — label lands first */
+  }
+
+  /* ========================
+     HEADING — word mask, snappiest of the three sections
+     Hero: 0.16,1,0.3,1  |  About: 0.25,1,0.5,1  |  Projects: 0.22,1,0.36,1
+     ======================== */
   .projects-heading {
     font-size: clamp(31px, 3.9vw, 44px);
     font-weight: 400;
@@ -82,17 +118,76 @@ const projects = [
     margin-bottom: 32px;
   }
 
+  .word-mask {
+    display: inline-block;
+    overflow: hidden;
+    padding-bottom: 0.08em;
+    margin-bottom: -0.08em;
+    vertical-align: top;
+  }
+
+  .pword {
+    display: inline-block;
+    transform: translateY(110%);
+    transition-property: transform;
+    transition-duration: 950ms;
+    transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  :global(.snapPage.isActive) .pword {
+    transform: translateY(0);
+    transition-delay: calc(180ms + var(--pwi) * 40ms);
+  }
+
+  /* ========================
+     GRID
+     ======================== */
   .projects-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 24px;
   }
 
+  /* ========================
+     CARDS — converge from opposite sides
+     Card 1 slides from LEFT, Card 2 from RIGHT.
+     Fast opacity (500ms), slower slide (1100ms) — card materializes as it moves.
+     ======================== */
   .project-tile {
     display: flex;
     flex-direction: column;
   }
 
+  .project-tile:nth-child(1) {
+    opacity: 0;
+    transform: translateX(-50px);
+    transition: opacity 500ms ease, transform 1100ms cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  .project-tile:nth-child(2) {
+    opacity: 0;
+    transform: translateX(50px);
+    transition: opacity 500ms ease, transform 1100ms cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  :global(.snapPage.isActive) .project-tile:nth-child(1) {
+    opacity: 1;
+    transform: translateX(0);
+    transition-delay: 650ms;
+  }
+
+  :global(.snapPage.isActive) .project-tile:nth-child(2) {
+    opacity: 1;
+    transform: translateX(0);
+    transition-delay: 760ms;
+  }
+
+  /* ========================
+     IMAGE — zoom-out wrapper
+     .project-img-zoom handles the entrance scale (1.08 → 1).
+     .project-img inside handles hover blur/scale independently.
+     Separation prevents entrance timing from breaking the hover effect.
+     ======================== */
   .project-image-wrap {
     position: relative;
     border-radius: var(--radius);
@@ -104,6 +199,23 @@ const projects = [
     justify-content: center;
     text-decoration: none;
     cursor: pointer;
+  }
+
+  .project-img-zoom {
+    width: 100%;
+    height: 100%;
+    transform: scale(1.08);
+    transition: transform 1600ms cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  :global(.snapPage.isActive) .project-tile:nth-child(1) .project-img-zoom {
+    transform: scale(1);
+    transition-delay: 650ms;
+  }
+
+  :global(.snapPage.isActive) .project-tile:nth-child(2) .project-img-zoom {
+    transform: scale(1);
+    transition-delay: 760ms;
   }
 
   .project-img {
@@ -172,22 +284,24 @@ const projects = [
     width: 40%;
   }
 
-  .ph-line {
-    height: 4px;
-    border-radius: 2px;
-    opacity: 0.45;
-  }
-
+  .ph-line { height: 4px; border-radius: 2px; opacity: 0.45; }
   .ph-line-wide  { width: 100%; }
   .ph-line-mid   { width: 70%; }
   .ph-line-short { width: 50%; }
 
+  /* ========================
+     META + DESCRIPTION — fade up per card
+     Delays are relative to each card's start time.
+     ======================== */
   .project-meta {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
     gap: 16px;
     margin-bottom: 8px;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 800ms ease, transform 800ms ease;
   }
 
   .project-title {
@@ -211,8 +325,29 @@ const projects = [
     font-size: 15px;
     line-height: 1.65;
     margin-bottom: 8px;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 800ms ease, transform 800ms ease;
   }
 
+  :global(.snapPage.isActive) .project-tile:nth-child(1) .project-meta {
+    opacity: 1; transform: translateY(0); transition-delay: 850ms;
+  }
+  :global(.snapPage.isActive) .project-tile:nth-child(1) .project-description {
+    opacity: 1; transform: translateY(0); transition-delay: 1000ms;
+  }
+  :global(.snapPage.isActive) .project-tile:nth-child(2) .project-meta {
+    opacity: 1; transform: translateY(0); transition-delay: 960ms;
+  }
+  :global(.snapPage.isActive) .project-tile:nth-child(2) .project-description {
+    opacity: 1; transform: translateY(0); transition-delay: 1110ms;
+  }
+
+  /* ========================
+     TAGS — scale-pop spring, staggered per card
+     Card 1: 5 tags from t=1150ms, 45ms apart
+     Card 2: 4 tags from t=1260ms, 45ms apart
+     ======================== */
   .project-tags {
     display: flex;
     flex-wrap: wrap;
@@ -229,11 +364,31 @@ const projects = [
     border-radius: 100px;
     padding: 3px 10px;
     letter-spacing: 0.01em;
+    opacity: 0;
+    transform: scale(0.65);
+    transition:
+      opacity  550ms cubic-bezier(0.34, 1.56, 0.64, 1),
+      transform 550ms cubic-bezier(0.34, 1.56, 0.64, 1);
   }
 
+  :global(.snapPage.isActive) .project-tile:nth-child(1) .tag:nth-child(1) { opacity:1; transform:scale(1); transition-delay:1150ms; }
+  :global(.snapPage.isActive) .project-tile:nth-child(1) .tag:nth-child(2) { opacity:1; transform:scale(1); transition-delay:1195ms; }
+  :global(.snapPage.isActive) .project-tile:nth-child(1) .tag:nth-child(3) { opacity:1; transform:scale(1); transition-delay:1240ms; }
+  :global(.snapPage.isActive) .project-tile:nth-child(1) .tag:nth-child(4) { opacity:1; transform:scale(1); transition-delay:1285ms; }
+  :global(.snapPage.isActive) .project-tile:nth-child(1) .tag:nth-child(5) { opacity:1; transform:scale(1); transition-delay:1330ms; }
+
+  :global(.snapPage.isActive) .project-tile:nth-child(2) .tag:nth-child(1) { opacity:1; transform:scale(1); transition-delay:1260ms; }
+  :global(.snapPage.isActive) .project-tile:nth-child(2) .tag:nth-child(2) { opacity:1; transform:scale(1); transition-delay:1305ms; }
+  :global(.snapPage.isActive) .project-tile:nth-child(2) .tag:nth-child(3) { opacity:1; transform:scale(1); transition-delay:1350ms; }
+  :global(.snapPage.isActive) .project-tile:nth-child(2) .tag:nth-child(4) { opacity:1; transform:scale(1); transition-delay:1395ms; }
+
   @media (max-width: 767px) {
-    .projects-grid {
-      grid-template-columns: 1fr;
+    .projects-grid { grid-template-columns: 1fr; }
+
+    /* On mobile single column, both cards slide up instead */
+    .project-tile:nth-child(1),
+    .project-tile:nth-child(2) {
+      transform: translateY(24px);
     }
   }
 </style>

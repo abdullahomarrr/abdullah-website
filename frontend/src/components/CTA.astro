@@ -1,16 +1,34 @@
 ---
+import SectionLabel from "./SectionLabel.astro";
 ---
 
-<div class="cta-wrap" data-reveal data-delay="0">
-  <span class="cta-eyebrow">Contact</span>
+<div class="cta-wrap">
+  <!-- Label: scale-pop spring, matching Experience section style -->
+  <div class="cta-label-wrap">
+    <SectionLabel text="Contact" />
+  </div>
+
+  <!-- Heading: 3D perspective flip, no word-mask (overflow:hidden clips italic descenders)
+       Each word fades in + rises from below + rotates from ~20° tilt to flat.
+       "great together." also transitions color text→accent as it lands. -->
   <h2 class="cta-heading">
-    Let's build something<br>
-    <em>great together.</em>
+    <span class="cword" style="--cwi:0">Let's</span>
+    <span class="cword" style="--cwi:1">build</span>
+    <span class="cword" style="--cwi:2">something</span>
+    <br>
+    <span class="cword cword--accent" style="--cwi:3">great</span>
+    <span class="cword cword--accent" style="--cwi:4">together.</span>
   </h2>
+
+  <!-- Sub: blur-into-focus -->
   <p class="cta-sub">Open to new projects, collabs, and conversations.</p>
-  <a href="mailto:abdullahom07@gmail.com" class="cta-btn">
-    Send me a message <span class="cta-arrow" aria-hidden="true">→</span>
-  </a>
+
+  <!-- Button wrapper handles entrance; <a> handles hover — no conflict -->
+  <div class="cta-btn-wrap">
+    <a href="mailto:abdullahom07@gmail.com" class="cta-btn">
+      Send me a message <span class="cta-arrow" aria-hidden="true">→</span>
+    </a>
+  </div>
 </div>
 
 <style>
@@ -22,16 +40,28 @@
     align-items: center;
   }
 
-  .cta-eyebrow {
-    font-family: var(--font-satoshi);
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--muted);
+  /* ========================
+     LABEL — scale-pop spring
+     ======================== */
+  .cta-label-wrap {
+    opacity: 0;
+    transform: scale(0.72);
     margin-bottom: 28px;
+    transition:
+      opacity   550ms cubic-bezier(0.34, 1.56, 0.64, 1),
+      transform 550ms cubic-bezier(0.34, 1.56, 0.64, 1);
   }
 
+  :global(.snapPage.isActive) .cta-label-wrap {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  /* ========================
+     HEADING — 3D perspective flip, no overflow:hidden
+     opacity handles the hide/show so descenders are never clipped.
+     Each word fades in while flipping from rotateX(20deg) to flat.
+     ======================== */
   .cta-heading {
     font-family: var(--font-serif);
     font-size: clamp(50px, 6.5vw, 86px);
@@ -42,12 +72,39 @@
     margin-bottom: 22px;
   }
 
-  .cta-heading em {
-    font-style: italic;
-    font-weight: 300;
-    color: var(--accent);
+  .cword {
+    display: inline-block;
+    opacity: 0;
+    transform: perspective(600px) translateY(36px) rotateX(20deg);
+    transform-origin: 50% 100%;
+    transition-property: transform, opacity;
+    transition-duration: 1100ms, 700ms;
+    transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1), ease;
   }
 
+  :global(.snapPage.isActive) .cword {
+    opacity: 1;
+    transform: perspective(600px) translateY(0) rotateX(0deg);
+    transition-delay: calc(200ms + var(--cwi) * 65ms);
+  }
+
+  /* Accent italic words — color also transitions in as they land */
+  .cword--accent {
+    font-style: italic;
+    color: var(--text);
+    transition-property: transform, opacity, color;
+    transition-duration: 1100ms, 700ms, 900ms;
+    transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1), ease, ease;
+  }
+
+  :global(.snapPage.isActive) .cword--accent {
+    color: var(--accent);
+    transition-delay: calc(200ms + var(--cwi) * 65ms);
+  }
+
+  /* ========================
+     SUB — blur-into-focus
+     ======================== */
   .cta-sub {
     font-family: var(--font-satoshi);
     font-size: 16px;
@@ -55,6 +112,40 @@
     color: var(--muted);
     max-width: 360px;
     margin-bottom: 44px;
+    opacity: 0;
+    filter: blur(6px);
+    transform: translateY(8px);
+    transition: opacity 900ms ease, filter 900ms ease, transform 900ms ease;
+  }
+
+  :global(.snapPage.isActive) .cta-sub {
+    opacity: 1;
+    filter: blur(0px);
+    transform: translateY(0);
+    transition-delay: 760ms;
+  }
+
+  /* ========================
+     BUTTON WRAPPER — spring pop entrance
+     Wrapper handles opacity + transform so .cta-btn:hover can use
+     opacity freely without conflicting with the entrance animation.
+     ======================== */
+  .cta-btn-wrap {
+    opacity: 0;
+    transform: scale(0.8) translateY(16px);
+    transition:
+      opacity   500ms cubic-bezier(0.34, 1.56, 0.64, 1),
+      transform 700ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  :global(.snapPage.isActive) .cta-btn-wrap {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    transition-delay: 960ms;
+  }
+
+  :global(.snapPage.isActive) .cta-btn {
+    animation: ctaGlow 1.5s ease-out 1180ms forwards;
   }
 
   .cta-btn {
@@ -69,7 +160,8 @@
     font-family: var(--font-satoshi);
     font-size: 15px;
     font-weight: 600;
-    transition: opacity 0.2s;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
   }
 
   .cta-btn:hover {
@@ -83,6 +175,13 @@
 
   .cta-btn:hover .cta-arrow {
     transform: translateX(4px);
+  }
+
+  /* Glow pulse — runs once, ends clean */
+  @keyframes ctaGlow {
+    0%   { box-shadow: none; }
+    40%  { box-shadow: 0 4px 32px rgba(33, 75, 183, 0.55), 0 0 0 10px rgba(33, 75, 183, 0.08); }
+    100% { box-shadow: none; }
   }
 
   @media (max-width: 767px) {

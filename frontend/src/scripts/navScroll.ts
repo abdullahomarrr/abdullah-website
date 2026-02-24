@@ -206,9 +206,14 @@ if (snapShell) {
     });
   });
 
-  // ── Init — activate first section immediately ─────────────────────────────
+  // ── Init — jump to section matching URL hash, or fall back to first ───────
   const initialPages = getPages();
   if (initialPages.length) {
-    setActive(0, initialPages);
+    const hash = window.location.hash.slice(1);
+    const hashIdx = hash ? initialPages.findIndex((p) => p.id === hash) : -1;
+    const startIdx = hashIdx !== -1 ? hashIdx : 0;
+    snapShell.scrollTop = initialPages[startIdx].offsetTop;
+    setActive(startIdx, initialPages);
+    currentIndex = startIdx;
   }
 }

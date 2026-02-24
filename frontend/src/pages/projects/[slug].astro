@@ -18,7 +18,7 @@ if (!project) {
   <!-- TOP BAR -->
   <div class="topbar">
     <div class="topbar-inner">
-      <a href="/" class="back-link">
+      <a href="/#projects" class="back-link">
         <svg
           width="16"
           height="16"
@@ -61,97 +61,27 @@ if (!project) {
           }
         </div>
       </div>
+      {project.liveUrl && (
+        <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" class="visit-btn" aria-label={`Visit ${project.name} website`}>
+          <span>Visit Website</span>
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+            <path d="M2.5 11.5L11.5 2.5M11.5 2.5H5.5M11.5 2.5V8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      )}
     </header>
 
     <!-- ─── DEMO BOX ──────────────────────────────── -->
     <div class="demo-wrap anim" style="--i:1" aria-hidden="true">
 
-      {/* ── Pyko: dark dashboard ── */}
+      {/* ── Pyko: dashboard screenshot ── */}
       {
         project.slug === "pyko" && (
-          <div
-            class="demo-card"
-            role="img"
-            aria-label="Pyko student dashboard preview"
-          >
-            <div class="demo-titlebar">
-              <div class="demo-dots">
-                <span class="dot dot-red" />
-                <span class="dot dot-yellow" />
-                <span class="dot dot-green" />
-              </div>
-              <span class="demo-title-text">Pyko — Student Dashboard</span>
-              <div class="demo-titlebar-spacer" />
-            </div>
-            <div class="demo-body">
-              <nav class="demo-sidebar">
-                <div class="dsb-item dsb-active">
-                  <span class="dsb-icon" />
-                  Overview
-                </div>
-                <div class="dsb-item">
-                  <span class="dsb-icon" />
-                  Courses
-                </div>
-                <div class="dsb-item">
-                  <span class="dsb-icon" />
-                  Analytics
-                </div>
-                <div class="dsb-item">
-                  <span class="dsb-icon" />
-                  Copilot
-                </div>
-                <div class="dsb-spacer" />
-                <div class="dsb-item">
-                  <span class="dsb-icon" />
-                  Settings
-                </div>
-              </nav>
-              <div class="demo-content">
-                <div class="demo-welcome">
-                  <span class="demo-greeting">Good morning, Alex</span>
-                  <span class="demo-sub">4 assignments due this week</span>
-                </div>
-                <div class="demo-stats">
-                  <div class="stat-card">
-                    <span class="stat-label">Avg Grade</span>
-                    <span class="stat-value">83.4%</span>
-                    <span class="stat-trend trend-up">↑ 2.1%</span>
-                  </div>
-                  <div class="stat-card">
-                    <span class="stat-label">Courses</span>
-                    <span class="stat-value">6</span>
-                    <span class="stat-trend">active</span>
-                  </div>
-                  <div class="stat-card stat-card-warn">
-                    <span class="stat-label">At Risk</span>
-                    <span class="stat-value">1</span>
-                    <span class="stat-trend trend-down">needs action</span>
-                  </div>
-                </div>
-                <div class="demo-courses">
-                  <span class="demo-courses-label">Performance</span>
-                  {[
-                    { name: "MATH 201", pct: 82, clr: "#4ade80" },
-                    { name: "CS 305", pct: 68, clr: "#f87171" },
-                    { name: "ENG 101", pct: 91, clr: "#4ade80" },
-                    { name: "ECON 210", pct: 79, clr: "#facc15" },
-                  ].map((c) => (
-                    <div class="course-row">
-                      <span class="course-name">{c.name}</span>
-                      <div class="course-track">
-                        <div
-                          class="course-fill"
-                          style={`width:${c.pct}%;background:${c.clr}`}
-                        />
-                      </div>
-                      <span class="course-pct">{c.pct}%</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
+          <img
+            src="/pyko dashboard.png"
+            alt="Pyko student dashboard"
+            class="pyko-screenshot"
+          />
         )
       }
 
@@ -395,10 +325,44 @@ if (!project) {
   .hero {
     padding-top: 80px;
     margin-bottom: 48px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 40px;
   }
 
   .hero-text {
     max-width: 720px;
+    flex: 1;
+  }
+
+  .visit-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+    margin-top: 8px;
+    font-family: var(--font-satoshi);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+    border: 1px solid rgba(29, 29, 29, 0.2);
+    border-radius: 100px;
+    padding: 10px 20px;
+    text-decoration: none;
+    transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+    white-space: nowrap;
+  }
+
+  .visit-btn:hover {
+    background: var(--text);
+    border-color: var(--text);
+    color: var(--bg);
+  }
+
+  .visit-btn:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
   }
 
   .hero-year {
@@ -452,6 +416,16 @@ if (!project) {
   .demo-wrap {
     width: 100%;
     margin-bottom: 96px;
+  }
+
+  .pyko-screenshot {
+    width: 100%;
+    display: block;
+    border-radius: var(--radius);
+    box-shadow:
+      0 24px 64px rgba(0, 0, 0, 0.13),
+      0 4px 16px rgba(0, 0, 0, 0.07);
+    border: 1px solid rgba(0, 0, 0, 0.07);
   }
 
   /* Shared titlebar dots */
@@ -1146,24 +1120,15 @@ if (!project) {
     .hero {
       padding-top: 48px;
       margin-bottom: 36px;
+      flex-wrap: wrap;
     }
 
-    .demo-card,
+    .visit-btn {
+      margin-top: 0;
+    }
+
     .pu-card {
       aspect-ratio: 4 / 3;
-    }
-
-    /* Pyko mobile */
-    .demo-sidebar {
-      display: none;
-    }
-
-    .demo-stats {
-      gap: 7px;
-    }
-
-    .stat-value {
-      font-size: 16px;
     }
 
     /* PakUni mobile */

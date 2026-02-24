@@ -29,13 +29,6 @@ const {
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="/logo.png" />
 
-    <!-- Theme init (runs before paint to prevent FOUC) -->
-    <script is:inline>
-      (function () {
-        var theme = localStorage.getItem('theme') || 'light';
-        document.documentElement.setAttribute('data-theme', theme);
-      })();
-    </script>
   </head>
   <body class="snap-active">
     <slot />

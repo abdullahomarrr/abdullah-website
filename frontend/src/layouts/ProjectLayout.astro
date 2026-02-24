@@ -34,4 +34,47 @@ const {
 
 <style is:global>
   @import "../styles/global.css";
+
+  /* ── Page exit — drops away with gravity ── */
+  @keyframes pageExitDown {
+    from { transform: translateY(0);    opacity: 1; }
+    to   { transform: translateY(64px); opacity: 0; }
+  }
+
+  body.page-exiting {
+    animation: pageExitDown 350ms cubic-bezier(0.4, 0, 1, 1) forwards;
+    pointer-events: none;
+    overflow: hidden;
+  }
 </style>
+
+<script>
+  // Intercept internal link clicks — play exit drop before navigating
+  document.addEventListener('click', (e) => {
+    const link = (e.target as Element).closest('a[href]') as HTMLAnchorElement | null;
+    if (!link) return;
+
+    const href = link.getAttribute('href') ?? '';
+
+    // Skip: external URLs, anchors, mailto/tel, new-tab links
+    if (
+      !href ||
+      href.startsWith('#') ||
+      href.startsWith('mailto:') ||
+      href.startsWith('tel:') ||
+      href.startsWith('http') ||
+      href.startsWith('//') ||
+      link.target === '_blank'
+    ) return;
+
+    e.preventDefault();
+    document.body.classList.add('page-exiting');
+
+    // Navigate when animation ends; 400ms timeout as hard fallback
+    const fallback = setTimeout(() => { window.location.href = href; }, 400);
+    document.body.addEventListener('animationend', () => {
+      clearTimeout(fallback);
+      window.location.href = href;
+    }, { once: true });
+  });
+</script>
