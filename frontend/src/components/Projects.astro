@@ -1,435 +1,242 @@
 ---
 import SectionLabel from "./SectionLabel.astro";
-
-const projects = [
-  {
-    title: "PakUni",
-    year: "2026",
-    stack: "Python · JavaScript · FastAPI · MongoDB",
-    description: "A unified admissions platform simplifying how Pakistani students apply to universities with one profile, one dashboard, and one workflow.",
-    color: "#214BB7",
-    accent: "#4a6fd4",
-    image: "/pakuni.png",
-    link: "/projects/pakuni",
-    comingSoon: false,
-  },
-  {
-    title: "Deer Hacks",
-    year: "2026",
-    stack: "",
-    description: "Something's brewing. Details locked, launch imminent — stay tuned.",
-    color: "#ECECEC",
-    accent: "#9F9F9F",
-    image: null,
-    link: "#",
-    comingSoon: true,
-  },
-];
+import { featuredProjects } from "../data/featuredProjects";
 ---
 
 <div class="projects-content">
-  <!-- Label slides DOWN from above — first time in the portfolio -->
-  <div class="projects-label-wrap">
-    <SectionLabel text="Projects" />
+  <div class="projects-label-wrap"><SectionLabel text="Projects" /></div>
+  <div class="projects-header">
+    <h2 class="projects-heading">
+      {"Building Products That Solve Real Problems".split(" ").map((word, index) => (
+        <span class="word-mask"><span class="pword" style={`--pwi:${index}`}>{word}</span></span>
+      ))}
+    </h2>
+    <div class="project-controls" aria-label="Browse projects" hidden>
+      <span class="project-range" aria-live="polite" aria-atomic="true">1–2 / {featuredProjects.length}</span>
+      <button type="button" data-project-prev aria-label="Previous projects" aria-controls="project-track" disabled>←</button>
+      <button type="button" data-project-next aria-label="Next projects" aria-controls="project-track">→</button>
+    </div>
   </div>
 
-  <!-- Word-mask headline: snappiest easing of the three sections -->
-  <h2 class="projects-heading">
-    <span class="word-mask"><span class="pword" style="--pwi:0">Building</span></span>
-    <span class="word-mask"><span class="pword" style="--pwi:1">Products</span></span>
-    <span class="word-mask"><span class="pword" style="--pwi:2">That</span></span>
-    <span class="word-mask"><span class="pword" style="--pwi:3">Solve</span></span>
-    <span class="word-mask"><span class="pword" style="--pwi:4">Real</span></span>
-    <span class="word-mask"><span class="pword" style="--pwi:5">Problems</span></span>
-  </h2>
-
-  <div class="projects-grid">
-    {projects.map((p) => (
-      <div class={`project-tile${p.comingSoon ? ' project-tile--soon' : ''}`}>
-        {p.comingSoon ? (
-          <div class="project-image-wrap project-image-wrap--soon" style={`background: ${p.color};`}>
-            <div class="coming-soon-inner">
-              <span class="coming-soon-label">Coming Soon</span>
-            </div>
-          </div>
-        ) : (
-          <a
-            class="project-image-wrap"
-            href={p.link}
-            target={p.link.startsWith('http') ? '_blank' : undefined}
-            rel={p.link.startsWith('http') ? 'noopener noreferrer' : undefined}
-            style={`background: ${p.color};`}
-          >
-            {p.image ? (
-              <div class="project-img-zoom">
-                <img src={p.image} alt={p.title} class="project-img" />
+  <div class="projects-grid" id="project-track" tabindex="0" role="region" aria-label="Featured projects">
+    {featuredProjects.map((project, index) => (
+      <article class="project-tile" style={`--card-delay:${650 + (index % 2) * 110}ms`}>
+        <a class={`project-image-wrap project-image-wrap--${project.visual}`}
+          href={project.link}
+          target={project.link.startsWith("http") ? "_blank" : undefined}
+          rel={project.link.startsWith("http") ? "noopener noreferrer" : undefined}
+          aria-label={`View ${project.title}${project.link.startsWith("http") ? " (opens in a new tab)" : ""}`}>
+          <div class="project-art" aria-hidden="true">
+            {project.visual === "football" && (
+              <div class="football-art">
+                <span class="art-caption">THE GAME, EXPLAINED.</span>
+                <svg class="pitch" viewBox="0 0 400 200" fill="none">
+                  <g stroke="currentColor" stroke-width="1.3" opacity="0.45">
+                    <rect x="10" y="10" width="380" height="180" rx="2" />
+                    <path d="M200 10v180M10 48h58v104H10M390 48h-58v104h58M10 76h22v48H10M390 76h-22v48h22" />
+                    <circle cx="200" cy="100" r="30" />
+                  </g>
+                  <path d="M90 133L164 78L235 116L308 58" stroke="currentColor" stroke-width="2" stroke-dasharray="5 5" opacity="0.7" />
+                  <g fill="currentColor"><circle cx="90" cy="133" r="5" /><circle cx="164" cy="78" r="5" /><circle cx="235" cy="116" r="5" /><circle cx="308" cy="58" r="6" /></g>
+                  <circle cx="308" cy="58" r="14" stroke="currentColor" opacity="0.4" />
+                </svg>
+                <span class="art-footnote">Football Intelligence <span>11.7M match events</span></span>
               </div>
-            ) : (
-              <div class="project-placeholder">
-                <div class="placeholder-lines">
-                  <div class="ph-line ph-line-wide" style={`background: ${p.accent};`}></div>
-                  <div class="ph-line ph-line-mid" style={`background: ${p.accent};`}></div>
-                  <div class="ph-line ph-line-short" style={`background: ${p.accent};`}></div>
+            )}
+            {project.visual === "notebook" && (
+              <div class="notebook-art">
+                <span class="notebook-brand">Strive<span>Think it through.</span></span>
+                <div class="notebook-paper">
+                  <span class="paper-label">CALCULUS / A WORK IN PROGRESS</span>
+                  <span class="math-line">∫ x · eˣ dx</span>
+                  <span class="math-working">u = x &nbsp;&nbsp; dv = eˣ dx</span>
+                  <span class="tutor-hint">What happens if you integrate by parts?</span>
                 </div>
               </div>
             )}
-            <div class="project-overlay">
-              <span class="view-btn">View Project</span>
-            </div>
-          </a>
-        )}
-        <div class="project-meta">
-          <span class="project-title">{p.title}</span>
-          {p.year && <span class="project-year muted">{p.year}</span>}
-        </div>
-        <p class="project-description muted">{p.description}</p>
-        {!p.comingSoon && p.stack && (
-          <div class="project-tags">
-            {p.stack.split(' · ').map((tag: string) => (
-              <span class="tag">{tag}</span>
-            ))}
+            {project.visual === "globe" && (
+              <div class="globe-art">
+                <svg class="globe" viewBox="0 0 240 240" fill="none">
+                  <g stroke="currentColor" opacity="0.4">
+                    <circle cx="120" cy="120" r="94" />
+                    <ellipse cx="120" cy="120" rx="57" ry="94" />
+                    <ellipse cx="120" cy="120" rx="23" ry="94" />
+                    <ellipse cx="120" cy="120" rx="94" ry="36" />
+                    <path d="M26 120h188M43 67h154M43 173h154" />
+                  </g>
+                  <circle cx="165" cy="82" r="6" fill="currentColor" />
+                  <circle cx="165" cy="82" r="15" stroke="currentColor" opacity="0.5" />
+                </svg>
+                <div class="globe-copy"><span class="art-caption">LISTEN. GUESS. EXPLORE.</span><span class="lingo-brand">DailyLingo</span><div class="waveform">{[12, 22, 36, 18, 42, 28, 16, 34, 46, 24, 12, 30, 20].map(height => <i style={`height:${height}px`}></i>)}</div></div>
+              </div>
+            )}
+            {project.visual === "pakuni" && <img src="/pakuni.png" alt="" class="project-img" loading="lazy" />}
           </div>
-        )}
-      </div>
+          <div class="project-overlay"><span class="view-btn">View Project ↗</span></div>
+        </a>
+        <div class="project-meta">
+          <h3 class="project-title"><a href={project.link} target={project.link.startsWith("http") ? "_blank" : undefined} rel={project.link.startsWith("http") ? "noopener noreferrer" : undefined}>{project.title}</a></h3>
+          <span class="project-year muted">2026</span>
+        </div>
+        <p class="project-description muted">{project.description}</p>
+        <div class="project-footer">
+          <ul class="project-tags" aria-label={`${project.title} technologies`}>
+            {project.tags.map(tag => <li class="tag">{tag}</li>)}
+          </ul>
+          {project.githubUrl && <a class="source-link" href={project.githubUrl} target="_blank" rel="noopener noreferrer" aria-label={`${project.title} source on GitHub (opens in a new tab)`}>GitHub ↗</a>}
+        </div>
+      </article>
     ))}
   </div>
+  <a class="all-projects" href="https://github.com/abdullahomarrr?tab=repositories" target="_blank" rel="noopener noreferrer">More on GitHub ↗</a>
 </div>
 
-<style>
-  .projects-content {
-    width: 100%;
-  }
+<script>
+  const track = document.querySelector<HTMLElement>("#project-track");
+  const controls = document.querySelector<HTMLElement>(".project-controls");
+  const previous = document.querySelector<HTMLButtonElement>("[data-project-prev]");
+  const next = document.querySelector<HTMLButtonElement>("[data-project-next]");
+  const range = document.querySelector<HTMLElement>(".project-range");
 
-  /* ========================
-     LABEL — slides down from above
-     First element in portfolio to arrive from the top.
-     ======================== */
-  .projects-label-wrap {
-    opacity: 0;
-    transform: translateY(-14px);
-    transition: opacity 700ms ease, transform 700ms cubic-bezier(0.25, 1, 0.5, 1);
-  }
-
-  :global(.snapPage.isActive) .projects-label-wrap {
-    opacity: 1;
-    transform: translateY(0);
-    /* No delay — label lands first */
-  }
-
-  /* ========================
-     HEADING — word mask, snappiest of the three sections
-     Hero: 0.16,1,0.3,1  |  About: 0.25,1,0.5,1  |  Projects: 0.22,1,0.36,1
-     ======================== */
-  .projects-heading {
-    font-size: clamp(31px, 3.9vw, 44px);
-    font-weight: 400;
-    line-height: 1.2;
-    letter-spacing: -0.02em;
-    max-width: 620px;
-    margin-bottom: 32px;
-  }
-
-  .word-mask {
-    display: inline-block;
-    overflow: hidden;
-    padding-bottom: 0.08em;
-    margin-bottom: -0.08em;
-    vertical-align: top;
-  }
-
-  .pword {
-    display: inline-block;
-    transform: translateY(110%);
-    transition-property: transform;
-    transition-duration: 950ms;
-    transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
-  }
-
-  :global(.snapPage.isActive) .pword {
-    transform: translateY(0);
-    transition-delay: calc(180ms + var(--pwi) * 40ms);
-  }
-
-  /* ========================
-     GRID
-     ======================== */
-  .projects-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 24px;
-  }
-
-  /* ========================
-     CARDS — converge from opposite sides
-     Card 1 slides from LEFT, Card 2 from RIGHT.
-     Fast opacity (500ms), slower slide (1100ms) — card materializes as it moves.
-     ======================== */
-  .project-tile {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .project-tile:nth-child(1) {
-    opacity: 0;
-    transform: translateX(-50px);
-    transition: opacity 500ms ease, transform 1100ms cubic-bezier(0.25, 1, 0.5, 1);
-  }
-
-  .project-tile:nth-child(2) {
-    opacity: 0;
-    transform: translateX(50px);
-    transition: opacity 500ms ease, transform 1100ms cubic-bezier(0.25, 1, 0.5, 1);
-  }
-
-  :global(.snapPage.isActive) .project-tile:nth-child(1) {
-    opacity: 1;
-    transform: translateX(0);
-    transition-delay: 650ms;
-  }
-
-  :global(.snapPage.isActive) .project-tile:nth-child(2) {
-    opacity: 1;
-    transform: translateX(0);
-    transition-delay: 760ms;
-  }
-
-  /* ========================
-     IMAGE — zoom-out wrapper
-     .project-img-zoom handles the entrance scale (1.08 → 1).
-     .project-img inside handles hover blur/scale independently.
-     Separation prevents entrance timing from breaking the hover effect.
-     ======================== */
-  .project-image-wrap {
-    position: relative;
-    border-radius: var(--radius);
-    overflow: hidden;
-    margin-bottom: 16px;
-    aspect-ratio: 16 / 9;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-decoration: none;
-    cursor: pointer;
-  }
-
-  .project-img-zoom {
-    width: 100%;
-    height: 100%;
-    transform: scale(1.08);
-    transition: transform 1600ms cubic-bezier(0.25, 1, 0.5, 1);
-  }
-
-  :global(.snapPage.isActive) .project-tile:nth-child(1) .project-img-zoom {
-    transform: scale(1);
-    transition-delay: 650ms;
-  }
-
-  :global(.snapPage.isActive) .project-tile:nth-child(2) .project-img-zoom {
-    transform: scale(1);
-    transition-delay: 760ms;
-  }
-
-  .project-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    transition:
-      filter 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-      transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  }
-
-  .project-image-wrap:hover .project-img {
-    filter: blur(5px);
-    transform: scale(1.03);
-  }
-
-  .project-overlay {
-    position: absolute;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.22);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    transition: opacity 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  }
-
-  .project-image-wrap:hover .project-overlay {
-    opacity: 1;
-  }
-
-  .view-btn {
-    color: #fff;
-    font-family: var(--font-satoshi);
-    font-size: 14px;
-    font-weight: 500;
-    letter-spacing: 0.04em;
-    border: 1.5px solid rgba(255, 255, 255, 0.75);
-    border-radius: 100px;
-    padding: 9px 22px;
-    opacity: 0;
-    transform: translateY(8px);
-    transition:
-      opacity 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.05s,
-      transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.05s;
-  }
-
-  .project-image-wrap:hover .view-btn {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  /* ========================
-     COMING SOON CARD
-     ======================== */
-  .project-image-wrap--soon {
-    cursor: default;
-    border: 1.5px dashed rgba(29, 29, 29, 0.18);
-    background: #F0F0F0 !important;
-  }
-
-  .coming-soon-inner {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
-  }
-
-  .coming-soon-label {
-    font-family: var(--font-serif);
-    font-size: clamp(22px, 2.8vw, 32px);
-    font-weight: 400;
-    color: var(--muted);
-    letter-spacing: 0.02em;
-    font-style: italic;
-  }
-
-  .project-tile--soon {
-    opacity: 0.6;
-  }
-
-  .project-placeholder {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
-  }
-
-  .placeholder-lines {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    width: 40%;
-  }
-
-  .ph-line { height: 4px; border-radius: 2px; opacity: 0.45; }
-  .ph-line-wide  { width: 100%; }
-  .ph-line-mid   { width: 70%; }
-  .ph-line-short { width: 50%; }
-
-  /* ========================
-     META + DESCRIPTION — fade up per card
-     Delays are relative to each card's start time.
-     ======================== */
-  .project-meta {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 16px;
-    margin-bottom: 8px;
-    opacity: 0;
-    transform: translateY(8px);
-    transition: opacity 800ms ease, transform 800ms ease;
-  }
-
-  .project-title {
-    font-family: var(--font-serif);
-    font-size: 20px;
-    font-weight: 400;
-    line-height: 1.35;
-    letter-spacing: -0.01em;
-  }
-
-  .project-year {
-    font-family: var(--font-satoshi);
-    font-weight: 400;
-    font-size: 15px;
-    flex-shrink: 0;
-  }
-
-  .project-description {
-    font-family: var(--font-satoshi);
-    font-weight: 400;
-    font-size: 15px;
-    line-height: 1.65;
-    margin-bottom: 8px;
-    opacity: 0;
-    transform: translateY(8px);
-    transition: opacity 800ms ease, transform 800ms ease;
-  }
-
-  :global(.snapPage.isActive) .project-tile:nth-child(1) .project-meta {
-    opacity: 1; transform: translateY(0); transition-delay: 850ms;
-  }
-  :global(.snapPage.isActive) .project-tile:nth-child(1) .project-description {
-    opacity: 1; transform: translateY(0); transition-delay: 1000ms;
-  }
-  :global(.snapPage.isActive) .project-tile:nth-child(2) .project-meta {
-    opacity: 1; transform: translateY(0); transition-delay: 960ms;
-  }
-  :global(.snapPage.isActive) .project-tile:nth-child(2) .project-description {
-    opacity: 1; transform: translateY(0); transition-delay: 1110ms;
-  }
-
-  /* ========================
-     TAGS — scale-pop spring, staggered per card
-     Card 1: 5 tags from t=1150ms, 45ms apart
-     Card 2: 4 tags from t=1260ms, 45ms apart
-     ======================== */
-  .project-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-  }
-
-  .tag {
-    font-family: var(--font-satoshi);
-    font-size: 12px;
-    font-weight: 500;
-    color: var(--text);
-    background: transparent;
-    border: 1px solid rgba(29, 29, 29, 0.2);
-    border-radius: 100px;
-    padding: 3px 10px;
-    letter-spacing: 0.01em;
-    opacity: 0;
-    transform: scale(0.65);
-    transition:
-      opacity  550ms cubic-bezier(0.34, 1.56, 0.64, 1),
-      transform 550ms cubic-bezier(0.34, 1.56, 0.64, 1);
-  }
-
-  :global(.snapPage.isActive) .project-tile:nth-child(1) .tag:nth-child(1) { opacity:1; transform:scale(1); transition-delay:1150ms; }
-  :global(.snapPage.isActive) .project-tile:nth-child(1) .tag:nth-child(2) { opacity:1; transform:scale(1); transition-delay:1195ms; }
-  :global(.snapPage.isActive) .project-tile:nth-child(1) .tag:nth-child(3) { opacity:1; transform:scale(1); transition-delay:1240ms; }
-  :global(.snapPage.isActive) .project-tile:nth-child(1) .tag:nth-child(4) { opacity:1; transform:scale(1); transition-delay:1285ms; }
-  :global(.snapPage.isActive) .project-tile:nth-child(1) .tag:nth-child(5) { opacity:1; transform:scale(1); transition-delay:1330ms; }
-
-  :global(.snapPage.isActive) .project-tile:nth-child(2) .tag:nth-child(1) { opacity:1; transform:scale(1); transition-delay:1260ms; }
-  :global(.snapPage.isActive) .project-tile:nth-child(2) .tag:nth-child(2) { opacity:1; transform:scale(1); transition-delay:1305ms; }
-  :global(.snapPage.isActive) .project-tile:nth-child(2) .tag:nth-child(3) { opacity:1; transform:scale(1); transition-delay:1350ms; }
-  :global(.snapPage.isActive) .project-tile:nth-child(2) .tag:nth-child(4) { opacity:1; transform:scale(1); transition-delay:1395ms; }
-
-  @media (max-width: 767px) {
-    .projects-grid { grid-template-columns: 1fr; }
-
-    /* On mobile single column, both cards slide up instead */
-    .project-tile:nth-child(1),
-    .project-tile:nth-child(2) {
-      transform: translateY(24px);
+  if (track && controls && previous && next && range) {
+    const cards = Array.from(track.querySelectorAll<HTMLElement>(".project-tile"));
+    const mobile = window.matchMedia("(max-width: 767px)");
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    function updateControls() {
+      if (!track || !previous || !next || !range) return;
+      const step = cards[1].offsetLeft - cards[0].offsetLeft;
+      const first = step > 0 ? Math.round(track.scrollLeft / step) : 0;
+      previous.disabled = track.scrollLeft <= 2;
+      next.disabled = track.scrollLeft + track.clientWidth >= track.scrollWidth - 2;
+      range.textContent = `${first + 1}–${Math.min(first + 2, cards.length)} / ${cards.length}`;
     }
+    function move(direction: number) {
+      if (!track || mobile.matches) return;
+      track.scrollBy({ left: direction * (cards[2].offsetLeft - cards[0].offsetLeft), behavior: reducedMotion.matches ? "instant" : "smooth" });
+    }
+    controls.hidden = false;
+    previous.addEventListener("click", () => move(-1));
+    next.addEventListener("click", () => move(1));
+    track.addEventListener("scroll", updateControls, { passive: true });
+    track.addEventListener("keydown", (event) => {
+      if (mobile.matches || event.target !== track) return;
+      if (event.key === "ArrowRight" || event.key === "ArrowLeft") {
+        event.preventDefault();
+        move(event.key === "ArrowRight" ? 1 : -1);
+      }
+    });
+    // Keep keyboard-focused cards in view without moving the page vertically.
+    track.addEventListener("focusin", (event) => {
+      if (mobile.matches || !(event.target instanceof Element)) return;
+      const card = event.target.closest<HTMLElement>(".project-tile");
+      if (!card) return;
+      const left = card.offsetLeft - cards[0].offsetLeft;
+      if (left < track.scrollLeft || left + card.clientWidth > track.scrollLeft + track.clientWidth + 2) {
+        track.scrollTo({ left, behavior: "instant" });
+      }
+    });
+    new ResizeObserver(updateControls).observe(track);
+    updateControls();
+  }
+</script>
+
+<style>
+  .projects-content { width: 100%; min-width: 0; }
+  .projects-label-wrap { opacity: 0; transform: translateY(-14px); transition: opacity 700ms ease, transform 700ms ease; }
+  :global(.snapPage.isActive) .projects-label-wrap { opacity: 1; transform: none; }
+  .projects-header { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin-bottom: 28px; }
+  .projects-heading { font-size: clamp(31px, 3.9vw, 44px); line-height: 1.2; max-width: 620px; }
+  .word-mask { display: inline-block; overflow: hidden; padding-bottom: 0.08em; margin-bottom: -0.08em; margin-right: 0.2em; vertical-align: top; }
+  .pword { display: inline-block; transform: translateY(110%); transition: transform 950ms cubic-bezier(0.22, 1, 0.36, 1); }
+  :global(.snapPage.isActive) .pword { transform: none; transition-delay: calc(180ms + var(--pwi) * 40ms); }
+  .project-controls { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+  .project-controls[hidden] { display: none; }
+  .project-range { font-family: var(--font-satoshi); font-size: 13px; font-variant-numeric: tabular-nums; color: #6b6b6b; margin-right: 8px; min-width: 52px; }
+  .project-controls button { width: 40px; height: 40px; border: 1px solid #d3d3d3; border-radius: 50%; font-size: 20px; transition: background 180ms; }
+  .project-controls button:hover:enabled { background: #fff; }
+  .project-controls button:disabled { opacity: 0.3; cursor: default; }
+  .projects-grid { display: grid; position: relative; grid-auto-flow: column; grid-auto-columns: calc((100% - 24px) / 2); gap: 24px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: thin; scrollbar-color: #c9c9c9 transparent; padding-bottom: 12px; }
+  .project-tile { display: flex; flex-direction: column; min-width: 0; scroll-snap-align: start; opacity: 0; transform: translateY(24px); transition: opacity 500ms ease, transform 1100ms cubic-bezier(0.25, 1, 0.5, 1); }
+  :global(.snapPage.isActive) .project-tile { opacity: 1; transform: none; transition-delay: var(--card-delay); }
+  .project-image-wrap { position: relative; border-radius: var(--radius); overflow: hidden; margin-bottom: 16px; aspect-ratio: 16 / 9; display: block; }
+  .project-art { width: 100%; height: 100%; transition: filter 350ms, transform 350ms; }
+  .project-img { width: 100%; height: 100%; object-fit: cover; }
+  .project-image-wrap--football { background: #122c27; color: #b0d9b4; }
+  .project-image-wrap--notebook { background: #eae3d9; color: #42382e; }
+  .project-image-wrap--globe { background: #1b3153; color: #bed9ee; }
+  .project-image-wrap--pakuni { background: #214bb7; }
+  .football-art { height: 100%; display: flex; flex-direction: column; justify-content: space-between; padding: 6% 7%; }
+  .art-caption, .art-footnote, .paper-label { font-family: var(--font-satoshi); font-size: clamp(8px, 0.8vw, 11px); letter-spacing: 0.12em; }
+  .pitch { width: 76%; margin: auto; min-height: 0; }
+  .art-footnote { display: flex; justify-content: space-between; gap: 8px; letter-spacing: 0; }
+  .art-footnote > span { opacity: 0.65; }
+  .notebook-art { height: 100%; padding: 6% 8% 0; overflow: hidden; }
+  .notebook-brand { display: flex; align-items: baseline; justify-content: space-between; font-family: var(--font-serif); font-size: clamp(24px, 3vw, 40px); }
+  .notebook-brand > span { font-family: var(--font-satoshi); font-size: clamp(9px, 0.9vw, 12px); }
+  .notebook-paper { display: flex; flex-direction: column; gap: 12px; margin: 5% 2% 0; padding: 6% 7% 12%; transform: rotate(-3deg); border: 1px solid #d8d0c3; border-radius: 8px; background: repeating-linear-gradient(#fffdf8 0px, #fffdf8 23px, #e7e2d7 24px); box-shadow: 0 4px 20px #42382e12; }
+  .paper-label { color: #81776a; font-size: clamp(7px, 0.65vw, 9px); }
+  .math-line { font-family: Georgia, serif; font-style: italic; font-size: clamp(22px, 3vw, 40px); line-height: 1.2; }
+  .math-working { font-family: Georgia, serif; font-style: italic; font-size: clamp(11px, 1.3vw, 18px); }
+  .tutor-hint { font-family: var(--font-satoshi); background: #e9edde; border-radius: 6px; padding: 7px 10px; font-size: clamp(8px, 0.9vw, 12px); }
+  .globe-art { display: flex; align-items: center; height: 100%; padding: 7%; gap: 5%; }
+  .globe { width: 49%; flex-shrink: 0; transform: rotate(-17deg); }
+  .globe-copy { display: flex; flex-direction: column; gap: 12px; }
+  .globe-copy .art-caption { font-size: clamp(6px, 0.65vw, 9px); }
+  .lingo-brand { font-family: var(--font-serif); font-size: clamp(22px, 3vw, 42px); line-height: 1; }
+  .waveform { display: flex; align-items: center; gap: 4px; height: 46px; margin-top: 8px; }
+  .waveform i { display: block; width: 3px; border-radius: 5px; background: currentColor; opacity: 0.65; }
+  .project-overlay { position: absolute; inset: 0; background: #0003; display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 350ms; }
+  .view-btn { color: #fff; font-family: var(--font-satoshi); font-size: 14px; font-weight: 500; border: 1.5px solid #ffffffbf; border-radius: 100px; padding: 9px 22px; transform: translateY(8px); transition: transform 350ms; }
+  .project-image-wrap:is(:hover, :focus-visible) .project-art { filter: blur(4px); transform: scale(1.03); }
+  .project-image-wrap:is(:hover, :focus-visible) .project-overlay { opacity: 1; }
+  .project-image-wrap:is(:hover, :focus-visible) .view-btn { transform: none; }
+  .project-meta { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; margin-bottom: 8px; }
+  .project-title { font-size: 22px; line-height: 1.35; }
+  .project-title a:hover { text-decoration: underline; text-underline-offset: 4px; }
+  .project-year { font-family: var(--font-satoshi); font-size: 14px; flex-shrink: 0; }
+  .project-description { font-family: var(--font-satoshi); font-size: 15px; line-height: 1.65; margin-bottom: 14px; color: #727272; }
+  .project-footer { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-top: auto; }
+  .project-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tag { font-family: var(--font-satoshi); font-size: 12px; font-weight: 500; border: 1px solid #1d1d1d33; border-radius: 100px; padding: 3px 10px; }
+  .source-link { font-family: var(--font-satoshi); font-size: 13px; padding: 4px 0; white-space: nowrap; text-underline-offset: 4px; }
+  .source-link:hover, .all-projects:hover { text-decoration: underline; }
+  .all-projects { display: inline-block; margin-top: 14px; font-family: var(--font-satoshi); font-size: 13px; color: #727272; text-underline-offset: 4px; }
+  a:focus-visible, button:focus-visible, .projects-grid:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+  @media (min-width: 768px) and (max-height: 820px) {
+    .project-image-wrap { aspect-ratio: auto; height: clamp(120px, 27vh, 220px); }
+    .projects-header { margin-bottom: 20px; }
+    .projects-heading { font-size: 34px; }
+    .project-description { font-size: 14px; }
+    .football-art { padding: 18px 7%; }
+    .pitch { width: 70%; }
+    .notebook-art { padding: 16px 7% 0; }
+    .notebook-brand { font-size: 28px; line-height: 1; }
+    .notebook-paper { margin: 12px 0 0; padding: 12px 18px; gap: 6px; }
+    .math-line { font-size: 28px; }
+    .math-working { font-size: 12px; }
+    .tutor-hint { font-size: 9px; padding: 5px 8px; }
+  }
+  @media (max-width: 767px) {
+    .projects-header { margin-bottom: 24px; }
+    .project-controls { display: none; }
+    .projects-grid { grid-auto-flow: row; grid-auto-columns: auto; grid-template-columns: minmax(0, 1fr); gap: 36px; overflow: visible; scroll-snap-type: none; }
+    .project-art .art-caption, .art-footnote { font-size: 9px; }
+    .notebook-art { padding: 14px 7% 0; }
+    .notebook-brand { font-size: 26px; line-height: 1; }
+    .notebook-brand > span { font-size: 10px; }
+    .notebook-paper { margin: 10px 0 0; padding: 10px 14px; gap: 4px; }
+    .paper-label { font-size: 7px; }
+    .math-line { font-size: 26px; }
+    .math-working { font-size: 11px; }
+    .tutor-hint { font-size: 8px; padding: 4px 6px; }
+    .lingo-brand { font-size: 30px; }
+    .globe-copy .art-caption { font-size: 7px; }
+    .waveform { gap: 3px; }
+    .waveform i { width: 2px; }
+    .project-footer { flex-wrap: wrap; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .projects-label-wrap, .pword, .project-tile { opacity: 1; transform: none; transition: none; }
+    .project-art, .project-overlay, .view-btn { transition: none; }
   }
 </style>

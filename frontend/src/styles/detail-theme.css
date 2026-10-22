@@ -1,0 +1,21 @@
+/* Shared material and typography for the pages reached from the portfolio. */
+body.portfolio-detail{--bg:#0c0e0c;--text:#eff0e9;--muted:#a2ab99;--border:#b8caa522;--accent:#c5ed9c;--font-serif:Satoshi,Arial,sans-serif;--font-sans:Satoshi,Arial,sans-serif;color-scheme:dark;background:var(--bg);color:var(--text);font-family:var(--font-sans);height:auto;min-height:100svh;overflow:auto;display:block}
+body.portfolio-detail .topbar{background:#0c0e0ce8;backdrop-filter:blur(16px);border-color:var(--border)}
+body.portfolio-detail .topbar-inner{max-width:1100px;height:70px}
+body.portfolio-detail .brand-link{font:400 13px Satoshi,Arial,sans-serif;color:#e2e8d8;letter-spacing:-.02em}
+body.portfolio-detail .page-main{--accent:#c5ed9c!important;max-width:1000px;padding:0 40px 80px;overflow:visible;min-height:auto}
+body.portfolio-detail .exp-header{padding-top:65px;margin-bottom:32px}
+body.portfolio-detail .meta-role,body.portfolio-detail .hero-title{font-family:Satoshi,Arial,sans-serif;font-weight:400;letter-spacing:-.055em;line-height:1.1}
+body.portfolio-detail .meta-company{text-transform:none;letter-spacing:0;font-weight:400;font-size:13px;color:#a6b397}
+body.portfolio-detail .meta-location{font-size:13px;color:#9da990}
+body.portfolio-detail .content{max-width:760px;overflow:visible;display:block}
+body.portfolio-detail .bullet-list{overflow:visible;gap:0}
+body.portfolio-detail .bullet-list li{font-size:15px;line-height:1.9;color:#bfc8b5;padding:22px 0;border-bottom:1px solid #b8caa51a}
+body.portfolio-detail .bullet-list li::before{display:none}
+body.portfolio-detail .divider{margin-bottom:0}
+body.portfolio-detail .demo-wrap{border-radius:16px;border:1px solid #b8caa52b;overflow:hidden}
+body.portfolio-detail .tag{border-color:#b8caa529;background:#1b2218;color:#b6c5a8;border-radius:6px}
+body.portfolio-detail .visit-btn{border-radius:9px;background:#26321f;color:#e0efcf;border-color:#809867}
+body.portfolio-detail a:focus-visible{outline:2px solid #c5ed9c;outline-offset:4px}
+@media(max-width:600px){body.portfolio-detail .page-main{padding:0 22px 50px}body.portfolio-detail .topbar-inner{padding:0 22px}body.portfolio-detail .exp-header{padding-top:40px}body.portfolio-detail .meta-role{font-size:38px}body.portfolio-detail .bullet-list li{font-size:14px}}
+@media(prefers-reduced-motion:reduce){body.portfolio-detail .anim{animation:none;opacity:1}body.portfolio-detail.page-exiting{animation:none}}

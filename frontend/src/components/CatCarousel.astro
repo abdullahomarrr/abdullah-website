@@ -1,0 +1,40 @@
+---
+import PhotoCarousel from './PhotoCarousel.astro';
+
+const photos = [
+  { src: '/cats/kitten-1.webp', alt: 'Ragdoll kitten sitting on a patterned bed', position: '50% 65%' },
+  { src: '/cats/kitten-2.webp', alt: 'Ragdoll kitten curled up asleep', position: '50% 66%' },
+  { src: '/cats/kitten-3.webp', alt: 'Sleepy kitten tucked between the pillows', position: '50% 40%' },
+  { src: '/cats/kitten-4.webp', alt: 'Kitten playing with a feather toy', position: '50% 60%' },
+  { src: '/cats/kitten-5.webp', alt: 'Ragdoll kitten stretched out on the bed', position: '50% 68%' },
+  { src: '/cats/kitten-6.webp', alt: 'Close-up of the kitten’s blue eyes', position: '50% 50%' },
+];
+
+---
+<div class="casper-profile">
+  <div class="casper-heading"><div><span class="casper-eyebrow">meet my little roommate</span><h2>casper<span aria-hidden="true">.</span></h2></div><span class="casper-breed">ragdoll</span></div>
+  <div class="casper-details"><span data-casper-age></span><span class="casper-birthday">born <time datetime="2026-07-07">jul 7, 2026</time></span></div>
+  <PhotoCarousel photos={photos} label="a few little moments" kind="cat" />
+</div>
+<script>
+  const age = document.querySelector<HTMLElement>('[data-casper-age]');
+  function updateAge() {
+    if (!age) return;
+    const parts = new Intl.DateTimeFormat('en-CA', {timeZone:'America/Toronto',year:'numeric',month:'numeric',day:'numeric'}).formatToParts(new Date());
+    const value = (type: string) => Number(parts.find(part => part.type === type)?.value);
+    const months = Math.max(0, (value('year') - 2026) * 12 + value('month') - 7 - (value('day') < 7 ? 1 : 0));
+    age.textContent = months === 0 ? 'less than a month old' : `${months} ${months === 1 ? 'month' : 'months'} old`;
+  }
+  updateAge();
+  setInterval(updateAge, 60_000);
+  document.addEventListener('visibilitychange', () => {if(!document.hidden) updateAge();});
+</script>
+<style>
+  .casper-heading{display:flex;align-items:center;justify-content:space-between;gap:18px}
+  .casper-eyebrow{display:block;font-size:10px;color:#9ba891;margin-bottom:7px}
+  .casper-heading h2{font:400 30px/1.1 Satoshi,Arial,sans-serif;letter-spacing:-.045em;color:#edf1e7;margin:0}
+  .casper-heading h2 span{color:#b6d29d}
+  .casper-breed{font-size:11px;color:#c0cbb5;border:1px solid #c3d5af25;border-radius:20px;padding:5px 10px}
+  .casper-details{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:16px 0 12px;padding-bottom:14px;border-bottom:1px solid #c5d5b319;font-size:11px;color:#c1cbb8}
+  .casper-birthday{color:#8f9c83;font-size:10px}
+</style>

@@ -1,0 +1,117 @@
+---
+import { featuredProjects } from '../data/featuredProjects';
+const projectLink = (p: typeof featuredProjects[number]) => p.visual === "globe" ? p.githubUrl! : p.link;
+const previews = ['/projects/football.png','/projects/strive.png','/projects/dailylingo.png','/pakuni.png'];
+const summaries = ['Football scouting, backed by 11.7 million match events.','A handwritten maths notebook with a little AI guidance.','Listen to a voice. Work out where it comes from.','One profile. A simpler way to apply to university.'];
+---
+<section id="projects" class="showcase" aria-labelledby="work-title">
+  <div class="showcase-label"><span>02</span> selected projects</div>
+  <h2 id="work-title">things i’ve <span>built.</span></h2>
+  <div class="showcase-layout">
+    <div class="project-navigation">
+      <div class="project-tabs" role="tablist" aria-label="Select a project" aria-orientation="vertical">
+        <span class="active-marker" aria-hidden="true"></span>
+        {featuredProjects.map((p,i)=><button id={`project-tab-${i}`} role="tab" aria-selected={i===0?'true':'false'} aria-controls={`project-view-${i}`} tabindex={i===0?0:-1} data-project={i}><span class="selection-mark" aria-hidden="true"></span><span>{p.title.toLowerCase()}</span><span class="tab-arrow" aria-hidden="true">↗</span></button>)}
+      </div>
+      <a class="project-archive" href="https://github.com/abdullahomarrr?tab=repositories" target="_blank" rel="noopener noreferrer">more on github ↗</a>
+    </div>
+    <div class="project-stage">
+      {featuredProjects.map((p,i)=><div class="project-view" id={`project-view-${i}`} role="tabpanel" aria-labelledby={`project-tab-${i}`} aria-hidden={i===0?'false':'true'} inert={i!==0} tabindex="0">
+        <a class="project-screen" href={projectLink(p)} target={p.link.startsWith('http')?'_blank':undefined} rel={p.link.startsWith('http')?'noopener noreferrer':undefined} aria-label={`Open ${p.title}`}><span class="screen-crop"><img src={previews[i]} alt={`${p.title} website preview`} width="1280" height="720" loading="lazy"/></span><span class="screen-open" aria-hidden="true">{p.visual==="globe"?"view source":"open project"} ↗</span></a>
+        <div class="project-caption"><p>{summaries[i]}</p><span class="project-position">0{i+1} <span>/ 04</span></span></div>
+        
+        <div class="project-bottom"><ul aria-label="Technologies">{p.tags.map(tag=><li>{tag}</li>)}</ul><div class="project-links"><a href={projectLink(p)} target={p.link.startsWith('http')?'_blank':undefined} rel={p.link.startsWith('http')?'noopener noreferrer':undefined}>{p.visual==='globe'?'view source':p.link.startsWith('http')?'open project':'read more'} ↗</a>{p.githubUrl&&p.visual!=="globe"&&<a href={p.githubUrl} target="_blank" rel="noopener noreferrer">source ↗</a>}</div></div>
+      </div>)}
+    </div>
+  </div>
+</section>
+<script>
+  const showcase=document.querySelector<HTMLElement>('.showcase');
+  if(showcase){
+    const tabs=[...showcase.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
+    const panels=[...showcase.querySelectorAll<HTMLElement>('[role="tabpanel"]')];
+    const reduced=window.matchMedia('(prefers-reduced-motion: reduce)');
+    const small=window.matchMedia('(max-width:700px)');
+    const tablist=showcase.querySelector<HTMLElement>('[role="tablist"]')!;
+    const marker=showcase.querySelector<HTMLElement>('.active-marker')!;
+    let current=0, visible=false, paused=reduced.matches, manualUntil=0;
+    let timer:ReturnType<typeof setTimeout>|undefined;
+    const hovered=new Set<Element>();
+    function moveMarker(){
+      const dot=tabs[current].querySelector<HTMLElement>('.selection-mark')!;
+      marker.style.transform=`translate(${tabs[current].offsetLeft+dot.offsetLeft}px,${tabs[current].offsetTop+dot.offsetTop}px)`;
+    }
+    function keyboardOrPanelFocus(){
+      const active=document.activeElement;
+      return active instanceof HTMLElement && showcase.contains(active) &&
+        (active.matches(':focus-visible') || panels.some(panel=>panel.contains(active)));
+    }
+    function schedule(){
+      clearTimeout(timer);
+      if(paused || !visible || document.hidden || hovered.size || keyboardOrPanelFocus())return;
+      timer=setTimeout(()=>{select((current+1)%tabs.length);schedule();},Math.max(5500,manualUntil-Date.now()));
+    }
+    function select(index:number){
+      if(index===current)return;
+      current=index;
+      tabs.forEach((tab,i)=>{tab.setAttribute('aria-selected',String(i===index));tab.tabIndex=i===index?0:-1;});
+      panels.forEach((panel,i)=>{panel.getAnimations().forEach(a=>a.cancel());panel.setAttribute('aria-hidden',String(i!==index));panel.inert=i!==index;});
+      moveMarker();
+      if(small.matches)tablist.scrollTo({left:Math.max(0,tabs[index].offsetLeft-(tablist.clientWidth-tabs[index].offsetWidth)/2),behavior:reduced.matches?'instant':'smooth'});
+      if(!reduced.matches)panels[index].animate([{opacity:0,filter:'blur(3px)'},{opacity:1,filter:'blur(0px)'}],{duration:480,easing:'cubic-bezier(.2,.7,.2,1)'});
+    }
+    function manualSelect(index:number){manualUntil=Date.now()+11000;select(index);schedule();}
+    tabs.forEach((tab,index)=>{
+      tab.addEventListener('click',()=>manualSelect(index));
+      tab.addEventListener('keydown',event=>{
+        let next=index;
+        if(event.key==='ArrowDown'||event.key==='ArrowRight')next=(index+1)%tabs.length;
+        else if(event.key==='ArrowUp'||event.key==='ArrowLeft')next=(index+tabs.length-1)%tabs.length;
+        else if(event.key==='Home')next=0;
+        else if(event.key==='End')next=tabs.length-1;
+        else return;
+        event.preventDefault();manualSelect(next);tabs[next].focus({preventScroll:true});schedule();
+      });
+    });
+    showcase.querySelectorAll('.project-tabs,.project-stage').forEach(region=>{
+      region.addEventListener('pointerenter',event=>{if((event as PointerEvent).pointerType==='mouse'){hovered.add(region);schedule();}});
+      region.addEventListener('pointerleave',()=>{hovered.delete(region);schedule();});
+      region.addEventListener('pointercancel',()=>{hovered.delete(region);schedule();});
+      region.addEventListener('pointerdown',()=>{manualUntil=Date.now()+11000;schedule();});
+    });
+    showcase.addEventListener('focusin',schedule);
+    showcase.addEventListener('focusout',()=>setTimeout(schedule,0));
+    reduced.addEventListener('change',()=>{paused=reduced.matches;schedule();});
+    document.addEventListener('visibilitychange',schedule);
+    const orientation=()=>{tablist.setAttribute('aria-orientation',small.matches?'horizontal':'vertical');moveMarker();};
+    new ResizeObserver(orientation).observe(tablist);
+    document.fonts.ready.then(moveMarker);
+    new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;schedule();},{threshold:.25}).observe(showcase.querySelector('.showcase-layout')!);
+    orientation();
+  }
+</script>
+<style>
+.showcase{padding:60px 0 95px;border-top:1px solid #b8caa51f;scroll-margin-top:40px}
+.showcase-label{display:flex;gap:16px;font-size:12px;color:#a2ab99;margin-bottom:30px}.showcase-label>span{font-size:10px;color:#68735e}
+h2{font:400 clamp(32px,3.8vw,48px)/1.15 Satoshi,Arial,sans-serif;letter-spacing:-.05em;margin:0 0 42px}h2>span{color:#8b9881}
+.showcase-layout{display:grid;grid-template-columns: minmax(220px,.8fr) minmax(0,1.7fr);gap:48px;align-items:start}
+.project-navigation{padding-top:8px}.project-tabs{position:relative;display:flex;flex-direction:column;gap:6px}
+.project-tabs button{position:relative;display:flex;align-items:center;gap:12px;width:100%;padding:14px 0;background:none;border:0;text-align:left;font:400 clamp(18px,2vw,25px)/1.3 Satoshi,Arial,sans-serif;letter-spacing:-.04em;color:#77816f;cursor:pointer;transition:color .2s}
+.project-tabs button[aria-selected=true]{color:#e8efdf}.project-tabs button:hover{color:#d2dec7}
+.selection-mark{width:5px;height:5px;border-radius:50%;background:#c5ed9c;flex-shrink:0;opacity:0;transition:opacity .2s}.active-marker{position:absolute;top:0;left:0;width:5px;height:5px;border-radius:50%;background:#c5ed9c;pointer-events:none;transition:transform .55s cubic-bezier(.22,1,.36,1);z-index:1}
+.tab-arrow{font-size:16px;color:#afc696;margin-left:auto;opacity:0;transition:opacity .2s}.project-tabs button[aria-selected=true] .tab-arrow{opacity:1}
+.project-tabs button:focus-visible{outline:1px solid #b6cc9f;outline-offset:3px;border-radius:4px}
+.project-archive{display:inline-block;font-size:11px;margin:38px 0 0 17px;color:#96a58a}.project-archive:hover{color:#d5e8c4}
+.project-stage{display:grid;min-width:0}.project-view{grid-area:1/1;min-width:0;align-self:start}.project-view[aria-hidden=true]{visibility:hidden;pointer-events:none}.project-view:focus-visible{outline:1px solid #b6cc9f;outline-offset:8px;border-radius:10px}
+.project-screen{display:block;position:relative;aspect-ratio:16/9;padding:7px;border:1px solid #d0e3b831;border-radius:12px;background:linear-gradient(135deg,#dbecc00b,#14200c0a);box-shadow:inset 0 1px 0 #f4ffeb0b,0 18px 48px #0003;overflow:hidden}
+.screen-crop{display:block;width:100%;height:100%;overflow:hidden;border-radius:6px}.project-screen img{transform:scale(1.03);display:block;width:100%;height:100%;object-fit:cover;object-position:top;border-radius:6px}
+.screen-open{position:absolute;bottom:16px;right:16px;background:#111b10c9;backdrop-filter:blur(16px);border:1px solid #d5e9bc40;border-radius:6px;padding:8px 12px;font-size:11px;color:#e1efd6;opacity:0;transition:opacity .2s}
+.project-screen:hover .screen-open,.project-screen:focus-visible .screen-open{opacity:1}
+.project-caption{display:flex;align-items:baseline;justify-content:space-between;gap:18px;margin-top:24px}.project-caption>p{margin:0;font-size:19px;line-height:1.45;letter-spacing:-.03em;color:#e0e8d7;max-width:460px}.project-position{font-size:10px;white-space:nowrap;font-variant-numeric:tabular-nums;color:#b6c7a6}.project-position>span{color:#58634f;margin-left:4px}
+.project-description{font-size:13px;line-height:1.8;color:#98a68d;max-width:560px;margin:12px 0 0}
+.project-bottom{display:flex;flex-direction:column;gap:23px;margin-top:19px}.project-bottom ul{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;gap:7px 15px;font-size:10px;color:#74836a}.project-links{display:flex;gap:24px;font-size:12px}.project-links a:first-child{color:#d5e7c4}.project-links a{color:#9ead91}.project-links a:hover{color:#eaf9de}
+@media(max-width:900px){.showcase-layout{gap:28px;grid-template-columns:minmax(200px,.85fr) minmax(0,1.5fr)}.project-tabs button{font-size:20px}.project-caption>p{font-size:17px}}
+@media(max-width:700px){.showcase{padding:45px 0 65px}.showcase-label{margin-bottom:22px}h2{margin-bottom:24px;font-size:34px}.showcase-layout{grid-template-columns:1fr;gap:23px}.project-navigation{padding:0;min-width:0}.project-tabs{flex-direction:row;overflow-x:auto;gap:22px;padding:3px 1px 12px;scrollbar-width:none;scrollbar-color:#48563e transparent}.project-tabs button{flex:0 0 auto;width:auto;font-size:16px;gap:7px;padding:8px 0;white-space:nowrap}.tab-arrow{display:none}.selection-mark,.active-marker{width:4px;height:4px}.project-archive{display:none}.project-caption{margin-top:20px;gap:12px}.project-caption>p{font-size:18px}.project-description{font-size:13px}.project-screen{padding:5px;border-radius:9px}.screen-open{display:none}.project-bottom{gap:20px}}
+.project-tabs::-webkit-scrollbar{display:none}
+@media(prefers-reduced-motion:reduce){.project-tabs button,.selection-mark,.active-marker,.tab-arrow,.screen-open{transition:none}}
+</style>

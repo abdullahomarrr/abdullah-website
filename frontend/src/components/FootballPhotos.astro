@@ -1,0 +1,10 @@
+---
+import PhotoCarousel from './PhotoCarousel.astro';
+const photos = [
+  { src: '/football-photos/match-1.webp', alt: 'On the pitch in a blue football kit' },
+  { src: '/football-photos/match-2.webp', alt: 'A team huddle beside the pitch' },
+  { src: '/football-photos/match-3.webp', alt: 'Number eight on the ball' },
+  { src: '/football-photos/match-4.webp', alt: 'A match on the neighbourhood pitch' },
+];
+---
+<PhotoCarousel photos={photos} label="on the pitch" kind="football" />

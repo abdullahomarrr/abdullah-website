@@ -1,0 +1,108 @@
+---
+import ProjectShowcase from './ProjectShowcase.astro';
+import CountryFlag from './CountryFlag.astro';
+import ContactIcons from './ContactIcons.astro';
+
+---
+<div class="portfolio-body">
+  <div class="middle-atmosphere">
+  <section id="about" class="story-section" aria-labelledby="about-title">
+    <div class="section-note"><span>01</span> a little about me</div>
+    <div class="story-layout">
+      <figure class="story-photo">
+        <img src="/abdullah.jpg" alt="Abdullah working through ideas at a whiteboard" width="4898" height="3265" loading="lazy"/>
+      </figure>
+      <div class="story-copy">
+        <h2 id="about-title">a little more than the <span>intro.</span></h2>
+        <p>I started coding in 7th grade, messing around with basic HTML and CSS and deploying a website just to see if I could. what began as curiosity slowly turned into something I genuinely love: building things from scratch and getting better every time.</p>
+        <p>I’ve grown up between <span class="flag-place">Pakistan <CountryFlag country="pk" /></span>, <span class="flag-place">Vienna <CountryFlag country="at" /></span>, and now <span class="flag-place">Canada <CountryFlag country="ca" /></span>, which probably explains why I’m comfortable adapting and starting over. I’m naturally competitive, especially when it comes to soccer. I support Man City and Barcelona and rarely miss a Premier League or Champions League match. that competitive mindset carries into everything I care about.</p>
+        <p>I’m currently studying computer science at the University of Toronto. outside of building, you’ll usually find me watching sports or rewatching <em>How I Met Your Mother</em> (still convinced it’s one of the best shows ever made).</p>
+      </div>
+    </div>
+  </section>
+
+  <ProjectShowcase />
+
+  <section id="experience" class="experience-section" aria-labelledby="experience-title">
+    <div class="section-note"><span>03</span> along the way</div>
+    <div class="experience-layout"><div><h2 id="experience-title">where i’ve<br/> been <span>building.</span></h2><a class="resume-link" href="/Abdullah-Omar-Resume-SWE.pdf" target="_blank" rel="noopener noreferrer" aria-label="View resume (opens in a new tab)">view resume</a></div>
+      <div class="experience-list">
+        <a class="career-entry" href="/experience/pyko"><div class="career-top"><img src="/brands/pyko.svg" alt="Pyko" width="87" height="36"/><span>2025 — now</span></div><h3>Founding Engineer</h3><p>Building better systems for students.</p><span class="career-arrow" aria-hidden="true">↗</span></a>
+        <a class="career-entry" href="/experience/dazia"><div class="career-top"><img class="dazia-logo" src="/brands/dazia.png" alt="Dazia Consulting" width="112" height="56"/><span><small class="career-contract">contract · </small>May — Jul 2026</span></div><h3>Software Engineering Intern</h3><p>Analytics, study tools, and reusable product interfaces.</p><span class="career-arrow" aria-hidden="true">↗</span></a>
+        <a class="career-entry" href="/experience/design"><div class="career-top"><span class="career-name independent-brand"><img class="independent-logo" src="/brands/independent-vc-mark.webp" alt="VC" width="54" height="30"/></span><span>2022 — 2024</span></div><h3>Freelance & Enterprise Designer</h3><p>Visual identities, motion, and digital experiences.</p><span class="career-arrow" aria-hidden="true">↗</span></a>
+      </div>
+    </div>
+  </section>
+
+  </div>
+
+  <section id="contact" class="closing-section" aria-labelledby="contact-title"><span class="closing-star" aria-hidden="true">✳</span><p>for an idea, a project, or just a hello</p><h2 id="contact-title">What are you<br/> <span>thinking about?</span></h2><div class="email-actions"><a href="mailto:abdullahom07@gmail.com">abdullahom07@gmail.com <span aria-hidden="true">↗</span></a><button class="copy-email" aria-label="Copy email address" title="Copy email address"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="3"/><path d="M15 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg></button></div><span class="copy-status" role="status" aria-live="polite"></span><ContactIcons /></section>
+</div>
+<script>
+  const copy = document.querySelector<HTMLButtonElement>('.copy-email');
+  const status = document.querySelector<HTMLElement>('.copy-status');
+  let reset: ReturnType<typeof setTimeout>;
+  copy?.addEventListener('click',async()=>{
+    try { await navigator.clipboard.writeText('abdullahom07@gmail.com'); if(status) status.textContent='Email copied.'; }
+    catch { if(status) status.textContent='abdullahom07@gmail.com'; }
+    clearTimeout(reset); reset=setTimeout(()=>{if(status) status.textContent='';},2500);
+  });
+</script>
+<style>
+  /* A quiet wash of olive light and fine grain, fading back to black before contact. */
+  .middle-atmosphere{position:relative;isolation:isolate}
+  .middle-atmosphere::before,.middle-atmosphere::after{content:'';position:absolute;inset:0;left:50%;width:calc(100vw - 24px);transform:translateX(-50%);pointer-events:none;z-index:-1;mask-image:linear-gradient(to bottom,transparent,#000 9%,#000 77%,transparent 99%)}
+  .middle-atmosphere::before{background:radial-gradient(ellipse 48% 25% at 0% 24%,#80936213,transparent 78%),radial-gradient(ellipse 43% 29% at 100% 57%,#a7b88c10,transparent 78%),radial-gradient(ellipse 55% 15% at 32% 80%,#71845b0a,transparent 80%)}
+  .middle-atmosphere::after{opacity:.035;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180' viewBox='0 0 180 180'%3E%3Cfilter id='grain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.88' numOctaves='3' stitchTiles='stitch' seed='12'/%3E%3C/filter%3E%3Cpath fill='%23fff' filter='url(%23grain)' opacity='.6' d='M0 0h180v180H0z'/%3E%3C/svg%3E");background-size:180px 180px}
+  @media(max-width:600px){.middle-atmosphere::before{background:radial-gradient(ellipse 80% 25% at 0% 24%,#80936210,transparent 80%),radial-gradient(ellipse 75% 30% at 100% 61%,#a7b88c0d,transparent 80%)}.middle-atmosphere::after{opacity:.025}}
+  .portfolio-body{max-width:1060px;margin:auto;--paper:#191e17;--edge:#b8caa51f;--quiet:#a2ab99}
+  .portfolio-body section{scroll-margin-top:48px}
+  .section-note{display:flex;align-items:center;gap:16px;font-size:12px;color:var(--quiet);margin-bottom:48px}
+  .section-note>span{font-size:10px;color:#68735e;font-variant-numeric:tabular-nums}
+  h2{font-family:Satoshi,Arial,sans-serif;font-size:clamp(32px,4vw,52px);font-weight:400;letter-spacing:-.055em;line-height:1.12;margin:0}
+  h2 span{color:#8b9881}
+  .story-section{padding:95px 0 110px}
+  .story-layout{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(36px,6vw,90px);align-items:center}
+  .story-photo{position:relative;aspect-ratio:4/4.6;border:1px solid #e2edd21f;border-radius:18px;overflow:hidden;background:#1c201a}
+  .story-photo>img{width:100%;height:100%;object-fit:cover;object-position:48% 50%;filter:saturate(.6)}
+  .story-photo figcaption{position:absolute;bottom:12px;left:12px;right:12px;display:flex;justify-content:space-between;gap:12px;padding:14px 16px;border:1px solid #e2efd426;border-radius:10px;background:#171e16a8;backdrop-filter:blur(18px);font-size:11px;color:#e4ebdc}
+  .flag-place{white-space:nowrap}
+  .story-copy h2{margin-bottom:26px}.story-copy p{font-size:14px;line-height:1.85;color:#a6ad9f;margin-top:16px;max-width:none;width:100%}.story-copy .story-lead{font-size:18px;line-height:1.6;color:#e3e8dc;letter-spacing:-.02em}.story-copy a{color:#d7e5c8;border-bottom:1px solid #67745a}.story-copy em{font-style:normal;color:#c0c8b8}
+  .projects-section{padding:60px 0 100px;border-top:1px solid var(--edge)}
+  .section-intro{display:flex;align-items:flex-end;justify-content:space-between;gap:30px;margin-bottom:42px}.section-intro p{font-size:13px;line-height:1.8;color:var(--quiet);margin:0 0 3px}
+  .project-book{display:grid;gap:10px}
+  .project-entry{border:1px solid var(--edge);border-radius:14px;background:linear-gradient(120deg,#b4d39005,transparent 70%),#141912;overflow:hidden;transition:border-color .25s,background .25s}
+  .project-entry[open]{border-color:#bed5a832;background:#191f16}
+  summary{list-style:none;display:grid;grid-template-columns:28px 1fr auto 32px;align-items:center;gap:18px;padding:24px 28px;cursor:pointer;user-select:none}
+  summary::-webkit-details-marker{display:none}summary:hover{background:#d2efb807}summary:focus-visible{outline:1px solid #c5ed9c;outline-offset:-5px;border-radius:12px}
+  .entry-number{font-size:11px;color:#717f65;font-variant-numeric:tabular-nums}summary h3{font-size:24px;letter-spacing:-.04em;line-height:1.3;font-weight:400;margin:0;color:#e5eadd}.entry-type{font-size:11px;color:#94a087}.entry-toggle{position:relative;width:28px;height:28px;border:1px solid #bacfa42b;border-radius:50%;justify-self:end}
+  .entry-toggle::before,.entry-toggle::after{content:'';position:absolute;left:8px;right:8px;height:1px;background:#becfaf;top:13px;transition:transform .25s}.entry-toggle::after{transform:rotate(90deg)}[open] .entry-toggle::after{transform:rotate(0)}
+  .project-inside{display:grid;grid-template-columns:1.1fr 1fr;gap:36px;padding:0 28px 28px 74px;align-items:center;animation:project-appear .35s ease-out}
+  .project-drawing{position:relative;min-width:0;aspect-ratio:1.32;border:1px solid #c1d6aa20;border-radius:10px;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;padding:18px;color:#b7cda4;background:radial-gradient(ellipse at 80% 0,#819b5f10,transparent 70%),#11190f}
+  .drawing-caption{font-size:12px;color:#e0e8d8;letter-spacing:-.02em}.drawing-foot{font-size:9px;color:#8f9d84;line-height:1.5;position:relative}.field-drawing{width:100%;max-height:190px;flex:1}
+  .project-copy>p{font-size:15px;line-height:1.8;letter-spacing:-.01em;color:#c2cbbc;max-width:380px}.project-copy ul{list-style:none;display:flex;gap:6px 14px;flex-wrap:wrap;padding:0;margin:22px 0 28px;color:#8f9e83;font-size:11px}.project-actions{display:flex;align-items:center;gap:20px;flex-wrap:wrap}.quiet-button{display:inline-flex;gap:24px;align-items:center;padding:10px 14px;border:1px solid #b1cb9440;border-radius:8px;background:#d4eac606;font-size:12px;color:#dce8d1;transition:background .2s,border-color .2s}.quiet-button:hover{background:#d4eac610;border-color:#b1cb9480}.source-link{font-size:11px;color:#a7b39b}.source-link:hover{color:#e4f5d5}
+  .drawing-notebook{background:#d6d8c9;color:#273323}.drawing-notebook .drawing-caption{color:#263020}.drawing-notebook .drawing-foot{color:#5c6654}.notebook-sheet{padding:12px 8px}.notebook-sheet>span{font-size:9px;color:#6d7663}.notebook-sheet>div{font-family:Georgia,serif;font-style:italic;font-size:38px;margin:12px 0}.notebook-sheet p{font-size:11px;color:#536248}.notebook-sheet i{display:block;height:1px;background:#4e603026;margin-top:13px}
+  .drawing-globe{background:#172123;color:#9bbdb8}.language-drawing{display:flex;align-items:center;justify-content:center;gap:12px;flex:1;min-height:0}.language-drawing svg{width:65%;max-height:200px}.language-wave{display:flex;gap:4px;align-items:center}.language-wave i{width:2px;background:currentColor}.drawing-pakuni{background:#1b212a}.drawing-pakuni img{width:100%;max-height:200px;object-fit:contain;margin:10px 0;border-radius:4px}
+  .archive-link{display:flex;justify-content:space-between;align-items:center;width:fit-content;gap:22px;margin-top:26px;font-size:12px;color:#aebba3}.archive-link:hover{color:#d9efc4}
+  .experience-section{padding:60px 0 100px;border-top:1px solid var(--edge)}.experience-layout{display:grid;grid-template-columns:.85fr 1.15fr;gap:60px}.resume-link{display:inline-flex;align-items:center;gap:23px;margin-top:25px;padding:12px 17px;border:1px solid #a8bc8c55;border-radius:9px;background:#20291b;color:#d9e8cd;font-size:12px;line-height:1.3;transition:background .25s,border-color .25s}.resume-link:hover{background:#2b3923;border-color:#b9d49a}.resume-link:focus-visible{outline:2px solid #c5ed9c;outline-offset:4px}.resume-link>span{font-size:17px;line-height:1;color:#bad69d}.experience-list{display:grid;gap:12px}
+  .career-entry{display:block;position:relative;border:1px solid var(--edge);border-radius:12px;padding:24px 26px;background:linear-gradient(130deg,#d8f2bf05,transparent),#171c15;isolation:isolate;overflow:hidden;transition:border-color .4s ease}.career-top{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:26px}.career-top img{width:68px;height:28px}.career-top>span:last-child{font-size:10px;color:#8d9b81}.career-name{font-size:15px;color:#c8d2be}.career-entry h3{font-size:18px;font-weight:400;letter-spacing:-.025em;padding-right:20px;margin:0 0 7px}.career-entry p{font-size:12px;color:#9eab92;line-height:1.6}.career-arrow{position:absolute;right:25px;bottom:46px;color:#a8bd92;transition:color .4s ease}
+  .closing-section{position:relative;text-align:center;padding:80px 0 70px;border-top:1px solid var(--edge);background:radial-gradient(ellipse at 50% 70%,#9fbd7910,transparent 58%)}.closing-star{display:inline-block;font-size:26px;color:#adc891;margin-bottom:22px}.closing-section>p{font-size:12px;color:#97a48a;margin-bottom:18px}.closing-section h2{font-size:clamp(42px,5.5vw,70px);line-height:1.1}.email-actions{display:flex;justify-content:center;align-items:center;gap:12px;margin-top:30px}.email-actions>a{font-size:clamp(14px,2vw,20px);letter-spacing:-.025em;padding:10px 0;border-bottom:1px solid #73896066}.email-actions>a>span{margin-left:12px;color:#b4cd9b}.copy-email{display:grid;place-items:center;width:34px;height:34px;border:1px solid #b9cda527;border-radius:8px;background:#d7ebc407;color:#abbc9e;cursor:pointer}.copy-email svg{width:16px;height:16px}.copy-email:hover{background:#d7ebc417;color:#e7f7da}.copy-status{display:block;height:20px;margin-top:10px;font-size:11px;color:#b7d09f}.closing-links{display:flex;gap:24px;justify-content:center;margin-top:16px;font-size:12px;color:#99a98b}
+  @keyframes project-appear{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:none}}
+  @media(max-width:800px){.section-note{margin-bottom:30px}.story-section{padding:65px 0 75px}.story-layout{gap:32px}.story-copy .story-lead{font-size:16px}.story-copy p{font-size:13px}.story-photo{aspect-ratio:3/4}.section-intro{align-items:start}.section-intro p{max-width:200px}.project-inside{padding-left:24px;gap:24px}.project-copy>p{font-size:13px}.project-drawing{aspect-ratio:1.1}.entry-type{display:none}.experience-layout{gap:32px;grid-template-columns:.9fr 1.1fr}.career-entry{padding:20px}.career-top{flex-wrap:wrap}.career-entry h3{font-size:16px}}
+  @media(max-width:600px){.portfolio-body section{scroll-margin-top:24px}.story-layout{grid-template-columns:1fr;gap:30px}.story-photo{aspect-ratio:1.15;max-width:100%}.story-photo>img{object-position:50% 42%}.story-copy h2 br{display:none}.story-copy p{font-size:14px}.story-copy .story-lead{font-size:18px}.story-route{margin-top:22px}.projects-section,.experience-section{padding:45px 0 65px}.section-intro{display:block;margin-bottom:28px}.section-intro p{margin-top:18px;max-width:none}.section-intro p br{display:none}summary{grid-template-columns:20px 1fr 25px;padding:20px 16px;gap:10px}summary h3{font-size:20px}.entry-number{font-size:9px}.project-inside{grid-template-columns:1fr;padding:0 16px 22px;gap:22px}.project-drawing{aspect-ratio:1.5;padding:15px}.field-drawing{max-height:160px}.project-copy>p{font-size:14px;max-width:none}.project-copy ul{margin:16px 0 20px}.experience-layout{grid-template-columns:1fr;gap:28px}.experience-layout h2 br{display:none}.career-top{flex-wrap:nowrap}.career-entry h3{font-size:18px}.career-entry p{padding-right:15px}.closing-section{padding:60px 0 50px}.closing-section h2{font-size:46px}.email-actions{gap:10px}.email-actions>a{font-size:16px}}
+  @media(prefers-reduced-motion:reduce){.project-inside{animation:none}.career-arrow,.career-entry,.project-entry{transition:none}.career-entry:hover .career-arrow{transform:none}}
+  .career-top img.dazia-logo{width:100px;height:40px;object-fit:contain;object-position:left center;filter:brightness(0) invert(1)}
+  .independent-brand{display:inline-flex;align-items:center;gap:12px}
+  .career-top img.independent-logo{width:54px;height:30px;object-fit:contain}
+  .career-entry::before{content:'';position:absolute;inset:0;z-index:-1;pointer-events:none;border-radius:inherit;background:linear-gradient(100deg,#b7d99a14,#c5e4a91b);transform:translateX(-101%);transition:transform .65s cubic-bezier(.22,1,.36,1)}
+  .career-entry:focus-visible{border-color:#b8cf9960}
+  .career-entry:focus-visible::before{transform:translateX(0)}
+  @media(hover:hover) and (pointer:fine){
+    .career-entry:hover{border-color:#b8cf9960}
+    .career-entry:hover::before{transform:translateX(0)}
+    .career-entry:hover .career-arrow{color:#d0e8b9}
+  }
+  @media(prefers-reduced-motion:reduce){.career-entry::before{transition:none}}
+  .career-contract{font-size:9px;color:#79856f;font-weight:400}
+</style>
+

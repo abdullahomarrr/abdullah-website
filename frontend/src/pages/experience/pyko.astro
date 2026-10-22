@@ -1,218 +1,134 @@
 ---
 import ProjectLayout from "../../layouts/ProjectLayout.astro";
+import { pykoPhotos } from "../../data/pykoPhotos";
+const work = [{title: 'Leading the build', body: 'Led a 5-person engineering team through weekly sprint planning, task breakdown, and PR/code reviews to ship core product features end-to-end for a 300-user beta cohort.'}, {title: 'Connecting Canvas', body: 'Built and shipped a Canvas LMS integration to import and sync courses and assignments into the platform using secure OAuth 2.0 authentication flows.'}, {title: 'Making setup simpler', body: 'Built an AI copilot using OpenAI model with structured tool/function calling to invoke backend actions that create and update course records (syllabi, assignments, deadlines, grading weights), reducing student setup time by 85%.'}, {title: 'Turning data into guidance', body: 'Implemented a student performance analytics and insights layer using deterministic scoring with peer benchmarking, paired with an AI copilot that converts computed results into structured, personalized guidance on misconceptions and prioritized next steps under reliability and user-control constraints.'}, {title: 'Keeping students in control', body: 'Implemented backend privacy controls for student data, including anonymization settings, data export and account deletion flows, consent flag handling, and strict request validation to ensure safe access.'}];
 ---
-
-<ProjectLayout title="Pyko — Founding Engineer | Abdullah Omar">
-
-  <!-- TOP BAR -->
-  <div class="topbar">
-    <div class="topbar-inner">
-      <a href="/#experience" class="back-link">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-          <path d="M10 13L5 8L10 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        Back to Experience
-      </a>
-      <a href="/" class="brand-link" aria-label="Home">
-        <img src="/logo.png" alt="Abdullah Omar" class="brand-logo" />
-      </a>
-    </div>
-  </div>
-
-  <main class="page-main">
-
-    <!-- ROLE HEADER -->
-    <header class="exp-header anim" style="--i:0">
-      <p class="meta-company">Pyko Canada Ltd</p>
-      <h1 class="meta-role">Founding Engineer</h1>
-      <p class="meta-location">Toronto, Ontario · June 2025 – Present</p>
+<ProjectLayout title="Pyko — Founding Engineer | Abdullah Omar" description="Building Pyko as a founding engineer: the product, the work, and moments along the way.">
+  <nav class="pyko-nav" aria-label="Page navigation"><a href="/#experience">← back to experience</a><a href="/">abdullah omar</a></nav>
+  <main class="pyko-page">
+    <header class="pyko-intro">
+      <div class="intro-copy"><img class="pyko-wordmark" src="/brands/pyko.svg" alt="Pyko" width="110" height="44"/><h1>building for <span>student life.</span></h1><p class="intro-summary">Founding engineer at Pyko. From the first integrations to the systems behind a 300-user beta.</p></div>
+      <dl class="role-facts"><div><dt>my role</dt><dd>Founding Engineer</dd></div><div><dt>when</dt><dd>June 2025 — present</dd></div><div><dt>where</dt><dd>Toronto, Ontario</dd></div><div><dt>company</dt><dd>Pyko Canada Ltd</dd></div></dl>
     </header>
-
-    <!-- CONTENT -->
-    <div class="content anim" style="--i:1">
-      <div class="divider"></div>
-      <ul class="bullet-list" role="list">
-        <li>Led a 5-person engineering team through weekly sprint planning, task breakdown, and PR/code reviews to ship core product features end-to-end for a 300-user beta cohort.</li>
-        <li>Built and shipped a Canvas LMS integration to import and sync courses and assignments into the platform using secure OAuth 2.0 authentication flows.</li>
-        <li>Built an AI copilot using OpenAI model with structured tool/function calling to invoke backend actions that create and update course records (syllabi, assignments, deadlines, grading weights), reducing student setup time by 85%.</li>
-        <li>Implemented a student performance analytics and insights layer using deterministic scoring with peer benchmarking, paired with an AI copilot that converts computed results into structured, personalized guidance on misconceptions and prioritized next steps under reliability and user-control constraints.</li>
-        <li>Implemented backend privacy controls for student data, including anonymization settings, data export and account deletion flows, consent flag handling, and strict request validation to ensure safe access.</li>
-      </ul>
+    <div class="experience-grid">
+      <aside class="photo-column">    <section class="journal" aria-labelledby="journal-heading"><div class="journal-heading"><div><h2 id="journal-heading">behind the scenes.</h2></div><p>{pykoPhotos.length ? 'moments from building Pyko.' : 'a few moments from Pyko, coming soon.'}</p></div>
+      <div class="photo-strip">{pykoPhotos.map((photo,i)=><figure class:list={{'photo-pending': !photo.src}}>{photo.src ? <button class="photo-trigger" data-photo={i} aria-haspopup="dialog" aria-label={`View ${photo.caption}`}><img src={photo.src} alt={photo.alt} loading="lazy" width="973" height="652"/></button> : <div class="empty-photo" aria-label="Photo to be added"><span class="frame-corner top"></span><span class="frame-corner bottom"></span><span class="photo-index">0{i+1}</span></div>}<figcaption><span>0{i+1}</span>{photo.caption}</figcaption></figure>)}</div>
+    </section>
+      </aside>
+      <section class="work-section" aria-labelledby="work-heading"><h2 id="work-heading">what i’m working on</h2><div class="work-list">{work.map((item,i)=><article><span class="work-number">0{i+1}</span><div><h3>{item.title.toLowerCase()}</h3><p>{item.body}</p></div></article>)}</div></section>
     </div>
-
+    <footer class="pyko-footer"><p>still building. still learning.</p><a href="/#experience">back to experience ↗</a></footer>
   </main>
-
+  <dialog class="photo-dialog" aria-label="Pyko photo gallery">
+    <header class="gallery-bar"><span>Pyko / behind the scenes</span><button class="gallery-close" aria-label="Close photo gallery">close <span aria-hidden="true">×</span></button></header>
+    <div class="gallery-stage">
+      <button class="gallery-prev" aria-label="Previous photo">←</button>
+      <figure class="gallery-main"><img class="gallery-image" src={pykoPhotos[0].src} alt={pykoPhotos[0].alt}/><figcaption aria-live="polite"><span class="gallery-caption"></span><span class="gallery-count"></span></figcaption></figure>
+      <button class="gallery-next" aria-label="Next photo">→</button>
+    </div>
+    <div class="gallery-thumbnails" aria-label="Choose a photo">{pykoPhotos.filter(photo=>photo.src).map((photo,i)=><button data-gallery-photo={i} data-src={photo.src} data-alt={photo.alt} data-caption={photo.caption} aria-label={`Show ${photo.caption}`} aria-pressed="false"><img src={photo.src} alt=""/><span>{photo.caption}</span></button>)}</div>
+  </dialog>
 </ProjectLayout>
-
-<!-- Lock body to viewport, no scrolling on this page -->
-<style is:global>
-  body {
-    height: 100dvh;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
+<script>
+const dialog=document.querySelector<HTMLDialogElement>('.photo-dialog')!;
+const image=dialog.querySelector<HTMLImageElement>('.gallery-image')!;
+const thumbs=[...dialog.querySelectorAll<HTMLButtonElement>('[data-gallery-photo]')];
+const reduced=window.matchMedia('(prefers-reduced-motion: reduce)');
+let selected=0;
+let opener:HTMLElement|null=null;
+let previousOverflow='';
+let busy=false;
+const ease="cubic-bezier(.22,1,.36,1)";
+async function showPhoto(index:number, animate=true){
+  if(busy)return;
+  const next=(index+thumbs.length)%thumbs.length;
+  if(animate && next===selected)return;
+  const thumb=thumbs[next];
+  const transitioning=animate && dialog.open && !reduced.matches;
+  let outgoing:HTMLImageElement|undefined;
+  const direction=index<selected?-1:1;
+  if(transitioning){
+    busy=true;
+    // Decode first so the existing photo stays visible until the next is ready.
+    const preload=new Image();preload.src=thumb.dataset.src!;
+    await preload.decode().catch(()=>{});
+    const bounds=image.getBoundingClientRect();
+    outgoing=image.cloneNode() as HTMLImageElement;
+    outgoing.removeAttribute('class');outgoing.alt='';outgoing.setAttribute('aria-hidden','true');
+    Object.assign(outgoing.style,{position:'fixed',left:`${bounds.left}px`,top:`${bounds.top}px`,width:`${bounds.width}px`,height:`${bounds.height}px`,maxWidth:'none',maxHeight:'none',objectFit:getComputedStyle(image).objectFit,objectPosition:getComputedStyle(image).objectPosition,borderRadius:'10px',pointerEvents:'none',zIndex:'2'});
+    dialog.append(outgoing);
   }
-</style>
-
+  selected=next;
+  image.src=thumb.dataset.src!;image.alt=thumb.dataset.alt!;
+  image.classList.toggle('merch',thumb.dataset.caption==='the merch');
+  dialog.querySelector('.gallery-caption')!.textContent=thumb.dataset.caption!;
+  dialog.querySelector('.gallery-count')!.textContent=`0${selected+1} / 0${thumbs.length}`;
+  thumbs.forEach((item,i)=>item.setAttribute('aria-pressed',String(i===selected)));
+  if(transitioning && outgoing){
+    const timing={duration:520,easing:'cubic-bezier(.25,.65,.3,1)',fill:'forwards' as FillMode};
+    const leave=outgoing.animate([{opacity:1,transform:'translateX(0)'},{opacity:0,transform:`translateX(${-direction*14}px)`}],timing);
+    const enter=image.animate([{opacity:0,transform:`translateX(${direction*14}px)`},{opacity:1,transform:'translateX(0)'}],timing);
+    await Promise.all([leave.finished,enter.finished]);
+    outgoing.remove();enter.cancel();busy=false;
+  }
+}
+async function travel(from:DOMRect,to:DOMRect){
+  const floating=image.cloneNode() as HTMLImageElement;
+  floating.removeAttribute('class');
+  Object.assign(floating.style,{position:'fixed',margin:'0',maxWidth:'none',maxHeight:'none',objectFit:'cover',objectPosition:image.classList.contains('merch')?'50% 65%':'50% 50%',borderRadius:'8px',pointerEvents:'none',zIndex:'10'});
+  dialog.append(floating);image.style.visibility='hidden';
+  const rect=(r:DOMRect)=>({left:`${r.left}px`,top:`${r.top}px`,width:`${r.width}px`,height:`${r.height}px`});
+  await floating.animate([rect(from),rect(to)],{duration:760,easing:ease,fill:'forwards'}).finished;
+  floating.remove();image.style.visibility='';
+}
+const chrome=[...dialog.querySelectorAll<HTMLElement>('.gallery-bar,.gallery-thumbnails,.gallery-main figcaption,.gallery-prev,.gallery-next')];
+document.querySelectorAll<HTMLButtonElement>('[data-photo]').forEach(button=>button.addEventListener('click',async()=>{
+  if(busy)return;
+  opener=button;showPhoto(Number(button.dataset.photo),false);busy=true;
+  await image.decode().catch(()=>{});
+  const start=button.querySelector('img')!.getBoundingClientRect();
+  previousOverflow=document.documentElement.style.overflow;
+  document.documentElement.style.overflow='hidden';dialog.showModal();
+  if(!reduced.matches){
+    dialog.animate([{backgroundColor:'transparent',backdropFilter:'blur(0px)'},{backgroundColor:'#0c0e0cf5',backdropFilter:'blur(24px)'}],{duration:760,easing:ease});
+    chrome.forEach(el=>el.animate([{opacity:0,transform:'translateY(10px)'},{opacity:1,transform:'translateY(0)'}],{duration:650,delay:160,easing:ease,fill:'backwards'}));
+    await travel(start,image.getBoundingClientRect());
+  }
+  busy=false;
+}));
+async function closeGallery(){
+  if(busy || !dialog.open)return;
+  busy=true;
+  if(!reduced.matches){
+    const destination=document.querySelector<HTMLButtonElement>(`[data-photo="${selected}"]`)!.querySelector('img')!.getBoundingClientRect();
+    const fade=dialog.animate([{backgroundColor:'#0c0e0cf5',backdropFilter:'blur(24px)'},{backgroundColor:'transparent',backdropFilter:'blur(0px)'}],{duration:760,easing:ease,fill:'forwards'});
+    const fades=chrome.map(el=>el.animate([{opacity:1},{opacity:0}],{duration:250,fill:'forwards'}));
+    await travel(image.getBoundingClientRect(),destination);
+    dialog.close();fade.cancel();fades.forEach(a=>a.cancel());
+  }else dialog.close();
+  busy=false;
+}
+thumbs.forEach((thumb,i)=>thumb.addEventListener('click',()=>showPhoto(i)));
+dialog.querySelector('.gallery-close')!.addEventListener('click',closeGallery);
+dialog.querySelector('.gallery-prev')!.addEventListener('click',()=>showPhoto(selected-1));
+dialog.querySelector('.gallery-next')!.addEventListener('click',()=>showPhoto(selected+1));
+dialog.addEventListener('click',event=>{if(event.target===dialog || (event.target as HTMLElement).classList.contains('gallery-stage'))closeGallery();});
+dialog.addEventListener('cancel',event=>{event.preventDefault();closeGallery();});
+dialog.addEventListener('keydown',event=>{if(event.key==='ArrowRight'||event.key==='ArrowLeft'){event.preventDefault();showPhoto(selected+(event.key==='ArrowRight'?1:-1));}});
+dialog.addEventListener('close',()=>{document.documentElement.style.overflow=previousOverflow;opener?.focus({preventScroll:true});});
+</script>
 <style>
-  /* ── Animations ─────────────────────────── */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(18px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
+.pyko-nav,.pyko-page{width:min(1120px,calc(100% - 80px));margin-inline:auto}
+.pyko-nav{height:68px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #b8caa522;font-size:12px;color:#a2ab99}.pyko-nav a:hover{color:#eff0e9}
+.pyko-intro{display:grid;grid-template-columns:1fr 260px;gap:55px;align-items:center;padding:38px 0 35px;border-bottom:1px solid #b8caa522}.pyko-wordmark{width:82px;height:30px;object-fit:contain;object-position:left;filter:brightness(0) invert(.93);margin-bottom:17px}h1{font:400 clamp(32px,3.6vw,48px)/1.13 Satoshi,Arial,sans-serif;letter-spacing:-.055em;margin:0}h1 span{color:#8b9881}.intro-summary{max-width:530px;color:#a8b19f;font-size:14px;line-height:1.65;margin:15px 0 0}.role-facts{margin:0;display:grid;gap:14px}.role-facts div{display:grid;grid-template-columns:55px 1fr;gap:12px;font-size:12px}.role-facts dt{color:#74816c}.role-facts dd{margin:0;color:#d4dccb}
+.experience-grid{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.4fr);gap:70px;padding:32px 0 38px}.photo-column{min-width:0}.journal-heading{margin-bottom:20px}h2{font-size:15px;font-weight:400;letter-spacing:-.02em;margin:0 0 10px;color:#dbe3d2}.journal-heading>p{font-size:12px;color:#7e8c73;line-height:1.6;margin:0}.photo-strip{display:grid;grid-template-columns:1fr 1fr;gap:18px 12px}.photo-strip figure{margin:0;min-width:0}.photo-strip figure:first-child{grid-column:1/-1}.photo-strip img{display:block;width:100%;height:145px;object-fit:cover;border-radius:8px}.photo-strip figure:first-child img{height:auto}.photo-strip figcaption{display:flex;gap:9px;color:#96a38b;font-size:11px;margin-top:9px}.photo-strip figcaption>span{font-size:9px;color:#64735b}.empty-photo{height:125px;position:relative;border-radius:8px;border:1px solid #b8caa51b;background:linear-gradient(145deg,#a5bb8a08,#a5bb8a02)}.photo-strip figure:first-child .empty-photo{height:190px}.photo-index{position:absolute;inset:0;display:grid;place-items:center;font-size:32px;font-weight:300;color:#879b701b}.frame-corner{position:absolute;width:14px;height:14px;color:#9daf7e38}.frame-corner.top{top:12px;left:12px;border-top:1px solid;border-left:1px solid}.frame-corner.bottom{bottom:12px;right:12px;border-bottom:1px solid;border-right:1px solid}
+.work-section>h2{margin-bottom:21px}.work-list article{display:grid;grid-template-columns:19px 1fr;gap:12px;padding:17px 0;border-top:1px solid #b8caa51a}.work-list article:first-child{padding-top:0;border-top:0}.work-number{font-size:9px;color:#718065;padding-top:5px}.work-list h3{font-size:17px;letter-spacing:-.025em;font-weight:400;margin:0 0 8px}.work-list p{font-size:13px;line-height:1.75;color:#a2ab99;margin:0}.pyko-footer{border-top:1px solid #b8caa522;padding:20px 0 28px;display:flex;justify-content:space-between;gap:20px;font-size:11px}.pyko-footer p{color:#75836a;margin:0}.pyko-footer a{color:#c3d4b3}
+@media(max-width:800px){.pyko-nav,.pyko-page{width:calc(100% - 40px)}.pyko-intro{grid-template-columns:1fr;gap:23px;padding:28px 0}.role-facts{grid-template-columns:1fr 1fr;gap:13px}.role-facts div{display:block}.role-facts dt{margin-bottom:4px}.experience-grid{grid-template-columns:1fr;gap:30px;padding:26px 0}.photo-strip{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.photo-strip figure:first-child{grid-column:auto}.photo-strip .empty-photo,.photo-strip figure:first-child .empty-photo,.photo-strip img,.photo-strip figure:first-child img{height:120px}.photo-strip figcaption{font-size:10px;gap:5px;flex-wrap:wrap}.journal-heading{margin-bottom:14px}.work-list p{font-size:13px}.pyko-nav{font-size:11px}h1{font-size:36px}.intro-summary{font-size:13px}}
+.photo-strip figure:first-child img{height:auto;object-fit:contain}
+@media(max-width:800px){.photo-strip{grid-template-columns:1fr 1fr}.photo-strip figure:first-child{grid-column:1/-1}}
 
-  .anim {
-    opacity: 0;
-    animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    animation-delay: calc(var(--i, 0) * 0.12s);
-  }
-
-  /* ── Top bar ────────────────────────────── */
-  .topbar {
-    flex-shrink: 0;
-    background: var(--bg);
-    border-bottom: 1px solid var(--border);
-  }
-
-  .topbar-inner {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 0 40px;
-    height: 64px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .back-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    font-family: var(--font-satoshi);
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--muted);
-    transition: color 0.15s ease;
-  }
-
-  .back-link:hover { color: var(--text); }
-
-  .back-link:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 3px;
-    border-radius: 4px;
-  }
-
-  .brand-link { display: flex; align-items: center; }
-  .brand-logo { height: 48px; width: auto; }
-
-  /* ── Page layout ────────────────────────── */
-  .page-main {
-    flex: 1;
-    min-height: 0;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    max-width: 1100px;
-    padding: 0 40px;
-    margin: 0 auto;
-    width: 100%;
-  }
-
-  /* ── Role header ────────────────────────── */
-  .exp-header {
-    flex-shrink: 0;
-    padding-top: 36px;
-    margin-bottom: 24px;
-  }
-
-  .meta-company {
-    font-family: var(--font-satoshi);
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 10px;
-  }
-
-  .meta-role {
-    font-family: var(--font-serif);
-    font-size: clamp(36px, 4.5vw, 58px);
-    font-weight: 400;
-    line-height: 1.05;
-    letter-spacing: -0.03em;
-    color: var(--text);
-    margin-bottom: 12px;
-  }
-
-  .meta-location {
-    font-family: var(--font-satoshi);
-    font-size: 14px;
-    color: var(--muted);
-    line-height: 1.5;
-  }
-
-  /* ── Content ────────────────────────────── */
-  .content {
-    flex: 1;
-    min-height: 0;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    max-width: 680px;
-  }
-
-  .divider {
-    flex-shrink: 0;
-    border-top: 1px solid var(--border);
-    margin-bottom: 28px;
-  }
-
-  .bullet-list {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    padding: 0;
-    margin: 0;
-    overflow-y: auto;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-    padding-bottom: 32px;
-  }
-
-  .bullet-list::-webkit-scrollbar { display: none; }
-
-  .bullet-list li {
-    font-family: var(--font-satoshi);
-    font-size: 15px;
-    line-height: 1.72;
-    color: var(--text);
-    padding-left: 20px;
-    position: relative;
-  }
-
-  .bullet-list li::before {
-    content: "–";
-    position: absolute;
-    left: 0;
-    top: 0;
-    color: var(--muted);
-    font-weight: 400;
-  }
-
-  /* ── Responsive ─────────────────────────── */
-  @media (max-width: 1023px) {
-    .page-main { padding: 0 32px; }
-    .topbar-inner { padding: 0 32px; }
-  }
-
-  @media (max-width: 767px) {
-    .page-main { padding: 0 20px; overflow-y: auto; }
-    .topbar-inner { padding: 0 20px; }
-    .exp-header { padding-top: 32px; }
-    .content { overflow: visible; }
-    .bullet-list { overflow: visible; padding-bottom: 0; }
-  }
+.photo-trigger{display:block;width:100%;padding:0;border:0;background:none;border-radius:8px;overflow:hidden;cursor:pointer}.photo-strip figure:nth-child(3) img{object-position:50% 65%}.photo-trigger:focus-visible{outline:2px solid #c5ed9c;outline-offset:4px}
+.photo-dialog{position:fixed;inset:0;width:100%;max-width:none;height:100dvh;max-height:none;padding:24px 40px;margin:0;border:0;background:#0c0e0cf5;backdrop-filter:blur(24px);color:#eff0e9;box-sizing:border-box;overflow:hidden}.photo-dialog[open]{display:grid;grid-template-rows:auto minmax(0,1fr) auto;gap:24px}.photo-dialog::backdrop{background:transparent}.gallery-bar{display:flex;justify-content:space-between;align-items:center;color:#96a38b;font-size:12px}.photo-dialog button{font:inherit;color:inherit;cursor:pointer}.gallery-close,.gallery-prev,.gallery-next{border:0;background:none;padding:10px}.gallery-close span{font-size:22px;margin-left:12px;vertical-align:middle}.gallery-stage{display:grid;grid-template-columns:40px minmax(0,1fr) 40px;align-items:center;gap:25px;min-height:0;max-width:1150px;width:100%;margin:auto;height:100%}.gallery-main{margin:0;min-height:0;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px}.gallery-image{display:block;max-width:100%;max-height:calc(100% - 32px);width:auto;height:auto;object-fit:contain;border-radius:10px}.gallery-image.merch{width:min(780px,100%);height:calc(100% - 32px);object-fit:cover;object-position:50% 65%;aspect-ratio:3/2}.gallery-main figcaption{display:flex;justify-content:space-between;gap:40px;font-size:12px;width:min(780px,100%);color:#a2ab99}.gallery-count{color:#6e7e62}.gallery-prev,.gallery-next{font-size:24px!important;color:#a2ab99!important}.gallery-thumbnails{display:flex;justify-content:center;gap:14px}.gallery-thumbnails button{border:0;background:none;padding:5px;width:120px;opacity:.5;transition:opacity .2s;border-radius:8px}.gallery-thumbnails button[aria-pressed=true]{opacity:1;box-shadow:0 0 0 1px #b1c59b}.gallery-thumbnails button:hover{opacity:1}.gallery-thumbnails img{width:100%;height:68px;object-fit:cover;border-radius:5px}.gallery-thumbnails button:last-child img{object-position:50% 65%}.gallery-thumbnails span{display:block;font-size:10px;margin-top:6px}.photo-dialog button:focus-visible{outline:2px solid #c5ed9c;outline-offset:3px}
+@media(max-width:600px){.photo-dialog{padding:14px;gap:18px}.gallery-stage{grid-template-columns:25px minmax(0,1fr) 25px;gap:5px}.gallery-prev,.gallery-next{padding:0}.gallery-thumbnails{gap:8px}.gallery-thumbnails button{width:90px}.gallery-thumbnails img{height:55px}.gallery-image.merch{height:auto;aspect-ratio:1/1;max-height:100%}.gallery-bar{font-size:11px}.gallery-main figcaption{font-size:11px;gap:12px}}
+@media(prefers-reduced-motion:reduce){.gallery-thumbnails button{transition:none}}
 </style>

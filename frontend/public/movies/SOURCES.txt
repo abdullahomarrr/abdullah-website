@@ -1,0 +1,7 @@
+Poster artwork sources
+Fight Club — https://en.wikipedia.org/wiki/Fight_Club
+Ford v Ferrari — https://en.wikipedia.org/wiki/Ford_v_Ferrari
+The Batman — https://en.wikipedia.org/wiki/The_Batman_(film)
+21 Jump Street — https://en.wikipedia.org/wiki/21_Jump_Street_(film)
+Scarface — https://en.wikipedia.org/wiki/Scarface_(1983_film)
+How I Met Your Mother — https://api.tvmaze.com/singlesearch/shows?q=how%20i%20met%20your%20mother

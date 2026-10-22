@@ -1,0 +1,76 @@
+<script>
+  import Lenis from 'lenis';
+  import 'lenis/dist/lenis.css';
+
+  const scroll = new Lenis({
+      autoRaf: true,
+      autoToggle: true,
+      lerp: 0.1,
+      smoothWheel: true,
+      syncTouch: false,
+      anchors: false,
+      allowNestedScroll: true,
+      prevent: node => Boolean(node.closest('dialog, .intro-panel')),
+  });
+  document.addEventListener('portfolio:experience-scroll', event => {
+    const { open, y } = (event as CustomEvent<{ open: boolean; y: number }>).detail;
+    if (open) {
+      scroll.scrollTo(y, { immediate: true, force: true });
+      scroll.stop();
+    } else {
+      scroll.resize();
+      scroll.scrollTo(y, { immediate: true, force: true });
+      scroll.start();
+    }
+  });
+
+  // Align the visible section label, rather than its padded outer boundary.
+  function destination(hash: string) {
+    if (!hash || hash === '#') return {top: 0, target: null};
+    let id: string;
+    try { id = decodeURIComponent(hash.slice(1)); } catch { return null; }
+    const target = document.getElementById(id);
+    if (!target) return null;
+    const label = target.querySelector<HTMLElement>(':scope > .section-note, :scope > .showcase-label');
+    const edge = label ?? target;
+    return {top: Math.max(0, window.scrollY + edge.getBoundingClientRect().top - 32), target};
+  }
+  document.addEventListener('click', event => {
+    if(event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    const link = (event.target as Element).closest<HTMLAnchorElement>('a[href]');
+    if(!link || link.target === '_blank' || link.hasAttribute('download')) return;
+    const url = new URL(link.href);
+    if(url.origin !== location.origin || url.pathname !== location.pathname || url.search !== location.search || !link.getAttribute('href')?.includes('#')) return;
+    const result = destination(url.hash);
+    if(!result) return;
+    event.preventDefault();
+    scroll.resize();
+    history.pushState(null, '', url.hash || location.pathname + location.search);
+    scroll.scrollTo(result.top, {
+      duration: 1.05,
+      lerp: 0,
+      onComplete: () => {
+        if(!result.target) return;
+        const hadTabIndex = result.target.hasAttribute('tabindex');
+        if(!hadTabIndex) result.target.setAttribute('tabindex','-1');
+        result.target.focus({preventScroll:true});
+        if(!hadTabIndex) result.target.addEventListener('blur', () => result.target?.removeAttribute('tabindex'), {once:true});
+      },
+    });
+  });
+  // Direct section URLs use the same landing point after fonts settle.
+  if(location.hash) {
+    const initialHash = location.hash;
+    document.fonts.ready.then(() => {
+      if(location.hash !== initialHash) return;
+      const result = destination(initialHash);
+      if(result) { scroll.resize(); scroll.scrollTo(result.top, {immediate:true}); }
+    });
+  }
+</script>
+<style is:global>
+  html.lenis.lenis-smooth { scroll-behavior: auto !important; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto !important; }
+  }
+</style>

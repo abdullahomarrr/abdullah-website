@@ -1,0 +1,25 @@
+---
+const links = [
+  { name: 'GitHub', href: 'https://github.com/abdullahomarrr/', icon: 'github' },
+  { name: 'LinkedIn', href: 'https://www.linkedin.com/in/abdullahomarr/', icon: 'linkedin' },
+  { name: 'Email', href: 'mailto:abdullahom07@gmail.com', icon: 'email' },
+  { name: 'Resume', href: '/Abdullah-Omar-Resume-SWE.pdf', icon: 'resume' },
+];
+---
+<div class="contact-icons">
+  {links.map(link => <a href={link.href} aria-label={link.name} title={link.name} target={link.icon === 'email' ? undefined : '_blank'} rel={link.icon === 'email' ? undefined : 'noopener noreferrer'}>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      {link.icon === 'github' && <path d="M9 19c-4 1-4-2-6-2m12 5v-4c0-1-.3-1.7-1-2 3-.3 6-1.5 6-6a5 5 0 0 0-1.3-3.5c.1-1 .1-2.1-.3-3.2 0 0-1.1-.3-3.5 1.3a12 12 0 0 0-6 0C6.5 3 5.4 3.3 5.4 3.3 5 4.4 5 5.5 5.1 6.5A5 5 0 0 0 3.8 10c0 4.5 3 5.7 6 6-.7.3-1 1-1 2v4"/>}
+      {link.icon === 'linkedin' && <g fill="currentColor" stroke="none"><circle cx="5" cy="5" r="2"/><path d="M3.5 9h3v12h-3zM10 9h3v1.6c.8-1.2 1.8-1.9 3.6-1.9 3 0 4.4 1.8 4.4 5.1V21h-3v-6.5c0-1.8-.6-2.9-2.1-2.9-1.8 0-2.9 1.2-2.9 3.2V21h-3z"/></g>}
+      {link.icon === 'email' && <><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m4 7 8 6 8-6"/></>}
+      {link.icon === 'resume' && <><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9Z"/><path d="M14 3v6h6M8 13h8M8 17h5"/></>}
+    </svg>
+  </a>)}
+</div>
+<style>
+  .contact-icons{display:flex;justify-content:center;gap:14px;margin-top:16px}
+  a{display:grid;place-items:center;width:42px;height:42px;color:#a8b89c;border:1px solid transparent;border-radius:10px;transition:color .2s,background .2s,border-color .2s}
+  a:hover{color:#d6efbf;background:#c5ed9c0a;border-color:#b9cda527}
+  a:focus-visible{outline:2px solid #c5ed9c;outline-offset:4px}
+  svg{width:22px;height:22px}
+</style>

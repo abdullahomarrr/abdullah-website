@@ -1,0 +1,40 @@
+---
+const games = [
+  { title: 'FC 27', category: 'football', image: '/games/fc27.png', color: '#a5c77c', style: 'cover' },
+  { title: 'Valorant', category: 'tactical shooter', image: '/games/valorant-cover.jpg', color: '#fa7786', style: 'cover' },
+  { title: 'GTA V', category: 'open world', image: '/games/gta-v.png', color: '#b8c98b', style: 'cover' },
+  { title: 'UFC 6', category: 'combat sports', image: '/games/ufc6.jpg', color: '#dcb28e', style: 'cover' },
+];
+---
+<div class="game-shelf">
+  <div class="game-artwork" aria-live="polite" aria-atomic="true">
+    <img src={games[0].image} alt="FC 27 cover art" width="300" height="400" />
+  </div>
+  <div class="game-library" role="group" aria-label="Choose a game">
+    {games.map((game,i)=><button type="button" class="game-choice" aria-label={`Show ${game.title}`} aria-pressed={i===0?'true':'false'} data-title={game.title} data-image={game.image} data-style={game.style}>
+      <span class="game-number" aria-hidden="true">0{i+1}</span>
+      <span class="game-copy"><span class="game-title">{game.title}</span><span class="game-genre">{game.category}</span></span>
+      <span class="selection-dot" aria-hidden="true"></span>
+    </button>)}
+  </div>
+</div>
+<script>
+document.querySelectorAll<HTMLElement>('.game-shelf').forEach(shelf=>{
+ const artwork=shelf.querySelector<HTMLElement>('.game-artwork')!;
+ const image=artwork.querySelector<HTMLImageElement>('img')!;
+ const choices=[...shelf.querySelectorAll<HTMLButtonElement>('.game-choice')];
+ choices.forEach(button=>button.addEventListener('click',()=>{
+  if(button.getAttribute('aria-pressed')==='true')return;
+  choices.forEach(choice=>choice.setAttribute('aria-pressed',String(choice===button)));
+  image.src=button.dataset.image!;image.alt=`${button.dataset.title} cover art`;
+  artwork.classList.toggle('logo-artwork',button.dataset.style==='logo');
+  if(!matchMedia('(prefers-reduced-motion: reduce)').matches)image.animate([{opacity:.3},{opacity:1}],{duration:180,easing:'ease-out'});
+ }));
+});
+</script>
+<style>
+.game-shelf{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.08fr);gap:13px;align-items:stretch;font-family:Satoshi,Arial,sans-serif;color:#e8ebe2}
+.game-artwork{background:#0e130f;border-radius:5px;overflow:hidden;aspect-ratio:3/4;align-self:center}.game-artwork img{display:block;width:100%;height:100%;object-fit:cover}.logo-artwork{background:#182027}.logo-artwork img{object-fit:contain;padding:14px}
+.game-library{display:flex;flex-direction:column;justify-content:center;min-width:0}.game-choice{display:flex;align-items:center;gap:10px;width:100%;flex:1;min-height:38px;border:0;border-bottom:1px solid #30372c;padding:7px 0;background:transparent;color:#91998b;text-align:left;cursor:pointer}.game-choice:last-child{border-bottom:0}.game-number{font-size:9px;font-variant-numeric:tabular-nums;color:#596451;align-self:center}.game-copy{display:flex;flex-direction:column;gap:4px;min-width:0}.game-title{font-size:14px;line-height:1.15;font-weight:500;letter-spacing:-.035em}.game-genre{font-size:9px;line-height:1.3;color:#7e8877}.selection-dot{width:4px;height:4px;flex-shrink:0;background:#c5ed9c;border-radius:50%;margin-left:auto;opacity:0}.game-choice[aria-pressed=true]{color:#f1f2eb}.game-choice[aria-pressed=true] .selection-dot{opacity:1}.game-choice[aria-pressed=true] .game-number{color:#b4c3a4}.game-choice:hover{color:#f1f2eb}.game-choice:focus-visible{outline:1px solid #b6cc9f;outline-offset:3px;border-radius:2px}@media(max-width:400px){.game-choice{min-height:44px;}.game-shelf{gap:14px}.game-choice{gap:7px}.game-title{font-size:15px}.game-genre{font-size:8px}.game-number{font-size:8px}}
+</style>
+

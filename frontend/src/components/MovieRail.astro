@@ -1,0 +1,97 @@
+---
+const picks = [
+  { title: 'Fight Club', type: 'Film', image: '/movies/fight-club-still.png', focal: '50% 44%' },
+  { title: 'Ford v Ferrari', type: 'Film', image: '/movies/ford-v-ferrari-still.png', focal: '50% 45%' },
+  { title: 'How I Met Your Mother', type: 'TV series', image: '/movies/how-i-met-your-mother-still.png', focal: '50% 68%' },
+  { title: 'The Batman (2022)', type: 'Film', image: '/movies/the-batman-still.png', focal: '65% 50%' },
+  { title: '21 Jump Street', type: 'Film', image: '/movies/21-jump-street-still.png', focal: '50% 45%' },
+  { title: 'Scarface', type: 'Film', image: '/movies/scarface-still.png', focal: '64% 43%' },
+];
+---
+<div class="movie-shelf">
+  <div class="movie-rail" role="group" aria-label="Favourite movies and TV shows">
+    {picks.map((pick,index) => <button type="button" class="movie-card" aria-label={pick.title} aria-pressed={index === 0 ? 'true' : 'false'} tabindex={index === 0 ? 0 : -1} data-title={pick.title} data-kind={pick.type}>
+      <img src={pick.image} style={`object-position:${pick.focal}`} alt="" width="1200" height="720" decoding="async" />
+      <span class="movie-shade" aria-hidden="true"></span>
+      <span class="movie-index" aria-hidden="true">{String(index+1).padStart(2,'0')}</span>
+      <span class="movie-spine" aria-hidden="true">{pick.title}</span>
+    </button>)}
+  </div>
+  <div class="movie-footer">
+    <div class="movie-captions" aria-live="polite" aria-atomic="true"><span class="movie-kind">Film</span><span class="movie-title">Fight Club</span></div>
+    <div class="movie-controls"><span class="movie-count">01 / 06</span><button type="button" data-movie-step="-1" aria-label="Previous movie or TV show">←</button><button type="button" data-movie-step="1" aria-label="Next movie or TV show">→</button></div>
+  </div>
+</div>
+<script>
+for (const shelf of document.querySelectorAll<HTMLElement>('.movie-shelf')) {
+ const cards = [...shelf.querySelectorAll<HTMLButtonElement>('.movie-card')];
+ const caption = shelf.querySelector<HTMLElement>('.movie-captions')!;
+ const title = shelf.querySelector<HTMLElement>('.movie-title')!;
+ const kind = shelf.querySelector<HTMLElement>('.movie-kind')!;
+ const count = shelf.querySelector<HTMLElement>('.movie-count')!;
+ let current = 0;
+ function select(index: number, focus = false) {
+  const next = (index + cards.length) % cards.length;
+  if(next !== current) {
+   current = next;
+   cards.forEach((card,i) => {card.setAttribute('aria-pressed', String(i === current)); card.tabIndex = i === current ? 0 : -1;});
+   title.textContent = cards[current].dataset.title!;
+   kind.textContent = cards[current].dataset.kind!;
+   count.textContent = `${String(current+1).padStart(2,'0')} / ${String(cards.length).padStart(2,'0')}`;
+   caption.getAnimations().forEach(animation => animation.cancel());
+   if(!matchMedia('(prefers-reduced-motion: reduce)').matches) caption.animate([{opacity:0,transform:'translateY(4px)'},{opacity:1,transform:'none'}],{duration:260,easing:'cubic-bezier(.2,.8,.2,1)'});
+  }
+  if(focus) cards[current].focus({preventScroll:true});
+ }
+ let pointerX = -1, pointerY = -1;
+ shelf.querySelector('.movie-rail')!.addEventListener('pointermove', (event) => {
+  const pointer = event as PointerEvent;
+  if(pointer.pointerType !== 'mouse' || (pointer.clientX === pointerX && pointer.clientY === pointerY)) return;
+  pointerX = pointer.clientX; pointerY = pointer.clientY;
+  const card = (pointer.target as Element).closest<HTMLButtonElement>('.movie-card');
+  if(card) select(cards.indexOf(card));
+ });
+ cards.forEach((card,index) => {
+
+  card.addEventListener('click', () => select(index));
+  card.addEventListener('focus', () => select(index));
+  card.addEventListener('keydown', event => {
+   let next = current;
+   if(event.key === 'ArrowRight' || event.key === 'ArrowDown') next++;
+   else if(event.key === 'ArrowLeft' || event.key === 'ArrowUp') next--;
+   else if(event.key === 'Home') next = 0;
+   else if(event.key === 'End') next = cards.length-1;
+   else return;
+   event.preventDefault(); select(next,true);
+  });
+ });
+ shelf.querySelectorAll<HTMLButtonElement>('[data-movie-step]').forEach(button=>button.addEventListener('click',()=>select(current+Number(button.dataset.movieStep))));
+}
+</script>
+<style>
+.movie-shelf{--closed:34px;--ease:cubic-bezier(.22,.75,.2,1);min-width:0}
+.movie-rail{display:flex;gap:7px;height:clamp(185px,27svh,245px);min-width:0;isolation:isolate}
+.movie-card{position:relative;flex:0 0 var(--closed);min-width:0;padding:0;border:0;border-radius:9px;overflow:hidden;cursor:pointer;background:#10120f;color:#fff;text-align:left;transition:flex-grow 640ms var(--ease),filter 400ms ease;filter:brightness(.66)}
+.movie-card[aria-pressed=true]{flex-grow:1;filter:brightness(1)}
+.movie-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 32%;max-width:none;transform:scale(1.045);transition:transform 760ms var(--ease)}
+.movie-card[aria-pressed=true] img{transform:scale(1)}
+.movie-shade{position:absolute;inset:0;background:linear-gradient(180deg,#0006,transparent 25%,#0001 65%,#000b)}
+.movie-index{position:absolute;top:13px;left:0;right:0;text-align:center;font:10px Satoshi,Arial,sans-serif;line-height:1;color:#f2f0ea;text-shadow:0 1px 6px #000;transition:opacity .2s}
+.movie-card[aria-pressed=true] .movie-index{opacity:.7}
+.movie-spine{position:absolute;bottom:14px;left:50%;writing-mode:vertical-rl;transform:translateX(-50%) rotate(180deg);white-space:nowrap;font:10px Satoshi,Arial,sans-serif;letter-spacing:.02em;opacity:.85;transition:opacity 160ms ease}
+.movie-card[aria-pressed=true] .movie-spine{opacity:0}
+.movie-card:focus-visible{outline:2px solid #c5ed9c;outline-offset:3px;z-index:1}
+.movie-footer{height:64px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 0 0}
+.movie-captions{display:flex;flex-direction:column;gap:5px;min-width:0}
+.movie-kind{font:9px Satoshi,Arial,sans-serif;color:#9da593;line-height:1}
+.movie-title{font:500 15px Satoshi,Arial,sans-serif;line-height:1.3;letter-spacing:-.02em;color:#ecefe5}
+.movie-controls{display:flex;align-items:center;gap:5px;flex-shrink:0}.movie-count{font:9px Satoshi,Arial,sans-serif;color:#8d9a80;margin-right:9px;white-space:nowrap}
+.movie-controls button{display:grid;place-items:center;width:27px;height:27px;border:1px solid #45503c;border-radius:50%;font:14px Satoshi,Arial,sans-serif;background:transparent;color:#c4d2b6;cursor:pointer;transition:background .2s}
+.movie-controls button:hover{background:#303c27}.movie-controls button:focus-visible{outline:2px solid #c5ed9c;outline-offset:2px}
+@media(max-width:600px){.movie-shelf{--closed:22px}.movie-rail{gap:5px}.movie-card{border-radius:6px}.movie-spine{font-size:9px}.movie-index{font-size:8px;top:10px}.movie-title{font-size:13px}.movie-count{display:none}.movie-footer{gap:8px}}
+@media(prefers-reduced-motion:reduce){.movie-card,.movie-card img,.movie-spine,.movie-index,.movie-controls button{transition:none}}
+.movie-index,.movie-spine{z-index:2}
+.movie-card[aria-pressed=true] .movie-index{left:12px;right:auto}
+</style>
+
+

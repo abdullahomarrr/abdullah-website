@@ -1,226 +1,36 @@
 ---
 import ProjectLayout from "../../layouts/ProjectLayout.astro";
+import { designClients as clients } from "../../data/designClients";
+const work = ['Delivered 50+ high-performing YouTube thumbnails and a high volume of ad creatives for esports orgs and creators, balancing speed with brand consistency across platforms.', 'Collaborated with creators and organizations totaling 6,000,000+ subscribers/followers, producing thumbnails and social ad creatives and iterating quickly based on feedback.', 'Managed a rapid iteration cycle with a typical ~2-day turnaround, refining designs from client feedback and shipping deadline-driven assets.', 'Built long-term client relationships with 15–20 repeat creators, including select full brand refreshes (templates, banners, promo graphics) aligned to consistent style guides.'];
 ---
-
-<ProjectLayout title="Freelance Designer | Abdullah Omar">
-
-  <!-- TOP BAR -->
-  <div class="topbar">
-    <div class="topbar-inner">
-      <a href="/#experience" class="back-link">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-          <path d="M10 13L5 8L10 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        Back to Experience
-      </a>
-      <a href="/" class="brand-link" aria-label="Home">
-        <img src="/logo.png" alt="Abdullah Omar" class="brand-logo" />
-      </a>
+<ProjectLayout title="Freelance Designer | Abdullah Omar" description="Independent design for creators and esports teams. Selected clients and work by Abdullah Omar.">
+  <nav class="design-nav" aria-label="Page navigation"><a href="/#experience">← back to experience</a><a href="/">abdullah omar</a></nav>
+  <main class="design-page">
+    <header class="design-intro"><div><p class="eyebrow">independent / 2022 — 2024</p><h1>behind the <span>creators.</span></h1></div></header>
+    <div class="design-layout">
+      <section class="client-wall" aria-labelledby="clients-title">
+        <div class="wall-header"><h2 id="clients-title">selected clients</h2></div>
+        <div class="client-grid">{clients.map((client,i)=><article class:list={['client-card',{'team-card':client.image==='tna'}]}>
+          <a class="client-profile" href={client.url} target="_blank" rel="noopener noreferrer" aria-label={`Visit ${client.name}`}>
+            <div class="client-portrait"><img src={`/clients/${client.image}.jpg`} alt={`${client.name} profile image`} width="300" height="300" loading="lazy"/></div>
+            <div class="client-identity"><h3>{client.name}</h3></div>
+          </a>
+          <a class="client-audience" href={client.source} target="_blank" rel="noopener noreferrer" aria-label={`${client.count} ${client.label}; view source`}><strong>{client.count}</strong><span>{client.label}</span></a>
+        </article>)}</div>
+        <p class="audience-note">Public platform counts · Oct 2026 · sources linked.</p>
+      </section>
+      <aside class="design-notes" aria-labelledby="work-title"><h2 id="work-title">freelance &amp; enterprise designer.</h2><p class="role-location">Toronto, Ontario · 2022 — 2024</p><ul class="work-details">{work.map(item=><li>{item}</li>)}</ul><div class="toolbox"><h3>in the toolkit</h3><p>Photoshop · Blender · Premiere Pro<br/>After Effects · DaVinci Resolve</p></div></aside>
     </div>
-  </div>
-
-  <main class="page-main">
-
-    <!-- ROLE HEADER -->
-    <header class="exp-header anim" style="--i:0">
-      <p class="meta-company">Self-Employed</p>
-      <h1 class="meta-role">Freelance & Enterprise Designer</h1>
-      <p class="meta-location">Toronto, Ontario · 2022 – 2024</p>
-      <p class="meta-tools">Photoshop · Blender · Premiere Pro · After Effects · DaVinci Resolve</p>
-    </header>
-
-    <!-- CONTENT -->
-    <div class="content anim" style="--i:1">
-      <div class="divider"></div>
-      <ul class="bullet-list" role="list">
-        <li>Delivered 50+ high-performing YouTube thumbnails and a high volume of ad creatives for esports orgs and creators, balancing speed with brand consistency across platforms.</li>
-        <li>Collaborated with creators and organizations totaling 6,000,000+ subscribers/followers, producing thumbnails and social ad creatives and iterating quickly based on feedback.</li>
-        <li>Managed a rapid iteration cycle with a typical ~2-day turnaround, refining designs from client feedback and shipping deadline-driven assets.</li>
-        <li>Built long-term client relationships with 15–20 repeat creators, including select full brand refreshes (templates, banners, promo graphics) aligned to consistent style guides.</li>
-      </ul>
-    </div>
-
+    <footer class="design-footer"><span>independent work. lasting collaborations.</span><a href="/#experience">back to experience ↗</a></footer>
   </main>
-
 </ProjectLayout>
-
-<!-- Lock body to viewport, no scrolling on this page -->
-<style is:global>
-  body {
-    height: 100dvh;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-  }
-</style>
-
 <style>
-  /* ── Animations ─────────────────────────── */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(18px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-  .anim {
-    opacity: 0;
-    animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    animation-delay: calc(var(--i, 0) * 0.12s);
-  }
-
-  /* ── Top bar ────────────────────────────── */
-  .topbar {
-    flex-shrink: 0;
-    background: var(--bg);
-    border-bottom: 1px solid var(--border);
-  }
-
-  .topbar-inner {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 0 40px;
-    height: 64px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .back-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    font-family: var(--font-satoshi);
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--muted);
-    transition: color 0.15s ease;
-  }
-
-  .back-link:hover { color: var(--text); }
-
-  .back-link:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 3px;
-    border-radius: 4px;
-  }
-
-  .brand-link { display: flex; align-items: center; }
-  .brand-logo { height: 48px; width: auto; }
-
-  /* ── Page layout ────────────────────────── */
-  .page-main {
-    flex: 1;
-    min-height: 0;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    max-width: 1100px;
-    padding: 0 40px;
-    margin: 0 auto;
-    width: 100%;
-  }
-
-  /* ── Role header ────────────────────────── */
-  .exp-header {
-    flex-shrink: 0;
-    padding-top: 36px;
-    margin-bottom: 24px;
-  }
-
-  .meta-company {
-    font-family: var(--font-satoshi);
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 10px;
-  }
-
-  .meta-role {
-    font-family: var(--font-serif);
-    font-size: clamp(36px, 4.5vw, 58px);
-    font-weight: 400;
-    line-height: 1.05;
-    letter-spacing: -0.03em;
-    color: var(--text);
-    margin-bottom: 12px;
-  }
-
-  .meta-location {
-    font-family: var(--font-satoshi);
-    font-size: 14px;
-    color: var(--muted);
-    line-height: 1.5;
-  }
-
-  .meta-tools {
-    font-family: var(--font-satoshi);
-    font-size: 13px;
-    color: var(--muted);
-    margin-top: 6px;
-    opacity: 0.75;
-  }
-
-  /* ── Content ────────────────────────────── */
-  .content {
-    flex: 1;
-    min-height: 0;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    max-width: 680px;
-  }
-
-  .divider {
-    flex-shrink: 0;
-    border-top: 1px solid var(--border);
-    margin-bottom: 28px;
-  }
-
-  .bullet-list {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    padding: 0;
-    margin: 0;
-    overflow-y: auto;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-    padding-bottom: 32px;
-  }
-
-  .bullet-list::-webkit-scrollbar { display: none; }
-
-  .bullet-list li {
-    font-family: var(--font-satoshi);
-    font-size: 15px;
-    line-height: 1.72;
-    color: var(--text);
-    padding-left: 20px;
-    position: relative;
-  }
-
-  .bullet-list li::before {
-    content: "–";
-    position: absolute;
-    left: 0;
-    top: 0;
-    color: var(--muted);
-    font-weight: 400;
-  }
-
-  /* ── Responsive ─────────────────────────── */
-  @media (max-width: 1023px) {
-    .page-main { padding: 0 32px; }
-    .topbar-inner { padding: 0 32px; }
-  }
-
-  @media (max-width: 767px) {
-    .page-main { padding: 0 20px; overflow-y: auto; }
-    .topbar-inner { padding: 0 20px; }
-    .exp-header { padding-top: 32px; }
-    .content { overflow: visible; }
-    .bullet-list { overflow: visible; padding-bottom: 0; }
-  }
+.design-nav,.design-page{width:min(1160px,calc(100% - 72px));margin-inline:auto}
+.design-nav{height:58px;display:flex;align-items:center;justify-content:space-between;font-size:12px;color:#a0a696;border-bottom:1px solid #d8dfcf14}.design-nav a:hover{color:#eff0e9}.design-intro{padding:30px 0 32px}.eyebrow{font-size:11px;color:#88917e;margin:0 0 12px}h1{font:400 clamp(36px,3.6vw,48px)/1.1 Satoshi,Arial,sans-serif;letter-spacing:-.055em;margin:0}h1 span{color:#8b9881}
+.design-layout{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:64px;align-items:start}.wall-header{margin-bottom:15px}.wall-header h2{font-size:12px;font-weight:400;color:#a8b19e;margin:0}.client-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.client-card{background:#181b16;border-radius:4px;min-height:100px;padding:21px 12px 17px;display:flex;flex-direction:column;justify-content:center;gap:12px;transition:background .25s}.client-card:hover,.client-card:focus-within{background:#20251c}.client-profile{display:flex;align-items:center;justify-content:center;gap:12px}.client-portrait{width:34px;height:34px;flex-shrink:0}.client-portrait img{display:block;width:100%;height:100%;object-fit:cover;border-radius:5px;filter:grayscale(1);opacity:.85;transition:filter .35s,opacity .35s}.client-card:hover img,.client-card:focus-within img{filter:grayscale(0);opacity:1}.client-identity h3{font-size:19px;line-height:1.15;font-weight:500;letter-spacing:-.04em;margin:0;color:#e1e5da}.client-audience{display:flex;justify-content:center;align-items:baseline;gap:5px;font-size:10px;line-height:1.4;color:#88947d}.client-audience strong{font-size:11px;font-weight:400;color:#b9c4ad}.client-audience:hover{color:#d5dfca}.team-card{grid-column:1/-1;min-height:83px;flex-direction:row;align-items:center;gap:30px;padding:18px}.team-card .client-audience{display:block}.team-card .client-audience strong{margin-right:5px}.audience-note{font-size:9px;color:#66745c;margin:12px 0 0;line-height:1.5}
+.design-notes h2{font-size:23px;line-height:1.2;font-weight:400;letter-spacing:-.035em;color:#e0e6d8;margin:0 0 7px}.role-location{font-size:10px;color:#859278;margin:0 0 22px}.work-details{list-style:none;padding:0;margin:0;display:grid;gap:16px}.work-details li{font-size:12px;line-height:1.7;color:#a8b29d}.toolbox{margin-top:22px;padding-top:15px;border-top:1px solid #d8dfcf14}.toolbox h3{font-size:10px;font-weight:400;color:#758369;margin:0 0 5px}.toolbox p{font-size:10px;line-height:1.7;color:#a0ac94;margin:0}.toolbox br{display:none}.design-footer{display:flex;justify-content:space-between;gap:20px;padding:17px 0 20px;border-top:1px solid #d8dfcf14;margin-top:28px;font-size:10px;color:#748367}.design-footer a{color:#bccbb0}
+@media(min-width:901px) and (min-height:850px){.design-page{padding-top:clamp(0px,calc((100svh - 800px)/4),55px)}.design-intro{padding-bottom:38px}.client-card{min-height:115px}.team-card{min-height:90px}.work-details{gap:20px}.work-details li{font-size:13px}}
+@media(max-width:1000px){.design-layout{gap:35px}.client-identity h3{font-size:17px}.client-profile{gap:9px}.client-portrait{width:30px;height:30px}.client-audience{font-size:9px}}
+@media(max-width:760px){.design-nav,.design-page{width:calc(100% - 40px)}.design-layout{grid-template-columns:1fr;gap:30px}.design-intro{padding:27px 0}.client-card{min-height:106px;padding:17px 9px}.client-profile{gap:8px}.client-identity h3{font-size:16px}.client-portrait{width:28px;height:28px}.client-audience{font-size:8px}.client-audience strong{font-size:10px}.team-card{min-height:78px;gap:22px}.team-card .client-audience{font-size:9px}.design-notes{padding-top:25px;border-top:1px solid #d8dfcf14}.design-notes h2{font-size:24px}.work-details li{font-size:13px;line-height:1.8}.design-footer>span{max-width:145px}.toolbox p{font-size:11px}}
+@media(prefers-reduced-motion:reduce){.client-card,.client-portrait img{transition:none}}
 </style>
