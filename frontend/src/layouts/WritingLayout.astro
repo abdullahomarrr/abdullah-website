@@ -1,0 +1,30 @@
+---
+import SiteNav from '../components/SiteNav.astro';
+import SmoothScroll from '../components/SmoothScroll.astro';
+import '../styles/portfolio.css';
+interface Props { title?:string; description?:string }
+const {title='Writing',description='Notes on building, learning, and everything in between. Writing by Abdullah Omar.'}=Astro.props;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="description" content={description}/><meta name="theme-color" content="#0c0e0c"/>
+    <title>{title} — Abdullah Omar</title><link rel="icon" type="image/png" href="/logo.png"/>
+  </head>
+  <body class="writing-site">
+    <a class="skip" href="#main">Skip to content</a>
+    <SiteNav active="writing"/>
+    <main id="main" class="writing-main shell"><slot/></main>
+    <footer class="writing-footer shell"><a href="/">abdullah omar <span>© {new Date().getFullYear()}</span></a><a href="mailto:abdullahom07@gmail.com">a thought to share? ↗</a></footer>
+    <SmoothScroll/>
+  </body>
+</html>
+<style is:global>
+  .writing-site{min-height:100svh;display:flex;flex-direction:column}
+  .writing-main{flex:1;padding-top:clamp(68px,12vh,130px);padding-bottom:100px}
+  .writing-footer{display:flex;justify-content:space-between;gap:20px;padding-block:23px;border-top:1px solid var(--line);font-size:11px;color:var(--muted)}
+  .writing-footer span{margin-left:9px;color:#7d8775}
+  .writing-footer a:hover{color:var(--fg)}
+  @media(max-width:600px){.writing-main{padding-top:64px;padding-bottom:70px}.writing-footer{font-size:10px;gap:12px}}
+</style>
