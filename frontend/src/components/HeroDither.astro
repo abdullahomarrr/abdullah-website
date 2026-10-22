@@ -31,6 +31,9 @@ for(let y=0;y<height;y++) for(let x=0;x<width;x++) {
     private observer?: ResizeObserver;
     private visibility?: IntersectionObserver;
     private pixels?: ImageData;
+    private alpha = new Uint8Array(0);
+    private context?: CanvasRenderingContext2D;
+    private ready = false;
     private frame = 0;
     private width = 0;
     private height = 0;
@@ -39,13 +42,13 @@ for(let y=0;y<height;y++) for(let x=0;x<width;x++) {
     private time = 0;
     private mouse = { x: .5, y: .5 };
     private target = { x: .5, y: .5 };
+    private pendingPointer?: {x:number; y:number};
     private motion = window.matchMedia('(prefers-reduced-motion: reduce)');
     private pointer = (event: PointerEvent) => {
       if (event.pointerType !== 'mouse') return;
-      const rect = this.getBoundingClientRect();
-      this.target = { x: (event.clientX-rect.left)/rect.width, y: (event.clientY-rect.top)/rect.height };
+      this.pendingPointer = {x:event.clientX,y:event.clientY};
     };
-    private leave = () => { this.target = { x: .5, y: .5 }; };
+    private leave = () => { this.pendingPointer=undefined; this.target = { x: .5, y: .5 }; };
     private sync = () => {
       cancelAnimationFrame(this.frame);
       this.last = 0;
@@ -53,10 +56,16 @@ for(let y=0;y<height;y++) for(let x=0;x<width;x++) {
       else if (this.visible && !document.hidden) this.frame = requestAnimationFrame(this.tick);
     };
     private tick = (now: number) => {
-      const elapsed = this.last ? now-this.last : 42;
-      if (elapsed >= 1000/24) {
+      const interval = 1000/30;
+      const elapsed = this.last ? now-this.last : interval;
+      if (elapsed >= interval - .5) {
         this.time += Math.min(elapsed, 80)/1000;
         this.last = now;
+        if(this.pendingPointer) {
+          const rect=this.getBoundingClientRect();
+          this.target={x:(this.pendingPointer.x-rect.left)/rect.width,y:(this.pendingPointer.y-rect.top)/rect.height};
+          this.pendingPointer=undefined;
+        }
         this.mouse.x += (this.target.x-this.mouse.x)*.07;
         this.mouse.y += (this.target.y-this.mouse.y)*.07;
         this.draw();
@@ -71,10 +80,27 @@ for(let y=0;y<height;y++) for(let x=0;x<width;x++) {
         const rect = this.getBoundingClientRect();
         this.width = rect.width;
         this.height = rect.height;
-        const cell = this.width < 600 ? 3 : 3.5;
-        canvas.width = Math.ceil(this.width/cell);
-        canvas.height = Math.ceil(this.height/cell);
+        // Bound the work on large displays; CSS preserves the pixelated surface.
+        const cell = Math.max(this.width < 600 ? 3 : 3.5, Math.sqrt(this.width*this.height/85000));
+        const width = Math.ceil(this.width/cell), height = Math.ceil(this.height/cell);
+        if(this.pixels?.width === width && this.pixels?.height === height) return;
+        canvas.width = width;
+        canvas.height = height;
+        this.context = context;
         this.pixels = context.createImageData(canvas.width,canvas.height);
+        this.alpha = new Uint8Array(width*height);
+        const smooth = (a:number,b:number,v:number) => {
+          const n=Math.max(0,Math.min(1,(v-a)/(b-a)));
+          return n*n*(3-2*n);
+        };
+        // The vignette and colour are invariant: compute only on resize.
+        for(let y=0;y<height;y++) for(let x=0;x<width;x++) {
+          const u=x/width, v=y/height, i=y*width+x;
+          const centre=1-.98*Math.exp(-Math.pow((u-.5)/.38,4)-Math.pow((v-.48)/.26,4));
+          const edge=smooth(0,.12,u)*(1-smooth(.88,1,u))*smooth(0,.12,v)*(1-smooth(.82,1,v));
+          this.alpha[i]=Math.round(112*centre*edge);
+          this.pixels.data[i*4]=83; this.pixels.data[i*4+1]=103; this.pixels.data[i*4+2]=62;
+        }
         this.draw();
       });
       this.observer.observe(this);
@@ -98,7 +124,7 @@ for(let y=0;y<height;y++) for(let x=0;x<width;x++) {
       document.removeEventListener('visibilitychange', this.sync);
     }
     private draw() {
-      const context = this.querySelector('canvas')?.getContext('2d');
+      const context = this.context;
       const pixels = this.pixels;
       if (!context || !pixels) return;
       const {width,height,data} = pixels;
@@ -112,24 +138,23 @@ for(let y=0;y<height;y++) for(let x=0;x<width;x++) {
       };
       for(let y=0;y<height;y++) {
         const v=y/height;
+        const py=v+(this.mouse.y-.5)*.035;
+        const rowWarp=.19*Math.sin(py*5.5-t*.8);
         for(let x=0;x<width;x++) {
+          const index=y*width+x;
+          if(!this.alpha[index]) continue;
           const u=x/width;
           const px=u+(this.mouse.x-.5)*.035;
-          const py=v+(this.mouse.y-.5)*.035;
-          const wx=px+.19*Math.sin(py*5.5-t*.8)+.07*Math.cos(px*7+py*4+t*.5);
+          const wx=px+rowWarp+.07*Math.cos(px*7+py*4+t*.5);
           const wy=py+.16*Math.sin(px*5+t*.6);
           const field=Math.sin(wx*9+wy*3-t)+.55*Math.cos(wy*9-wx*3+t*.7);
           const density=smooth(-.8,.9,field);
           const lit=density>(bayer[(y%8)*8+x%8]+.5)/64;
-          const centre=1-.98*Math.exp(-Math.pow((u-.5)/.38,4)-Math.pow((v-.48)/.26,4));
-          const edge=smooth(0,.12,u)*(1-smooth(.88,1,u))*smooth(0,.12,v)*(1-smooth(.82,1,v));
-          const i=(y*width+x)*4;
-          data[i]=83; data[i+1]=103; data[i+2]=62;
-          data[i+3]=lit ? Math.round(112*centre*edge) : 0;
+          data[index*4+3]=lit ? this.alpha[index] : 0;
         }
       }
       context.putImageData(pixels,0,0);
-      this.setAttribute('data-ready', '');
+      if(!this.ready) { this.setAttribute('data-ready', ''); this.ready=true; }
     }
   }
   if (!customElements.get('hero-dither')) customElements.define('hero-dither', HeroDither);
