@@ -3,7 +3,7 @@ import ProjectLayout from "../../layouts/ProjectLayout.astro";
 import { projects } from "../../data/projects";
 
 export function getStaticPaths() {
-  return Object.keys(projects).map((slug) => ({ params: { slug } }));
+  return Object.keys(projects).filter((slug) => slug !== 'pakuni').map((slug) => ({ params: { slug } }));
 }
 
 const { slug } = Astro.params;
