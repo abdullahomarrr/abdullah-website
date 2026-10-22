@@ -554,9 +554,10 @@ h1{font-size:clamp(28px,3.7vw,50px);font-weight:500;line-height:1.4;letter-spaci
 .arrival-role{animation:hero-arrival-word 900ms cubic-bezier(.2,.65,.3,1) var(--arrival) backwards}
 .arrival-role .arrival-word{animation-name:hero-arrival-ink}
 .portrait-anchor{transform-origin:50% 60%;animation:hero-arrival-portrait 950ms linear 1550ms backwards}
-.portrait-hint>span{animation-delay:2500ms}
-.hint-curve{animation-delay:2700ms}
-.hint-tip{animation-delay:3550ms}
+/* Begin the hint after the portrait finishes at 2500ms, with a quiet pause. */
+.portrait-hint>span{animation-delay:2850ms}
+.hint-curve{animation-delay:3150ms}
+.hint-tip{animation-delay:4000ms}
 @keyframes hero-arrival-word{from{opacity:0;transform:translate3d(0,.22em,0)}to{opacity:1;transform:none}}
 @keyframes hero-arrival-ink{from{opacity:0}to{opacity:1}}
 /* Fast lift, soft compression, then diminishing rebounds. Segment curves
