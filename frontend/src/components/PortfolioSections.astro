@@ -49,12 +49,12 @@ import ContactIcons from './ContactIcons.astro';
   });
 </script>
 <style>
-  /* A quiet wash of olive light and fine grain, fading back to black before contact. */
+  /* Fine halftone at the edges; the centre stays quiet for the content. */
   .middle-atmosphere{position:relative;isolation:isolate}
-  .middle-atmosphere::before,.middle-atmosphere::after{content:'';position:absolute;inset:0;left:50%;width:calc(100vw - 24px);transform:translateX(-50%);pointer-events:none;z-index:-1;mask-image:linear-gradient(to bottom,transparent,#000 9%,#000 77%,transparent 99%)}
-  .middle-atmosphere::before{background:radial-gradient(ellipse 48% 25% at 0% 24%,#80936213,transparent 78%),radial-gradient(ellipse 43% 29% at 100% 57%,#a7b88c10,transparent 78%),radial-gradient(ellipse 55% 15% at 32% 80%,#71845b0a,transparent 80%)}
-  .middle-atmosphere::after{opacity:.035;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180' viewBox='0 0 180 180'%3E%3Cfilter id='grain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.88' numOctaves='3' stitchTiles='stitch' seed='12'/%3E%3C/filter%3E%3Cpath fill='%23fff' filter='url(%23grain)' opacity='.6' d='M0 0h180v180H0z'/%3E%3C/svg%3E");background-size:180px 180px}
-  @media(max-width:600px){.middle-atmosphere::before{background:radial-gradient(ellipse 80% 25% at 0% 24%,#80936210,transparent 80%),radial-gradient(ellipse 75% 30% at 100% 61%,#a7b88c0d,transparent 80%)}.middle-atmosphere::after{opacity:.025}}
+  .middle-atmosphere::before,.middle-atmosphere::after{content:'';position:absolute;inset:0;left:50%;width:calc(100vw - 24px);transform:translateX(-50%);pointer-events:none;z-index:-1}
+  .middle-atmosphere::before{background:radial-gradient(ellipse 42% 23% at 0% 23%,#8399661c,transparent 80%),radial-gradient(ellipse 38% 26% at 100% 54%,#a0b68119,transparent 80%),radial-gradient(ellipse 40% 18% at 0% 79%,#829c6514,transparent 80%);mask-image:linear-gradient(to bottom,transparent,#000 9%,#000 78%,transparent 98%)}
+  .middle-atmosphere::after{background-image:radial-gradient(circle,#a5bd825c 1px,transparent 1.2px);background-size:7px 7px;mask-image:linear-gradient(to bottom,transparent,#000 9%,#000 78%,transparent 98%),radial-gradient(ellipse 38% 24% at 0% 23%,#000 3%,transparent 85%),radial-gradient(ellipse 35% 25% at 100% 54%,#000 3%,transparent 85%),radial-gradient(ellipse 34% 17% at 0% 79%,#000 3%,transparent 85%);mask-composite:intersect,add,add}
+  @media(max-width:600px){.middle-atmosphere::after{background-size:6px 6px;background-image:radial-gradient(circle,#a5bd8248 .8px,transparent 1px);mask-image:linear-gradient(to bottom,transparent,#000 9%,#000 78%,transparent 98%),linear-gradient(to right,#000,transparent 23%,transparent 77%,#000);mask-composite:intersect}}
   .portfolio-body{max-width:1060px;margin:auto;--paper:#191e17;--edge:#b8caa51f;--quiet:#a2ab99}
   .portfolio-body section{scroll-margin-top:48px}
   .section-note{display:flex;align-items:center;gap:16px;font-size:12px;color:var(--quiet);margin-bottom:48px}

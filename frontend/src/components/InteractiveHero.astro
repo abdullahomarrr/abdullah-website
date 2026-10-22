@@ -11,10 +11,10 @@ import FootballPhotos from './FootballPhotos.astro';
   <div class="intro-center">
     <p class="intro-kicker"> currently building at pyko · toronto</p>
     <h1 id="intro-title">
-      <span class="intro-line">Hi, I’m Abdullah
+      <span class="intro-line"><span class="hello-phrase"><span class="arrival-word" style="--arrival:80ms;--settle:540ms">Hi,</span> <span class="arrival-word" style="--arrival:155ms;--settle:580ms">I’m</span> <span class="arrival-word" style="--arrival:260ms;--settle:720ms">Abdullah</span></span>
         <span class="portrait-anchor"><span class="portrait-hint" aria-hidden="true" hidden><span>press me</span><svg viewBox="0 0 120 52" fill="none"><path class="hint-curve" pathLength="1" d="M99 5C107 24 60 25 60 48"/><path class="hint-tip" pathLength="1" d="m52 40 8 9 8-10"/></svg></span><button class="portrait-trigger" data-reveal="social" aria-expanded="false" aria-controls="intro-social" aria-label="Abdullah’s social links"><img src="/abdullah.jpg" alt="" width="120" height="72"/></button></span>
       </span>
-      <span class="intro-line">a <button class="word-trigger" data-reveal="software" aria-expanded="false" aria-controls="intro-software">software engineer</button> &amp; <button class="word-trigger" data-reveal="curiosity" aria-expanded="false" aria-controls="intro-curiosity">project builder<span class="trigger-star" aria-hidden="true">✳</span></button>.</span>
+      <span class="intro-line"><span class="arrival-word" style="--arrival:370ms;--settle:450ms">a</span> <button class="word-trigger arrival-role" style="--arrival:390ms" data-reveal="software" aria-expanded="false" aria-controls="intro-software"><span class="arrival-word" style="--arrival:420ms;--settle:700ms">software</span> <span class="arrival-word" style="--arrival:510ms;--settle:750ms">engineer</span></button> <span class="arrival-word" style="--arrival:650ms;--settle:460ms">&amp;</span> <button class="word-trigger arrival-role" style="--arrival:680ms" data-reveal="curiosity" aria-expanded="false" aria-controls="intro-curiosity"><span class="arrival-word" style="--arrival:710ms;--settle:660ms">project</span> <span class="arrival-word" style="--arrival:800ms;--settle:700ms">builder</span><span class="trigger-star arrival-word" style="--arrival:900ms;--settle:500ms" aria-hidden="true">✳</span></button><span class="arrival-word" style="--arrival:940ms;--settle:400ms">.</span></span>
     </h1>
     <div class="intro-interests"><span>beyond the code</span><button data-reveal="football" aria-expanded="false" aria-controls="intro-football">football ↗</button><button data-reveal="places" aria-expanded="false" aria-controls="intro-places">travel ↗</button><button data-reveal="games" aria-expanded="false" aria-controls="intro-games">games ↗</button><button data-reveal="screen" aria-expanded="false" aria-controls="intro-screen">movies / tv ↗</button><button data-reveal="cats" aria-expanded="false" aria-controls="intro-cats">cats ↗</button></div>
     <div class="reveal-stage">
@@ -62,6 +62,14 @@ import FootballPhotos from './FootballPhotos.astro';
 <script>
 const hero = document.querySelector<HTMLElement>('.intro-hero');
 if (hero) {
+ // Interaction always takes priority over the one-time entrance.
+ const finishEntrance = () => {
+   hero.getAnimations({subtree:true}).forEach(animation => {
+     if(animation instanceof CSSAnimation && animation.animationName.startsWith('hero-arrival')) animation.finish();
+   });
+ };
+ hero.addEventListener('pointerdown', finishEntrance, {once:true});
+ hero.addEventListener('keydown', finishEntrance, {once:true});
  const portrait=hero.querySelector<HTMLButtonElement>('.portrait-trigger')!;
  const hint=hero.querySelector<HTMLElement>('.portrait-hint')!;
  const hintKey='portfolio:portrait-hint-dismissed';
@@ -473,4 +481,21 @@ h1{font-size:clamp(28px,3.7vw,50px);font-weight:500;line-height:1.4;letter-spaci
 /* Keep the glass surface at its final geometry: scaling and clipping a live
    backdrop caused a visible edge snap when the opening animation finished. */
 .intro-panel:not(.portrait-orbit){animation:none!important;transform:none;clip-path:none}
+</style>
+
+<style>
+/* Overlapping word beats: no layout changes, blur, or letter-by-letter jitter. */
+.hello-phrase{display:inline-block}
+.arrival-word{display:inline-block;animation:hero-arrival-word var(--settle,650ms) cubic-bezier(.22,1,.36,1) var(--arrival,0ms) backwards}
+.arrival-role{animation:hero-arrival-fade 600ms ease var(--arrival,0ms) backwards}
+.portrait-anchor{animation:hero-arrival-portrait 680ms cubic-bezier(.22,1,.36,1) 1100ms backwards}
+.intro-kicker{animation:hero-arrival-fade 700ms ease 0ms backwards}
+.intro-interests{animation:hero-arrival-word 650ms cubic-bezier(.22,1,.36,1) 860ms backwards}
+.portrait-hint>span{animation-delay:1850ms}
+.hint-curve{animation-delay:2050ms}
+.hint-tip{animation-delay:2900ms}
+@keyframes hero-arrival-word{from{opacity:0;transform:translate3d(0,.24em,0)}to{opacity:1;transform:none}}
+@keyframes hero-arrival-fade{from{opacity:0}to{opacity:1}}
+@keyframes hero-arrival-portrait{from{opacity:0;transform:translate3d(0,8px,0) scale(.92)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){.arrival-word,.arrival-role,.portrait-anchor,.intro-kicker,.intro-interests{animation:none}}
 </style>

@@ -6,10 +6,10 @@ interface Props {
 }
 const {photos, label, kind} = Astro.props;
 ---
-<div class:list={["football-photos", {"cat-photos": kind === "cat"}]} data-photo-carousel>
+<div class:list={["football-photos", {"cat-photos": kind === "cat"}]} data-photo-carousel data-loop={kind === 'football' ? 'true' : undefined}>
   <div class="strip-heading"><span>{label}</span><div><button type="button" data-step="-1" aria-label={`Previous ${kind} photos`}>←</button><button type="button" data-step="1" aria-label={`Next ${kind} photos`}>→</button></div></div>
   <div class="football-strip" aria-label={`${kind} photos`}>
-    {photos.map((photo, i) => <button type="button" data-football-photo={i} aria-label={`Enlarge ${kind} photo ${i + 1}`}><img src={photo.src} alt={photo.alt} style={{objectPosition: photo.position}} width="160" height="100" loading="lazy" decoding="async" /></button>)}
+    {(kind === 'football' ? [0, 1, 2] : [1]).map(copy => photos.map((photo, i) => <button type="button" data-football-photo={i} tabindex={copy === 1 ? undefined : -1} aria-hidden={copy === 1 ? undefined : 'true'} aria-label={`Enlarge ${kind} photo ${i + 1}`}><img src={photo.src} alt={photo.alt} style={{objectPosition: photo.position}} width="160" height="100" loading="lazy" decoding="async" /></button>))}
   </div>
 <dialog class="football-gallery" aria-label={`${kind} photo gallery`}>
   <header><span>{label}</span><button type="button" class="gallery-close" aria-label={`Close ${kind} gallery`}>close ×</button></header>
@@ -24,6 +24,26 @@ const {photos, label, kind} = Astro.props;
   const frame = gallery.querySelector<HTMLElement>('.football-image')!;
   const thumbs = [...gallery.querySelectorAll<HTMLButtonElement>('[data-football-thumb]')];
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+  const loop = root.dataset.loop === 'true';
+  let initialized = false;
+  const cycleWidth = () => {
+    const cards = strip.querySelectorAll<HTMLButtonElement>('[data-football-photo]');
+    return cards[thumbs.length].offsetLeft - cards[0].offsetLeft;
+  };
+  function normalizeLoop() {
+    if (!loop || !initialized || !strip.clientWidth) return;
+    const cycle = cycleWidth();
+    if (strip.scrollLeft < cycle - 1) strip.scrollTo({left:strip.scrollLeft + cycle, behavior:'instant'});
+    else if (strip.scrollLeft >= cycle * 2 - 1) strip.scrollTo({left:strip.scrollLeft - cycle, behavior:'instant'});
+  }
+  if (loop) {
+    new ResizeObserver(() => {
+      if (!strip.clientWidth || initialized) return;
+      strip.scrollTo({left:cycleWidth(), behavior:'instant'});
+      initialized = true;
+    }).observe(strip);
+    strip.addEventListener('scrollend', normalizeLoop);
+  }
   let selected = 0, busy = false, oldOverflow = '';
   let opener: HTMLButtonElement | null = null;
   document.body.append(gallery);
@@ -49,6 +69,12 @@ const {photos, label, kind} = Astro.props;
   let pauseUntil = 0;
   const pause = () => { pauseUntil = Date.now() + 6500; };
   function advance(direction: number) {
+    if (loop) {
+      normalizeLoop();
+      const step = strip.querySelector('button')!.getBoundingClientRect().width + 8;
+      strip.scrollBy({left:direction * step, behavior:reduced.matches ? 'instant' : 'smooth'});
+      return;
+    }
     const max = strip.scrollWidth - strip.clientWidth;
     const step = strip.querySelector('button')!.getBoundingClientRect().width + 8;
     const end = direction > 0 ? strip.scrollLeft >= max - 2 : strip.scrollLeft <= 2;
@@ -58,7 +84,7 @@ const {photos, label, kind} = Astro.props;
   root.addEventListener('pointerdown', pause);
   root.addEventListener('wheel', pause, {passive:true});
   setInterval(() => {
-    if(reduced.matches || document.hidden || gallery.open || root.closest('[hidden]') || root.matches(':hover, :focus-within') || Date.now() < pauseUntil) return;
+    if(reduced.matches || document.hidden || gallery.open || root.closest('[hidden]') || (!loop && root.matches(':hover, :focus-within')) || Date.now() < pauseUntil) return;
     const bounds = root.getBoundingClientRect();
     if(bounds.bottom > 0 && bounds.top < innerHeight) advance(1);
   }, 3800);
