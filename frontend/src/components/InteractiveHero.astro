@@ -11,10 +11,10 @@ import FootballPhotos from './FootballPhotos.astro';
   <div class="intro-center">
     <p class="intro-kicker"> currently building at pyko · toronto</p>
     <h1 id="intro-title">
-      <span class="intro-line"><span class="hello-phrase"><span class="arrival-word" style="--arrival:120ms;--settle:1100ms">Hi,</span> <span class="arrival-word" style="--arrival:300ms;--settle:1150ms">I’m</span> <span class="arrival-word" style="--arrival:520ms;--settle:1350ms">Abdullah</span></span>
+      <span class="intro-line"><span class="hello-phrase"><span class="arrival-word" style="--arrival:80ms;--settle:780ms">Hi,</span> <span class="arrival-word" style="--arrival:200ms;--settle:820ms">I’m</span> <span class="arrival-word" style="--arrival:350ms;--settle:950ms">Abdullah</span></span>
         <span class="portrait-anchor"><span class="portrait-hint" aria-hidden="true" hidden><span>press me</span><svg viewBox="0 0 120 52" fill="none"><path class="hint-curve" pathLength="1" d="M99 5C107 24 60 25 60 48"/><path class="hint-tip" pathLength="1" d="m52 40 8 9 8-10"/></svg></span><button class="portrait-trigger" data-reveal="social" aria-expanded="false" aria-controls="intro-social" aria-label="Abdullah’s social links"><img src="/abdullah.jpg" alt="" width="120" height="72"/></button></span>
       </span>
-      <span class="intro-line"><span class="arrival-word" style="--arrival:1000ms;--settle:1000ms">a</span> <button class="word-trigger" data-reveal="software" aria-expanded="false" aria-controls="intro-software"><span class="arrival-word" style="--arrival:1120ms;--settle:1250ms">software</span> <span class="arrival-word" style="--arrival:1330ms;--settle:1300ms">engineer</span></button> <span class="arrival-word" style="--arrival:1660ms;--settle:1000ms">&amp;</span> <button class="word-trigger" data-reveal="curiosity" aria-expanded="false" aria-controls="intro-curiosity"><span class="arrival-word" style="--arrival:1840ms;--settle:1200ms">project</span> <span class="arrival-word" style="--arrival:2050ms;--settle:1250ms">builder</span><span class="trigger-star arrival-word" style="--arrival:2250ms;--settle:1050ms" aria-hidden="true">✳</span></button><span class="arrival-word" style="--arrival:2360ms;--settle:950ms">.</span></span>
+      <span class="intro-line"><span class="arrival-word" style="--arrival:650ms;--settle:700ms">a</span> <button class="word-trigger arrival-role" style="--arrival:650ms" data-reveal="software" aria-expanded="false" aria-controls="intro-software"><span class="arrival-word" style="--arrival:710ms;--settle:800ms">software</span> <span class="arrival-word" style="--arrival:840ms;--settle:850ms">engineer</span></button> <span class="arrival-word" style="--arrival:1020ms;--settle:700ms">&amp;</span> <button class="word-trigger arrival-role" style="--arrival:1060ms" data-reveal="curiosity" aria-expanded="false" aria-controls="intro-curiosity"><span class="arrival-word" style="--arrival:1120ms;--settle:800ms">project</span> <span class="arrival-word" style="--arrival:1250ms;--settle:850ms">builder</span><span class="trigger-star arrival-word" style="--arrival:1380ms;--settle:720ms" aria-hidden="true">✳</span></button><span class="arrival-word" style="--arrival:1450ms;--settle:650ms">.</span></span>
     </h1>
     <div class="intro-interests"><span>beyond the code</span><button data-reveal="football" aria-expanded="false" aria-controls="intro-football">football ↗</button><button data-reveal="places" aria-expanded="false" aria-controls="intro-places">travel ↗</button><button data-reveal="games" aria-expanded="false" aria-controls="intro-games">games ↗</button><button data-reveal="screen" aria-expanded="false" aria-controls="intro-screen">movies / tv ↗</button><button data-reveal="cats" aria-expanded="false" aria-controls="intro-cats">cats ↗</button></div>
     <div class="reveal-stage">
@@ -484,14 +484,17 @@ h1{font-size:clamp(28px,3.7vw,50px);font-weight:500;line-height:1.4;letter-spaci
 </style>
 
 <style>
-/* A single reading rhythm. Surfaces and supporting UI stay present throughout. */
+/* Overlapping phrase entrances; role surfaces move with their text. */
 .hello-phrase{display:inline-block}
-.arrival-word{display:inline-block;animation:hero-arrival-word var(--settle,1200ms) cubic-bezier(.25,.1,.25,1) var(--arrival,0ms) backwards}
-.portrait-anchor{animation:hero-arrival-portrait 1100ms cubic-bezier(.25,.1,.25,1) 2850ms backwards}
-.portrait-hint>span{animation-delay:3950ms}
-.hint-curve{animation-delay:4150ms}
-.hint-tip{animation-delay:5000ms}
-@keyframes hero-arrival-word{from{opacity:0;transform:translate3d(0,.32em,0)}to{opacity:1;transform:none}}
-@keyframes hero-arrival-portrait{from{opacity:0;transform:translate3d(0,10px,0)}to{opacity:1;transform:none}}
-@media(prefers-reduced-motion:reduce){.arrival-word,.portrait-anchor{animation:none}}
+.arrival-word{display:inline-block;animation:hero-arrival-word var(--settle,820ms) cubic-bezier(.2,.65,.3,1) var(--arrival,0ms) backwards}
+.arrival-role{animation:hero-arrival-word 900ms cubic-bezier(.2,.65,.3,1) var(--arrival) backwards}
+.arrival-role .arrival-word{animation-name:hero-arrival-ink}
+.portrait-anchor{animation:hero-arrival-portrait 850ms cubic-bezier(.2,.65,.3,1) 1650ms backwards}
+.portrait-hint>span{animation-delay:2500ms}
+.hint-curve{animation-delay:2700ms}
+.hint-tip{animation-delay:3550ms}
+@keyframes hero-arrival-word{from{opacity:0;transform:translate3d(0,.22em,0)}to{opacity:1;transform:none}}
+@keyframes hero-arrival-ink{from{opacity:0}to{opacity:1}}
+@keyframes hero-arrival-portrait{from{opacity:0;transform:translate3d(0,8px,0)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){.arrival-word,.arrival-role,.portrait-anchor{animation:none}}
 </style>
