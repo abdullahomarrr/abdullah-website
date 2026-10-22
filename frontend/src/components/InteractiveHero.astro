@@ -496,5 +496,17 @@ h1{font-size:clamp(28px,3.7vw,50px);font-weight:500;line-height:1.4;letter-spaci
 @keyframes hero-arrival-word{from{opacity:0;transform:translate3d(0,.22em,0)}to{opacity:1;transform:none}}
 @keyframes hero-arrival-ink{from{opacity:0}to{opacity:1}}
 @keyframes hero-arrival-portrait{from{opacity:0;transform:translate3d(0,8px,0)}to{opacity:1;transform:none}}
-@media(prefers-reduced-motion:reduce){.arrival-word,.arrival-role,.portrait-anchor{animation:none}}
+/* A quiet ripple beneath the headline, finished before the portrait settles. */
+.intro-interests>span:first-child{animation:hero-arrival-ink 650ms ease 1250ms backwards}
+.intro-interests>button{transform-origin:20% 100%;animation:hero-arrival-interest 720ms cubic-bezier(.2,.65,.3,1) var(--interest-delay) backwards}
+.intro-interests>button:nth-of-type(1){--interest-delay:1350ms}
+.intro-interests>button:nth-of-type(2){--interest-delay:1440ms}
+.intro-interests>button:nth-of-type(3){--interest-delay:1530ms}
+.intro-interests>button:nth-of-type(4){--interest-delay:1620ms}
+.intro-interests>button:nth-of-type(5){--interest-delay:1710ms}
+@keyframes hero-arrival-interest{
+  from{opacity:0;transform:translate3d(-5px,10px,0) rotate(1.5deg)}
+  to{opacity:1;transform:none}
+}
+@media(prefers-reduced-motion:reduce){.arrival-word,.arrival-role,.portrait-anchor,.intro-interests>span:first-child,.intro-interests>button{animation:none}}
 </style>
