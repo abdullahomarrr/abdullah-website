@@ -1,4 +1,30 @@
-<hero-dither aria-hidden="true"><canvas></canvas></hero-dither>
+---
+// Render the starting surface into the HTML, before the canvas script loads.
+const width = 320, height = 180;
+const paths = Array.from({length:16}, () => '');
+const bayer = [0,32,8,40,2,34,10,42,48,16,56,24,50,18,58,26,12,44,4,36,14,46,6,38,60,28,52,20,62,30,54,22,3,35,11,43,1,33,9,41,51,19,59,27,49,17,57,25,15,47,7,39,13,45,5,37,63,31,55,23,61,29,53,21];
+const smooth = (a:number,b:number,v:number) => {
+  const n = Math.max(0,Math.min(1,(v-a)/(b-a)));
+  return n*n*(3-2*n);
+};
+for(let y=0;y<height;y++) for(let x=0;x<width;x++) {
+  const u=x/width, v=y/height;
+  const wx=u+.19*Math.sin(v*5.5)+.07*Math.cos(u*7+v*4);
+  const wy=v+.16*Math.sin(u*5);
+  const density=smooth(-.8,.9,Math.sin(wx*9+wy*3)+.55*Math.cos(wy*9-wx*3));
+  if(density<=(bayer[(y%8)*8+x%8]+.5)/64) continue;
+  const centre=1-.98*Math.exp(-Math.pow((u-.5)/.38,4)-Math.pow((v-.48)/.26,4));
+  const edge=smooth(0,.12,u)*(1-smooth(.88,1,u))*smooth(0,.12,v)*(1-smooth(.82,1,v));
+  const level=Math.round(15*centre*edge);
+  if(level) paths[level]+=`M${x} ${y}h1v1h-1z`;
+}
+---
+<hero-dither aria-hidden="true">
+  <svg class="initial-surface" viewBox={`0 0 ${width} ${height}`} preserveAspectRatio="none" shape-rendering="crispEdges">
+    {paths.map((d,i) => d && <path d={d} fill="#53673e" opacity={i/15*112/255}/>)}
+  </svg>
+  <canvas></canvas>
+</hero-dither>
 
 <script>
   class HeroDither extends HTMLElement {
@@ -103,6 +129,7 @@
         }
       }
       context.putImageData(pixels,0,0);
+      this.setAttribute('data-ready', '');
     }
   }
   if (!customElements.get('hero-dither')) customElements.define('hero-dither', HeroDither);
@@ -110,7 +137,8 @@
 
 <style>
   hero-dither{position:absolute;inset:0;z-index:-1;pointer-events:none;overflow:hidden;contain:strict;mask-image:linear-gradient(transparent,#000 9%,#000 87%,transparent)}
-  canvas{display:block;width:100%;height:100%;image-rendering:pixelated}
+  canvas,.initial-surface{position:absolute;inset:0;display:block;width:100%;height:100%;image-rendering:pixelated}
+  hero-dither[data-ready] .initial-surface{display:none}
   @media(max-width:760px){hero-dither{opacity:.7}}
   @media(prefers-reduced-motion:reduce){canvas{animation:none}}
 </style>
