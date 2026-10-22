@@ -87,11 +87,18 @@ if (hero) {
  const stage = hero.querySelector<HTMLElement>('.reveal-stage')!;
  const center = hero.querySelector<HTMLElement>('.intro-center')!;
  let active: HTMLButtonElement | null = null;
+ let revealVersion = 0;
+ const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
+ const panelEase = 'cubic-bezier(.22,.75,.25,1)';
+ function cancelPanelMotion(panel: HTMLElement) {
+  panel.getAnimations().forEach(animation => animation.cancel());
+  [...panel.children].forEach(child => child.getAnimations().forEach(animation => animation.cancel()));
+ }
  
  
  
  function close(restore = false) {
-  
+  ++revealVersion;
   const previous = active;
   triggers.forEach(button => button.setAttribute('aria-expanded', 'false'));
     panels.forEach(panel => {
@@ -103,10 +110,11 @@ if (hero) {
      if(i===0) motion.onfinish=()=>{ if(active?.dataset.reveal!=='social') panel.hidden=true; };
     });
    } else if (!panel.hidden && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    const opacity = getComputedStyle(panel).opacity;
-    panel.getAnimations().forEach(animation => animation.cancel());
+    const current = getComputedStyle(panel);
+    const opacity = current.opacity, transform = current.transform;
+    cancelPanelMotion(panel);
     panel.style.pointerEvents = 'none';
-    const fade = panel.animate([{opacity},{opacity:0}], {duration:160,easing:'ease-out',fill:'forwards'});
+    const fade = panel.animate([{opacity,transform},{opacity:0,transform:'scale(.98,.96)'}], {duration:220,easing:'cubic-bezier(.4,0,.6,1)',fill:'forwards'});
     fade.onfinish = () => {
      if(active?.getAttribute('aria-controls') !== panel.id) panel.hidden = true;
      fade.cancel();
@@ -163,19 +171,44 @@ if (hero) {
  window.addEventListener('resize', () => { if(active) positionPanel(active); });
  window.addEventListener('scroll', () => { if(active?.dataset.reveal === 'football') positionPanel(active); }, {passive:true});
  window.visualViewport?.addEventListener('resize', () => { if(active?.dataset.reveal === 'football') positionPanel(active); });
- function open(button: HTMLButtonElement) {
-  
+ async function open(button: HTMLButtonElement) {
+  const version = ++revealVersion;
   const enteringSocial = button.dataset.reveal === "social" && active !== button;
+  const outgoing = active && document.getElementById(active.getAttribute('aria-controls')!);
+  active = button;
   triggers.forEach(trigger => trigger.setAttribute('aria-expanded', String(trigger === button)));
+  if(outgoing && !outgoing.hidden && outgoing.id !== button.getAttribute('aria-controls') && outgoing.id !== 'intro-social' && !reduceMotion.matches) {
+   const current = getComputedStyle(outgoing);
+   const from = {opacity:current.opacity,transform:current.transform};
+   cancelPanelMotion(outgoing);
+   outgoing.style.pointerEvents = 'none';
+   const exit = outgoing.animate([from,{opacity:0,transform:'scale(.985,.97)'}],{duration:150,easing:'ease-in',fill:'forwards'});
+   await exit.finished.catch(()=>{});
+   if(version !== revealVersion) return;
+  }
   panels.forEach(panel => {
-   panel.getAnimations().forEach(animation => animation.cancel());
+   cancelPanelMotion(panel);
    panel.style.pointerEvents = '';
    panel.hidden = panel.id !== button.getAttribute('aria-controls');
   });
-    active = button; positionPanel(button);
+  positionPanel(button);
   if(button.dataset.reveal !== 'social' && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
    const panel = document.getElementById(button.getAttribute('aria-controls')!)!;
-   panel.animate([{opacity:0},{opacity:1}], {duration:260,easing:'cubic-bezier(.22,1,.36,1)'});
+   const anchor = button.getBoundingClientRect(), bounds = panel.getBoundingClientRect();
+   const above = bounds.top < anchor.top;
+   panel.style.transformOrigin = `${Math.max(16,Math.min(bounds.width-16,anchor.left+anchor.width/2-bounds.left))}px ${above?'100%':'0%'}`;
+   panel.animate([
+    {opacity:0,transform:`translateY(${above?18:-18}px) scale(.88,.82)`,offset:0,easing:'cubic-bezier(.18,.75,.28,1)'},
+    {opacity:1,transform:`translateY(${above?-2:2}px) scale(1.012,1.018)`,offset:.7,easing:'cubic-bezier(.4,0,.2,1)'},
+    {opacity:1,transform:'none',offset:1}
+   ], {duration:580,easing:'linear'});
+   [...panel.children].forEach((child,i) => {
+    if(!(child instanceof HTMLElement) || child.hidden) return;
+    child.animate([
+     {opacity:0,transform:`translateY(${above?-10:10}px)`},
+     {opacity:1,transform:'none'}
+    ],{duration:380,delay:100+Math.min(i,4)*40,easing:panelEase,fill:'backwards'});
+   });
   }
   if(enteringSocial) {
    hero!.querySelectorAll<HTMLElement>('.orbit-link').forEach((link,i)=>{
@@ -191,6 +224,31 @@ if (hero) {
   hero!.classList.toggle('has-annotation', ['software', 'curiosity'].includes(button.dataset.reveal || ''));
  }
  triggers.forEach(button => {
+   // Individual scale preserves the portrait rotation and entrance transforms.
+   let pressMotion: Animation | undefined;
+   const press = () => {
+     if(reduceMotion.matches) return;
+     const scale = getComputedStyle(button).scale;
+     pressMotion?.cancel();
+     pressMotion = button.animate([{scale},{scale:'.95'}],{duration:110,easing:'ease-out',fill:'forwards'});
+   };
+   const release = () => {
+     if(reduceMotion.matches) return;
+     const scale = getComputedStyle(button).scale;
+     pressMotion?.cancel();
+     pressMotion = button.animate([
+       {scale:scale==='none'?'.97':scale,offset:0,easing:'cubic-bezier(.16,.7,.3,1)'},
+       {scale:'1.035',offset:.45,easing:'ease-in-out'},
+       {scale:'.995',offset:.75,easing:'ease-out'},
+       {scale:'1',offset:1}
+     ],{duration:460,easing:'linear'});
+   };
+   button.addEventListener('pointerdown', event => {if(event.button===0) press();});
+   button.addEventListener('pointerup', release);
+   button.addEventListener('pointercancel', release);
+   button.addEventListener('pointerleave', () => {if(pressMotion?.effect?.getTiming().fill==='forwards') release();});
+   button.addEventListener('keydown', event => {if(!event.repeat && ['Enter',' '].includes(event.key)) press();});
+   button.addEventListener('keyup', event => {if(['Enter',' '].includes(event.key)) release();});
    let hoverFrame = 0, hoverX = 0, hoverY = 0;
    button.addEventListener('pointermove', event => {
      if(event.pointerType !== 'mouse') return;
