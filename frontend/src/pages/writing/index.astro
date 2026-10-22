@@ -5,12 +5,10 @@ const entries=(await getCollection('writing',({data})=>!data.draft)).sort((a,b)=
 const date=(value:Date)=>value.toLocaleDateString('en-CA',{year:'numeric',month:'short',day:'numeric',timeZone:'UTC'});
 ---
 <WritingLayout>
-  <div class="writing-heading"><span class="section-label">the notebook</span><span class="entry-count">{String(entries.length).padStart(2,'0')} published</span></div>
   <section class="writing-grid" aria-labelledby="writing-title">
     <header class="writing-intro">
       <h1 id="writing-title">a few<br/><span>thoughts.</span></h1>
       <p>On building, learning,<br/>and everything in between.</p>
-      <div class="notebook-mark" aria-hidden="true"><svg viewBox="0 0 52 56" fill="none"><path d="M12 7h29v42H12V7Z" stroke="currentColor"/><path d="M17 7v42M9 15h6M9 24h6M9 33h6M9 42h6M23 18h12M23 24h9M23 30h12" stroke="currentColor" stroke-linecap="round"/></svg><span>a place to think out loud</span></div>
     </header>
     <div class="writing-entries">
       <div class="list-heading"><span>entries</span><span>{entries.length?'newest first':'just getting started'}</span></div>
@@ -31,12 +29,9 @@ const date=(value:Date)=>value.toLocaleDateString('en-CA',{year:'numeric',month:
   </section>
 </WritingLayout>
 <style>
-  .writing-heading{display:flex;justify-content:space-between;color:#89947f;font-size:11px;border-bottom:1px solid var(--line);padding-bottom:18px}
-  .section-label{color:#b1bba7}.entry-count{font-variant-numeric:tabular-nums}
-  .writing-grid{display:grid;grid-template-columns:1fr 1.55fr;gap:clamp(40px,7vw,100px);padding-top:47px}
+  .writing-grid{display:grid;grid-template-columns:1fr 1.55fr;gap:clamp(40px,7vw,100px);padding-top:0}
   .writing-intro h1{font-size:clamp(48px,5.4vw,76px);font-weight:400;line-height:1.04;letter-spacing:-.06em}
   .writing-intro h1 span{color:#8e9b80}.writing-intro>p{font-size:14px;color:#a2ab99;line-height:1.8;margin-top:25px}
-  .notebook-mark{display:flex;align-items:center;gap:12px;margin-top:65px;color:#65745b}.notebook-mark svg{width:39px;height:44px;transform:rotate(-8deg)}.notebook-mark span{font-size:10px}
   .list-heading{display:flex;justify-content:space-between;gap:15px;font-size:10px;color:#929f87;padding:4px 0 22px;border-bottom:1px solid var(--line)}
   .first-page{position:relative;display:grid;grid-template-columns:32px 1fr;gap:16px;padding:39px 0 45px;border-bottom:1px solid var(--line)}
   .page-number{font-size:11px;color:#637258;font-variant-numeric:tabular-nums;padding-top:3px}
@@ -48,6 +43,6 @@ const date=(value:Date)=>value.toLocaleDateString('en-CA',{year:'numeric',month:
   .writing-entry .entry-number{margin:0;color:#748267;font-size:10px}.entry-meta{display:flex;gap:16px;justify-content:space-between;font-size:10px;color:#8e9c82}
   .writing-entry h2{font-size:25px;line-height:1.25;font-weight:400;letter-spacing:-.035em;margin:13px 0 10px;transition:color .35s}.writing-entry p{color:var(--muted);font-size:13px;line-height:1.7}
   .entry-arrow{width:17px;margin-top:25px;color:#849a70;transition:transform .4s,color .4s}.writing-entry:hover{border-color:#667958}.writing-entry:hover h2{color:var(--lime)}.writing-entry:hover .entry-arrow{transform:translate(2px,-2px);color:var(--lime)}
-  @media(max-width:700px){.writing-grid{grid-template-columns:1fr;gap:42px;padding-top:30px}.writing-intro h1 br{display:none}.writing-intro h1 span{margin-left:.18em}.writing-intro h1{font-size:49px}.writing-intro>p{margin-top:18px}.notebook-mark{display:none}.first-page{padding:30px 0 35px;gap:10px;grid-template-columns:22px 1fr}.first-page h2{font-size:33px}.writing-entry{gap:10px;grid-template-columns:20px 1fr 16px}.writing-entry h2{font-size:23px}.entry-meta{flex-wrap:wrap;gap:6px 14px}}
+  @media(max-width:700px){.writing-grid{grid-template-columns:1fr;gap:42px;padding-top:0}.writing-intro h1 br{display:none}.writing-intro h1 span{margin-left:.18em}.writing-intro h1{font-size:49px}.writing-intro>p{margin-top:18px}.first-page{padding:30px 0 35px;gap:10px;grid-template-columns:22px 1fr}.first-page h2{font-size:33px}.writing-entry{gap:10px;grid-template-columns:20px 1fr 16px}.writing-entry h2{font-size:23px}.entry-meta{flex-wrap:wrap;gap:6px 14px}}
   @media(prefers-reduced-motion:reduce){.writing-entry,.writing-entry h2,.entry-arrow{transition:none}}
 </style>
