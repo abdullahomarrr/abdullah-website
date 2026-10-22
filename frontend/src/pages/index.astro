@@ -1,4 +1,5 @@
 ---
+import WeatherTheme from '../components/WeatherTheme.astro';
 import SmoothScroll from '../components/SmoothScroll.astro';
 import PortfolioSections from '../components/PortfolioSections.astro';
 import '../styles/portfolio.css';
@@ -7,7 +8,7 @@ import ExperienceSheet from '../components/ExperienceSheet.astro';
 ---
 <!doctype html>
 <html lang="en">
-<head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><meta name="description" content="Abdullah Omar — software engineer, U of T CS student, and founding engineer at Pyko. Things I've built and things I'm curious about."/><meta name="theme-color" content="#0c0e0c"/><title>Abdullah Omar — Software Engineer</title><link rel="icon" type="image/png" href="/logo.png"/><link rel="preload" href="/Satoshi-Bold.otf" as="font" type="font/otf" crossorigin/></head>
+<head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><meta name="description" content="Abdullah Omar — software engineer, U of T CS student, and founding engineer at Pyko. Things I've built and things I'm curious about."/><meta name="theme-color" content="#0c0e0c"/><title>Abdullah Omar — Software Engineer</title><link rel="icon" type="image/png" href="/logo.png"/><link rel="preload" href="/Satoshi-Bold.otf" as="font" type="font/otf" crossorigin/><WeatherTheme /></head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
 <header class="nav shell"><a class="brand" href="#"><span>abdullah omar</span></a><nav aria-label="Main navigation"><a href="#projects">work</a><a href="#about">about</a><a href="/Abdullah-Omar-Resume-SWE.pdf" target="_blank" rel="noopener">resume ↗</a></nav><a class="nav-contact" href="mailto:abdullahom07@gmail.com">let’s talk ↗</a></header>
@@ -15,6 +16,7 @@ import ExperienceSheet from '../components/ExperienceSheet.astro';
 <InteractiveHero />
 <PortfolioSections />
 </main><footer class="shell footer"><a href="#">Abdullah Omar <span class="soft">© {new Date().getFullYear()}</span></a><p>built by abdullah, always in progress.</p><div><a href="https://github.com/abdullahomarrr/" target="_blank" rel="noopener noreferrer">GitHub ↗</a><a href="https://www.linkedin.com/in/abdullahomarr/" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a><a href="#">Back to top ↑</a></div></footer>
+<p class="weather-credit">a little colour from your local sky · approximate IP location · weather by <a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">Open-Meteo</a></p>
 <SmoothScroll />
 <ExperienceSheet />
 </body></html>

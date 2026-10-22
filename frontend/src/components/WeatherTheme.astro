@@ -1,0 +1,80 @@
+---
+import {palettes} from '../lib/atmosphere';
+const css=Object.entries(palettes).map(([key,color])=>`html[data-atmosphere="${key}"]{--tone-dither:${color}}`).join('\n');
+---
+<style is:inline set:html={css}/>
+<script is:inline define:vars={{isDev:import.meta.env.DEV}}>
+  // Choose a cached, age-checked palette before the first paint. No network here.
+  (()=>{
+    let state; try{state=JSON.parse(localStorage.getItem('portfolio-weather-v1')||'null')}catch{}
+    const hour=new Date().getHours();
+    let day=hour>=7&&hour<19, kind='clear';
+    if(state && Date.now()-state.savedAt<30*60*1000 && ['clear','cloud','rain','snow','storm'].includes(state.kind)) {
+      day=state.day;kind=state.kind;
+      const now=Date.now()/1000;
+      for(let i=0;i<(state.sunrise||[]).length;i++) if(now>=state.sunrise[i]-43200&&now<state.sunset[i]+21600){day=now>=state.sunrise[i]&&now<state.sunset[i];break;}
+    }
+    const preview=isDev?new URLSearchParams(location.search).get('sky'):null;
+    document.documentElement.dataset.atmosphere=preview&&/^(clear|cloud|rain|snow|storm)-(day|night)$/.test(preview)?preview:kind+'-'+(day?'day':'night');
+  })();
+</script>
+<script>
+  import {conditions,daylight,localDay} from '../lib/atmosphere';
+  type State={savedAt:number;kind:string;day:boolean;sunrise:number[];sunset:number[]};
+  const key='portfolio-weather-v1';
+  const requested=import.meta.env.DEV?new URLSearchParams(location.search).get('sky'):null;
+  const preview=requested&&/^(clear|cloud|rain|snow|storm)-(day|night)$/.test(requested)?requested:null;
+  let state:State|null=null, busy=false, nextAttempt=0;
+  try{state=JSON.parse(localStorage.getItem(key)||'null')}catch{}
+  function apply(){
+    const fresh=state && Date.now()-state.savedAt<30*60*1000;
+    const day=fresh?daylight(Date.now()/1000,state!.sunrise,state!.sunset,state!.day):localDay();
+    const theme=preview || (fresh?state!.kind:'clear')+'-'+(day?'day':'night');
+    document.documentElement.dataset.atmosphereSource=preview?'preview':fresh?'weather':'clock';
+    if(document.documentElement.dataset.atmosphere!==theme){
+      document.documentElement.dataset.atmosphere=theme;
+      document.dispatchEvent(new Event('portfolio:atmosphere'));
+    }
+
+  }
+  async function json(url:string){
+    const response=await fetch(url,{signal:AbortSignal.timeout(6000),credentials:'omit',referrerPolicy:'no-referrer'});
+    if(!response.ok) throw new Error('Weather unavailable');
+    return response.json();
+  }
+  async function refresh(){
+    if(preview||document.hidden||busy||Date.now()<nextAttempt)return;
+    apply();
+    if(state&&Date.now()-state.savedAt<15*60*1000)return;
+    busy=true;nextAttempt=Date.now()+5*60*1000;
+    try{
+      // City-scale coordinates only; never request GPS or retain the IP address.
+      let geo;
+      try{geo=JSON.parse(sessionStorage.getItem('portfolio-city-v1')||'null')}catch{}
+      if(!geo||Date.now()-geo.savedAt>60*60*1000){
+        const result=await json(import.meta.env.DEV?'https://ipwho.is/?fields=success,latitude,longitude':'/api/location');
+        if(!result.success||!Number.isFinite(result.latitude)||!Number.isFinite(result.longitude)||Math.abs(result.latitude)>90||Math.abs(result.longitude)>180)throw new Error('Location unavailable');
+        geo={latitude:Math.round(result.latitude*10)/10,longitude:Math.round(result.longitude*10)/10,savedAt:Date.now()};
+        try{sessionStorage.setItem('portfolio-city-v1',JSON.stringify(geo))}catch{}
+      }
+      const url=new URL('https://api.open-meteo.com/v1/forecast');
+      url.search=new URLSearchParams({latitude:String(geo.latitude),longitude:String(geo.longitude),current:'weather_code,is_day',daily:'sunrise,sunset',timezone:'auto',timeformat:'unixtime',forecast_days:'2'}).toString();
+      const weather=await json(url.href);
+      if(!Number.isFinite(weather.current?.weather_code)||![0,1].includes(weather.current?.is_day)||!Array.isArray(weather.daily?.sunrise)||!Array.isArray(weather.daily?.sunset))throw new Error('Invalid weather');
+      state={savedAt:Date.now(),kind:conditions(weather.current.weather_code),day:weather.current.is_day===1,sunrise:weather.daily.sunrise,sunset:weather.daily.sunset};
+      try{localStorage.setItem(key,JSON.stringify(state))}catch{}
+      apply();
+    }catch(error){if(import.meta.env.DEV)console.warn('Weather uses local-time fallback:',error instanceof Error?error.message:'unavailable');apply()}finally{busy=false}
+  }
+  apply();
+
+  // Let the hero entrance finish before the first network-driven recolour.
+  setTimeout(refresh,3000);
+  setInterval(()=>{apply();void refresh()},60_000);
+  document.addEventListener('visibilitychange',()=>{if(!document.hidden)void refresh()});
+  window.addEventListener('storage',event=>{if(event.key===key){try{state=JSON.parse(event.newValue||'null');apply()}catch{}}});
+</script>
+<style is:global>
+  .weather-credit{font-size:10px;color:#8e9787;text-align:center;padding:0 20px 20px;line-height:1.6}
+  .weather-credit a{text-decoration:underline;text-underline-offset:3px}
+</style>
