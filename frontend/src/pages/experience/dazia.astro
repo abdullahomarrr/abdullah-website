@@ -1,8 +1,21 @@
 ---
 import ProjectLayout from '../../layouts/ProjectLayout.astro';
-const contributions = [{"title": "a clearer view of the business", "body": "Built an internal analytics platform tracking 10+ metrics, giving leadership a centralized view of product usage, AI costs, and business performance."}, {"title": "more room to study", "body": "Expanded exams and flashcards to draw from multiple textbooks per course, removing the study workflow’s single-book restriction."}, {"title": "one consistent product", "body": "Rebuilt 8+ FinanceBuddy screens with reusable UI components and animation patterns to create a consistent experience across core workflows."}, {"title": "a better first experience", "body": "Developed interactive onboarding for 4 study tools, letting users practice key workflows without consuming LLM calls or user credits."}];
+const contributions = [
+  {
+    "title": "a clearer view of the business",
+    "body": "Delivered a full-stack admin platform with automated tracking of 10+ metrics and tools including user engagement analytics, system health monitoring, and interactive 12-month revenue modeling."
+  },
+  {
+    "title": "course-specific AI study tools",
+    "body": "Implemented a RAG pipeline that splits seven financial certification textbooks into searchable passages and retrieves course-specific content using ChromaDB to power AI tutoring, quizzes, flashcards, and summaries."
+  },
+  {
+    "title": "one consistent product",
+    "body": "Redesigned and rebuilt the application’s entire user interface, creating reusable components and consistent layouts and interactions across all pages."
+  }
+];
 ---
-<ProjectLayout title="Dazia Consulting — Software Engineering Intern | Abdullah Omar" description="Contract software engineering internship at Dazia Consulting, May–July 2026. Analytics, study tools, and FinanceBuddy product interfaces.">
+<ProjectLayout title="Dazia Consulting — Software Engineering Intern | Abdullah Omar" description="Contract software engineering internship at Dazia Consulting, May–July 2026. Admin analytics, a RAG-powered study pipeline, and a complete interface rebuild.">
   <nav class="dazia-nav" aria-label="Page navigation"><a href="/#experience">← back to experience</a><a href="/">abdullah omar</a></nav>
   <main class="dazia-page">
     <div class="experience-spread">
@@ -10,11 +23,11 @@ const contributions = [{"title": "a clearer view of the business", "body": "Buil
         <img class="dazia-logo" src="/brands/dazia.png" alt="Dazia Consulting" width="140" height="70"/>
         <p class="role-type">contract / may — july 2026</p>
         <h1>software <br/>engineering <br/><span>intern.</span></h1>
-        <p class="role-summary">Analytics, study tools, and the interfaces that bring them together.</p>
+        <p class="role-summary">Admin analytics, AI-powered study tools, and a complete interface rebuild.</p>
         <dl class="role-details"><div><dt>company</dt><dd>Dazia Consulting</dd></div><div><dt>location</dt><dd>Toronto, Ontario</dd></div></dl>
         <div class="toolkit"><h2>built with</h2><p>React <span>·</span> JavaScript <span>·</span> Vite <span>·</span> Supabase</p></div>
       </header>
-      <section class="contributions" aria-labelledby="contributions-title"><div class="contributions-heading"><h2 id="contributions-title">what i shipped</h2><span>four areas of work</span></div><ol>{contributions.map((item,i)=><li><span class="entry-number" aria-hidden="true">0{i+1}</span><div><h3>{item.title}</h3><p>{item.body}</p></div></li>)}</ol></section>
+      <section class="contributions" aria-labelledby="contributions-title"><div class="contributions-heading"><h2 id="contributions-title">what i shipped</h2><span>three areas of work</span></div><ol>{contributions.map((item,i)=><li><span class="entry-number" aria-hidden="true">0{i+1}</span><div><h3>{item.title}</h3><p>{item.body}</p></div></li>)}</ol></section>
     </div>
     <footer class="dazia-footer"><span>Dazia Consulting · 2026</span><a href="/#experience">back to experience ↗</a></footer>
   </main>
