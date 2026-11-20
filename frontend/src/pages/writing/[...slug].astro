@@ -1,6 +1,7 @@
 ---
 import {getCollection} from 'astro:content';
 import WritingLayout from '../../layouts/WritingLayout.astro';
+import FootballExplainers from '../../components/FootballExplainers.astro';
 export async function getStaticPaths(){
   return (await getCollection('writing',({data})=>!data.draft)).map(entry=>({params:{slug:entry.slug},props:{entry}}));
 }
@@ -13,6 +14,7 @@ const minutes=Math.max(1,Math.ceil(entry.body.split(/\s+/).length/220));
     <a class="back" href="/writing/">← all writing</a>
     <header><div class="essay-meta"><span>{entry.data.topic}</span><time datetime={entry.data.date.toISOString()}>{entry.data.date.toLocaleDateString('en-CA',{month:'long',day:'numeric',year:'numeric',timeZone:'UTC'})}</time><span>{minutes} min read</span></div><h1>{entry.data.title}</h1><p>{entry.data.description}</p></header>
     <div class="essay-body"><Content/></div>
+    {entry.slug==='football-analytics' && <FootballExplainers/>}
     <div class="essay-end"><a href="/writing/">← back to the notebook</a><a href={`mailto:abdullahom07@gmail.com?subject=${encodeURIComponent(entry.data.title)}`}>share a thought ↗</a></div>
   </article>
 </WritingLayout>
