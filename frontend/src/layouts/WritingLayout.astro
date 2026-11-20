@@ -1,4 +1,5 @@
 ---
+import Analytics from '../components/Analytics.astro';
 import SiteNav from '../components/SiteNav.astro';
 import SmoothScroll from '../components/SmoothScroll.astro';
 import '../styles/portfolio.css';
@@ -18,7 +19,8 @@ const {title='Writing',description='Notes on building, learning, and everything 
     <main id="main" class="writing-main shell"><slot/></main>
     <footer class="writing-footer shell"><a href="/">abdullah omar <span>© {new Date().getFullYear()}</span></a><a href="mailto:abdullahom07@gmail.com">a thought to share? ↗</a></footer>
     <SmoothScroll/>
-  </body>
+  <Analytics />
+</body>
 </html>
 <style is:global>
   .writing-site{min-height:100svh;display:flex;flex-direction:column}

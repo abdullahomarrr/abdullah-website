@@ -2,7 +2,7 @@
 
 My personal site and portfolio — built with [Astro](https://astro.build).
 
-A small, fast, static site for showing what I'm building, what I've worked on, and how to get in touch. No tracking, no bloat — just content rendered at build time.
+A small, fast, static site for showing what I'm building, what I've worked on, and how to get in touch. Content is rendered at build time, with optional first-party analytics powered by Vercel functions and Redis. See [analytics setup](frontend/ANALYTICS.md).
 
 ## Highlights
 

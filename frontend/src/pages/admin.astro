@@ -1,0 +1,19 @@
+---
+import '../styles/portfolio.css';
+import '../styles/admin.css';
+---
+<!doctype html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="robots" content="noindex,nofollow"/><title>Observatory — Abdullah Omar</title><link rel="icon" href="/logo.png"/></head>
+<body><main class="admin-shell">
+  <header class="admin-nav"><a href="/">ao<span> / observatory</span></a><div><span class="private-dot"></span> private analytics <button id="logout" hidden>sign out ↗</button></div></header>
+  <section id="login" class="login-panel"><p class="kicker">01 / PRIVATE SPACE</p><h1>a closer<br/>look <em>inside.</em></h1><p class="muted">The visits, the paths, and what catches attention.</p><form id="login-form"><label for="password">Dashboard password</label><div class="password-row"><input id="password" type="password" autocomplete="current-password" required/><button class="admin-button">enter ↗</button></div></form><p id="login-status" role="status"></p><a class="muted" href="/">← back to the portfolio</a></section>
+  <section id="dashboard" hidden>
+    <div class="dashboard-heading"><div><p class="kicker">01 / THE BIG PICTURE</p><h1>attention, <em>mapped.</em></h1><p class="muted" id="updated">Your portfolio, through the eyes of its visitors.</p></div><div class="filters"><label>Time window <select id="days"><option value="7">Last 7 days</option><option value="14">Last 14 days</option><option value="30">Last 30 days</option></select></label><button id="refresh" class="admin-button">refresh ↻</button></div></div>
+    <p id="report-status" role="status"></p>
+    <div id="metrics" class="metric-grid"></div>
+    <div class="chart-grid"><article class="admin-card trend-card"><div class="card-title"><h2>the rhythm of visits</h2><span>visitors & page views · UTC</span></div><div class="chart-legend"><span>● visitors</span><span>● page views</span></div><div id="trend"></div></article><article class="admin-card"><div class="card-title"><h2>what draws people in</h2><span>page views</span></div><div id="pages" class="rank-list"></div></article></div>
+    <div class="breakdown-grid"><article class="admin-card"><div class="card-title"><h2>where they arrive from</h2><span>sessions</span></div><div id="sources" class="rank-list"></div></article><article class="admin-card"><div class="card-title"><h2>around the world</h2><span>sessions</span></div><div id="countries" class="rank-list"></div></article><article class="admin-card"><div class="card-title"><h2>the next move</h2><span>clicks</span></div><div id="clicks" class="rank-list"></div></article></div>
+    <div class="section-label"><p class="kicker">02 / FOLLOW THE JOURNEY</p><p class="muted">Select a visit to see its sequence.</p></div>
+    <div class="journey-grid"><article class="admin-card visits-card"><div class="card-title"><h2>recent visits</h2><input id="search" type="search" placeholder="Find visitor, city, or source" aria-label="Filter visits"/></div><div class="table-wrap"><table><thead><tr><th>visitor / arrival</th><th>location</th><th>visits*</th><th>active</th><th>views</th></tr></thead><tbody id="visits"></tbody></table></div></article><article class="admin-card timeline-card"><div class="card-title"><h2>session journal</h2><span id="session-label">select a visit</span></div><div id="timeline"><p class="empty">Every journey starts somewhere.<br/>Choose a visit on the left.</p></div></article></div>
+    <footer class="admin-footer">Anonymous browser IDs · approximate IP locations · active time pauses after 60s idle.<br/>*Visits and returning visitors are counted within the selected window. Latest 500 sessions shown; up to 10,000 events per day. Raw events expire after 90 days. No historical visits before installation.</footer>
+  </section>
+</main><script src="../scripts/admin.ts"></script></body></html>
